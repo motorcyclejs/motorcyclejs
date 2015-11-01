@@ -1,0 +1,16 @@
+{
+  "extends": "eslint-config-cycle",
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "new-cap": 0,
+    "arrow-spacing": 2,
+    "object-curly-spacing": [2, "always"],
+    "array-bracket-spacing": [2, "always"],
+    "space-in-parens": [2, "always", {"exceptions": ["{}", "[]", "empty"]}],
+    "semi": [2, "always"]
+  }
+}
