@@ -1,50 +1,48 @@
-let Rx = require(`rx`);
-
-const disposableCreate = Rx.Disposable.create;
-const CompositeDisposable = Rx.CompositeDisposable;
-const AnonymousObservable = Rx.AnonymousObservable;
+import Most from 'most';
+import CompoundDisposable from 'most/lib/disposable/CompoundDisposable';
+import Disposable from 'most/lib/disposable/Disposable';
 
 function createListener({ element, eventName, handler, useCapture }) {
   if ( element.addEventListener ) {
     element.addEventListener( eventName, handler, useCapture );
-    return disposableCreate( function removeEventListener() {
+    return new Disposable( function removeEventListener() {
       element.removeEventListener( eventName, handler, useCapture );
-    });
+    }, {});
   }
   throw new Error( `No listener found` );
 }
 
 function createEventListener({ element, eventName, handler, useCapture }) {
-  const disposables = new CompositeDisposable();
+  const disposables = new CompoundDisposable();
 
   const toStr = Object.prototype.toString;
   if ( toStr.call( element ) === `[object NodeList]` ||
     toStr.call( element ) === `[object HTMLCollection]` )
   {
     for ( let i = 0, len = element.length; i < len; i++ ) {
-      disposables.add( createEventListener({
+      disposables.disposables.push( createEventListener({
           element: element.item( i ),
           eventName,
           handler,
           useCapture }) );
     }
   } else if ( element ) {
-    disposables
-      .add( createListener({ element, eventName, handler, useCapture }) );
+    disposables.disposables
+      .push( createListener({ element, eventName, handler, useCapture }) );
   }
-  return disposables;
+  return () => { disposables.dispose(); };
 }
 
 function fromEvent( element, eventName, useCapture = false ) {
-  return new AnonymousObservable( function subscribe( observer ) {
+  return Most.create( add => {
     return createEventListener({
       element,
       eventName,
       handler: function handler() {
-        observer.onNext( arguments[0]);
+        add( arguments[0]);
       },
       useCapture });
-  }).publish().refCount();
+  });
 }
 
 export default fromEvent;

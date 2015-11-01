@@ -1,6 +1,7 @@
 import Most from 'most';
 
 function parseTree( vTree ) {
+  console.log( vTree );
   // Child is a observable
   if ( vTree.observe ) {
     return vTree.flatMap( parseTree );

@@ -17,7 +17,7 @@ function makeEventsSelector( element$ ) {
         return Most.empty();
       }
       return fromEvent( element, eventName, useCapture );
-    }).multicast();
+    });
   };
 }
 
@@ -38,6 +38,13 @@ function makeElementSelector( rootElem$ ) {
   };
 }
 
+function validateDOMDriverInput( view$ ) {
+  if ( !view$ || typeof view$.observe !== `function` ) {
+    throw new Error( `The DOM driver function expects as input an ` +
+      `Observable of virtual DOM elements` );
+  }
+}
+
 function makeDOMDriver( container, modules = [
   require( `snabbdom/modules/class` ),
   require( `snabbdom/modules/props` ),
@@ -46,33 +53,23 @@ function makeDOMDriver( container, modules = [
 ]) {
   const patch = snabbdom.init( modules );
   const rootElem = getDomElement( container );
-  let renderContainer = document.createElement( `div` );
+  //let renderContainer = document.createElement( `div` );
+  const rootElem$ = bus();
 
   return function DOMDriver( view$ ) {
-    const rootElem$ = bus();
+    validateDOMDriverInput( view$ );
 
     const renderedView$ = view$
-      .take( 1 )
       .flatMap( parseTree )
       .flatMap( view => {
-        if ( rootElem.hasChildNodes() ) {
-          rootElem.innerHTML = ``;
-        }
+        rootElem.innerHTML = ``;
+        let renderContainer = document.createElement( `div` );
         rootElem.appendChild( renderContainer );
         patch( renderContainer, view );
         return Most.just( rootElem );
-      })
-      .concat( view$
-        .flatMapLatest( parseTree )
-        .pairwise()
-        .flatMap( view => {
-          patch( view[0], view[1]);
-          return Most.just( rootElem );
-        })
-      );
+      });
 
     rootElem$.plug( renderedView$ );
-    rootElem$.observe();
 
     return {
       select: makeElementSelector( rootElem$ ),
