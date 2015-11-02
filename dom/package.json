@@ -55,6 +55,7 @@
     "testem": "^0.9.8"
   },
   "dependencies": {
+    "fast.js": "^0.1.1",
     "snabbdom": "^0.2.7"
   }
 }

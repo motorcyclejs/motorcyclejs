@@ -1,7 +1,8 @@
 import Most from 'most';
+import assign from 'fast.js/object/assign';
 
 function combineVTreeStreams( vTree, ...children ) {
-  return Object.assign( vTree, { children });
+  return assign( vTree, { children });
 }
 
 function parseTree( vTree ) {
