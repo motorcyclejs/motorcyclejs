@@ -10,7 +10,7 @@
     "eslint": "eslint src/",
     "mocha": "mocha --compilers js:babel-core/register",
     "test": "npm run eslint && npm run mocha",
-    "compile-lib": "babel-cli src/ -d lib/",
+    "compile-lib": "babel src/ -d lib/",
     "pretest-browser": "browserify test/browser/index.js -t babelify -o test/browser/page/tests-bundle.js",
     "test-browser": "testem",
     "posttest-browser": "rm test/browser/page/tests-bundle.js"
