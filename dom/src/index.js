@@ -1,8 +1,7 @@
 import Most from 'most';
-import bus from 'most-bus';
 import snabbdom from 'snabbdom';
 import h from 'snabbdom/h';
-import { getDomElement } from './utils';
+import { getDomElement, Subject } from './utils';
 import fromEvent from './fromEvent';
 import parseTree from './parseTree';
 
@@ -53,23 +52,33 @@ function makeDOMDriver( container, modules = [
 ]) {
   const patch = snabbdom.init( modules );
   const rootElem = getDomElement( container );
-  //let renderContainer = document.createElement( `div` );
-  const rootElem$ = bus();
+  const renderContainer = document.createElement( `div` );
+  const rootElem$ = Subject();
 
   return function DOMDriver( view$ ) {
     validateDOMDriverInput( view$ );
 
-    const renderedView$ = view$
+    view$
       .flatMap( parseTree )
-      .flatMap( view => {
-        rootElem.innerHTML = ``;
-        let renderContainer = document.createElement( `div` );
-        rootElem.appendChild( renderContainer );
-        patch( renderContainer, view );
-        return Most.just( rootElem );
-      });
+      .loop( ( buffer, x ) => {
+        buffer.push( x );
+        if ( buffer[0] === rootElem ) {
+          if ( rootElem.hasChildNodes() ) {
+            rootElem.innerHTML = ``;
+          }
+          rootElem.appendChild( renderContainer );
+          buffer.shift();
+        }
 
-    rootElem$.plug( renderedView$ );
+        const pair = buffer.slice( -2 );
+        patch( ...pair );
+        console.log( pair );
+        return pair;
+      },
+      [ rootElem, renderContainer ]
+    ).forEach( console.log.bind( console ) );
+
+    rootElem$.plug( view$.map( () => rootElem ) );
 
     return {
       select: makeElementSelector( rootElem$ ),

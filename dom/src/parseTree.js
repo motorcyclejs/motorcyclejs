@@ -1,17 +1,20 @@
 import Most from 'most';
 
+function combineVTreeStreams( vTree, ...children ) {
+  return Object.assign( vTree, { children });
+}
+
 function parseTree( vTree ) {
-  console.log( vTree );
-  // Child is a observable
   if ( vTree.observe ) {
     return vTree.flatMap( parseTree );
   } else if ( `object` === typeof vTree && Array.isArray( vTree.children ) &&
     vTree.children.length > 0 )
   {
-    return Most
-      .combine( ( ...children ) => {
-        return Object.assign( vTree, { children });
-      }, vTree.children.map( parseTree ) );
+    return Most.zip(
+      combineVTreeStreams,
+      Most.just( vTree ),
+      ...vTree.children.map( parseTree )
+    );
   } else if ( `object` === typeof vTree ) {
     return Most.just( vTree );
   } else {

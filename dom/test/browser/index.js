@@ -2,8 +2,7 @@
 import assert from 'assert';
 import { run } from 'cycle-more';
 import { makeDOMDriver, h } from '../../src';
-import Most from 'most';
-import bust from 'most-bus';
+import most from 'most';
 
 function createRenderTarget( id = null ) {
   let element = document.createElement(`div`);
@@ -44,7 +43,7 @@ describe(`Rendering`, () => {
     it('should have Observable `:root` in response', function (done) {
       function app() {
         return {
-          DOM: Most.just(
+          DOM: most.just(
             h('div.top-most', [
               h('p', 'Foo'),
               h('span', 'Bar')
@@ -56,7 +55,8 @@ describe(`Rendering`, () => {
         DOM: makeDOMDriver(createRenderTarget(`fuckThisTest`))
       });
 
-      sources.DOM.select(':root').observable.skip(2).observe(root => {
+      sources.DOM.select(':root').observable.forEach(root => {
+        console.log(root);
         let classNameRegex = /top\-most/;
         assert.strictEqual(root.tagName, 'DIV');
         console.log(root.children);
