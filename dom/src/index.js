@@ -73,18 +73,17 @@ function makeDOMDriver( container, modules = [
     const rootElem$ = Most.create( add => {
       transposedView$
         .loop( ( buffer, x ) => {
-          const newBuffer = buffer.concat( x ) ;
-          if ( newBuffer[0] === rootElem ) {
+          buffer.push( x ) ;
+          if ( buffer[0] === rootElem ) {
             if ( rootElem.hasChildNodes() ) {
               rootElem.innerHTML = ``;
             }
             rootElem.appendChild( renderContainer );
             buffer.shift();
           }
-          const pair = newBuffer.slice( -2 );
+          const pair = buffer.slice( -2 );
           patch( ...pair );
-          console.log( pair );
-          return pair;
+          return { seed: pair, value: pair };
         }, [ rootElem, renderContainer ]).observe( pair => {
           add( rootElem );
           return pair;

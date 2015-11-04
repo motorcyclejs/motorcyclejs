@@ -95,18 +95,17 @@ function makeDOMDriver(container) {
 
     var rootElem$ = _most2.default.create(function (add) {
       transposedView$.loop(function (buffer, x) {
-        var newBuffer = buffer.concat(x);
-        if (newBuffer[0] === rootElem) {
+        buffer.push(x);
+        if (buffer[0] === rootElem) {
           if (rootElem.hasChildNodes()) {
             rootElem.innerHTML = '';
           }
           rootElem.appendChild(renderContainer);
           buffer.shift();
         }
-        var pair = newBuffer.slice(-2);
+        var pair = buffer.slice(-2);
         patch.apply(undefined, _toConsumableArray(pair));
-        console.log(pair);
-        return pair;
+        return { seed: pair, value: pair };
       }, [rootElem, renderContainer]).observe(function (pair) {
         add(rootElem);
         return pair;
