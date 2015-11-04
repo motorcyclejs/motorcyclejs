@@ -1,9 +1,11 @@
 import Most from 'most';
 import snabbdom from 'snabbdom';
 import h from 'snabbdom/h';
-import { getDomElement, Subject } from './utils';
+import { getDomElement } from './utils';
 import fromEvent from './fromEvent';
 import parseTree from './parseTree';
+
+import forEach from 'fast.js/array/forEach';
 
 function makeEventsSelector( element$ ) {
   return function events( eventName, useCapture = false ) {
@@ -15,7 +17,15 @@ function makeEventsSelector( element$ ) {
       if ( !element ) {
         return Most.empty();
       }
-      return fromEvent( element, eventName, useCapture );
+      return Most.create( add => {
+        if ( element.length ) {
+          forEach(element, el => { // eslint-disable-line
+            Most.fromEvent( eventName, el, useCapture ).observe( add );
+          });
+        } else {
+          fromEvent( eventName, element, useCapture ).observe( add );
+        }
+      });
     });
   };
 }
@@ -53,32 +63,33 @@ function makeDOMDriver( container, modules = [
   const patch = snabbdom.init( modules );
   const rootElem = getDomElement( container );
   const renderContainer = document.createElement( `div` );
-  const rootElem$ = Subject();
 
   return function DOMDriver( view$ ) {
     validateDOMDriverInput( view$ );
 
-    view$
-      .flatMap( parseTree )
-      .loop( ( buffer, x ) => {
-        buffer.push( x );
-        if ( buffer[0] === rootElem ) {
-          if ( rootElem.hasChildNodes() ) {
-            rootElem.innerHTML = ``;
+    const transposedView$ = view$
+      .flatMap( parseTree );
+
+    const rootElem$ = Most.create( add => {
+      transposedView$
+        .loop( ( buffer, x ) => {
+          const newBuffer = buffer.concat( x ) ;
+          if ( newBuffer[0] === rootElem ) {
+            if ( rootElem.hasChildNodes() ) {
+              rootElem.innerHTML = ``;
+            }
+            rootElem.appendChild( renderContainer );
+            buffer.shift();
           }
-          rootElem.appendChild( renderContainer );
-          buffer.shift();
-        }
-
-        const pair = buffer.slice( -2 );
-        patch( ...pair );
-        console.log( pair );
-        return pair;
-      },
-      [ rootElem, renderContainer ]
-    ).forEach( console.log.bind( console ) );
-
-    rootElem$.plug( view$.map( () => rootElem ) );
+          const pair = newBuffer.slice( -2 );
+          patch( ...pair );
+          console.log( pair );
+          return pair;
+        }, [ rootElem, renderContainer ]).observe( pair => {
+          add( rootElem );
+          return pair;
+        });
+    });
 
     return {
       select: makeElementSelector( rootElem$ ),
