@@ -1,5 +1,7 @@
 'use strict';
 
+var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; })();
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -27,9 +29,9 @@ var _parseTree = require('./parseTree');
 
 var _parseTree2 = _interopRequireDefault(_parseTree);
 
-var _forEach = require('fast.js/array/forEach');
+var _map = require('fast.js/array/map');
 
-var _forEach2 = _interopRequireDefault(_forEach);
+var _map2 = _interopRequireDefault(_map);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -46,16 +48,9 @@ function makeEventsSelector(element$) {
       if (!element) {
         return _most2.default.empty();
       }
-      return _most2.default.create(function (add) {
-        if (element.length) {
-          (0, _forEach2.default)(element, function (el) {
-            // eslint-disable-line
-            _most2.default.fromEvent(eventName, el, useCapture).observe(add);
-          });
-        } else {
-          (0, _fromEvent2.default)(eventName, element, useCapture).observe(add);
-        }
-      });
+      return _most2.default.merge.apply(_most2.default, _toConsumableArray((0, _map2.default)(element, function (el) {
+        return (0, _fromEvent2.default)(eventName, el, useCapture);
+      })));
     });
   };
 }
@@ -90,26 +85,28 @@ function makeDOMDriver(container) {
 
   return function DOMDriver(view$) {
     validateDOMDriverInput(view$);
-
-    var transposedView$ = view$.flatMap(_parseTree2.default);
-
+    var i = 0;
     var rootElem$ = _most2.default.create(function (add) {
-      transposedView$.loop(function (buffer, x) {
-        buffer.push(x);
-        if (buffer[0] === rootElem) {
+      view$.debounce(0.2).flatMap(_parseTree2.default).reduce(function (buffer, x) {
+        console.log(i);
+
+        var _buffer = _slicedToArray(buffer, 2);
+
+        var viewContainer = _buffer[0];
+        var view = _buffer[1];
+
+        if (viewContainer === rootElem) {
           if (rootElem.hasChildNodes()) {
             rootElem.innerHTML = '';
           }
           rootElem.appendChild(renderContainer);
-          buffer.shift();
         }
-        var pair = buffer.slice(-2);
-        patch.apply(undefined, _toConsumableArray(pair));
-        return { seed: pair, value: pair };
-      }, [rootElem, renderContainer]).observe(function (pair) {
+        patch(view, x);
         add(rootElem);
-        return pair;
-      });
+        var newBuffer = [view, x];
+        i++;
+        return newBuffer;
+      }, [rootElem, renderContainer]);
     });
 
     return {

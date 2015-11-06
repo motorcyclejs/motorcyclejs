@@ -4,72 +4,72 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _most = require('most');
+var _Stream = require('most/lib/Stream');
 
-var _most2 = _interopRequireDefault(_most);
+var _Stream2 = _interopRequireDefault(_Stream);
 
-var _CompoundDisposable = require('most/lib/disposable/CompoundDisposable');
+var _MulticastSource = require('most/lib/source/MulticastSource');
 
-var _CompoundDisposable2 = _interopRequireDefault(_CompoundDisposable);
-
-var _Disposable = require('most/lib/disposable/Disposable');
-
-var _Disposable2 = _interopRequireDefault(_Disposable);
+var _MulticastSource2 = _interopRequireDefault(_MulticastSource);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function createListener(_ref) {
-  var element = _ref.element;
-  var eventName = _ref.eventName;
-  var handler = _ref.handler;
-  var useCapture = _ref.useCapture;
-
-  if (element.addEventListener) {
-    element.addEventListener(eventName, handler, useCapture);
-    return new _Disposable2.default(function removeEventListener() {
-      element.removeEventListener(eventName, handler, useCapture);
-    }, {});
+var tryEvent = function tryEvent(t, x, sink) {
+  try {
+    sink.event(t, x);
+  } catch (e) {
+    sink.error(t, e);
   }
-  throw new Error('No listener found');
-}
+};
 
-function createEventListener(_ref2) {
-  var element = _ref2.element;
-  var eventName = _ref2.eventName;
-  var handler = _ref2.handler;
-  var useCapture = _ref2.useCapture;
+var EventAdapter = function EventAdapter( // eslint-disable-line
+init, event, source, useCapture, sink, scheduler) {
+  this.event = event;
+  this.source = source;
+  this.useCapture = useCapture;
 
-  var disposables = new _CompoundDisposable2.default();
-
-  var toStr = Object.prototype.toString;
-  if (toStr.call(element) === '[object NodeList]' || toStr.call(element) === '[object HTMLCollection]') {
-    for (var i = 0, len = element.length; i < len; i++) {
-      disposables.disposables.push(createEventListener({
-        element: element.item(i),
-        eventName: eventName,
-        handler: handler,
-        useCapture: useCapture }));
-    }
-  } else if (element) {
-    disposables.disposables.push(createListener({ element: element, eventName: eventName, handler: handler, useCapture: useCapture }));
-  }
-  return function () {
-    disposables.dispose();
+  var addEvent = function addEvent(ev) {
+    tryEvent(scheduler.now(), ev, sink);
   };
+
+  this._dispose = init(source, event, addEvent, useCapture);
+};
+
+EventAdapter.prototype.dispose = function dispose() {
+  return this._dispose(this.event, this.source);
+};
+
+var initEventTarget = function initEventTarget(source, event, addEvent, useCapture) {
+  // eslint-disable-line
+  source.addEventListener(event, addEvent, useCapture);
+
+  var dispose = function dispose(_event, target) {
+    target.removeEventListener(_event, addEvent, useCapture);
+  };
+
+  return dispose;
+};
+
+function EventTargetSource(event, source, useCapture) {
+  this.event = event;
+  this.source = source;
+  this.useCapture = useCapture;
 }
 
-function fromEvent(element, eventName) {
+EventTargetSource.prototype.run = function run(sink, scheduler) {
+  return new EventAdapter(initEventTarget, this.event, this.source, this.useCapture, sink, scheduler);
+};
+
+var fromEvent = function fromEvent(event, source) {
   var useCapture = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
-  return _most2.default.create(function (add) {
-    return createEventListener({
-      element: element,
-      eventName: eventName,
-      handler: function handler() {
-        add(arguments[0]);
-      },
-      useCapture: useCapture });
-  });
-}
+  var s = undefined;
+  if (source.addEventListener && source.removeEventListener) {
+    s = new _MulticastSource2.default(new EventTargetSource(event, source, useCapture));
+  } else {
+    throw new Error('source must support addEventListener/removeEventListener');
+  }
+  return new _Stream2.default(s);
+};
 
 exports.default = fromEvent;

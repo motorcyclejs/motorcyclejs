@@ -5,7 +5,7 @@ import { getDomElement } from './utils';
 import fromEvent from './fromEvent';
 import parseTree from './parseTree';
 
-import forEach from 'fast.js/array/forEach';
+import map from 'fast.js/array/map';
 
 function makeEventsSelector( element$ ) {
   return function events( eventName, useCapture = false ) {
@@ -17,15 +17,11 @@ function makeEventsSelector( element$ ) {
       if ( !element ) {
         return Most.empty();
       }
-      return Most.create( add => {
-        if ( element.length ) {
-          forEach(element, el => { // eslint-disable-line
-            Most.fromEvent( eventName, el, useCapture ).observe( add );
-          });
-        } else {
-          fromEvent( eventName, element, useCapture ).observe( add );
-        }
-      });
+      return Most.merge(
+        ...map( element, el => {
+          return fromEvent( eventName, el, useCapture );
+        })
+      );
     });
   };
 }
@@ -66,28 +62,26 @@ function makeDOMDriver( container, modules = [
 
   return function DOMDriver( view$ ) {
     validateDOMDriverInput( view$ );
-
-    const transposedView$ = view$
-      .flatMap( parseTree );
-
+    let i = 0;
     const rootElem$ = Most.create( add => {
-      transposedView$
-        .loop( ( buffer, x ) => {
-          buffer.push( x ) ;
-          if ( buffer[0] === rootElem ) {
+      view$
+        .flatMap( parseTree )
+        .reduce( ( buffer, x ) => {
+          console.log( i );
+          const [ viewContainer, view ] = buffer;
+
+          if ( viewContainer === rootElem ) {
             if ( rootElem.hasChildNodes() ) {
               rootElem.innerHTML = ``;
             }
             rootElem.appendChild( renderContainer );
-            buffer.shift();
           }
-          const pair = buffer.slice( -2 );
-          patch( ...pair );
-          return { seed: pair, value: pair };
-        }, [ rootElem, renderContainer ]).observe( pair => {
+          patch( view, x );
           add( rootElem );
-          return pair;
-        });
+          const newBuffer = [ view, x ];
+          i++;
+          return newBuffer;
+        }, [ rootElem, renderContainer ]);
     });
 
     return {

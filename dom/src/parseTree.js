@@ -11,7 +11,7 @@ function parseTree( vTree ) {
   } else if ( `object` === typeof vTree && Array.isArray( vTree.children ) &&
     vTree.children.length > 0 )
   {
-    return Most.zip(
+    return Most.combine(
       combineVTreeStreams,
       Most.just( vTree ),
       ...vTree.children.map( parseTree )
