@@ -1,9 +1,5 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _Stream = require('most/lib/Stream');
 
 var _Stream2 = _interopRequireDefault(_Stream);
@@ -72,4 +68,4 @@ var fromEvent = function fromEvent(event, source) {
   return new _Stream2.default(s);
 };
 
-exports.default = fromEvent;
+module.exports = fromEvent;

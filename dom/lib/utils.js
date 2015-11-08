@@ -11,10 +11,8 @@ var _most2 = _interopRequireDefault(_most);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _instanceof(left, right) { if (right != null && right[Symbol.hasInstance]) { return right[Symbol.hasInstance](left); } else { return left instanceof right; } }
-
 function isElement(obj) {
-  return typeof HTMLElement === 'object' ? _instanceof(obj, HTMLElement) || _instanceof(obj, DocumentFragment) : //DOM2
+  return typeof HTMLElement === 'object' ? obj instanceof HTMLElement || obj instanceof DocumentFragment : //DOM2
   obj && typeof obj === 'object' && obj !== null && (obj.nodeType === 1 || obj.nodeType === 11) && typeof obj.nodeName === 'string';
 }
 

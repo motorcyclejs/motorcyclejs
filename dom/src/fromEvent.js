@@ -1,4 +1,3 @@
-const Stream = require( `most/lib/stream` );
 import Stream from 'most/lib/Stream';
 import MulticastSource from 'most/lib/source/MulticastSource';
 

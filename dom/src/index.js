@@ -50,6 +50,14 @@ function validateDOMDriverInput( view$ ) {
   }
 }
 
+function firstRender( rootElem, renderContainer ) {
+  if ( rootElem.hasChildNodes ) {
+    rootElem.innerHTML = ``;
+  }
+  rootElem.appendChild( renderContainer );
+  return rootElem;
+}
+
 function makeDOMDriver( container, modules = [
   require( `snabbdom/modules/class` ),
   require( `snabbdom/modules/props` ),
@@ -62,30 +70,22 @@ function makeDOMDriver( container, modules = [
 
   return function DOMDriver( view$ ) {
     validateDOMDriverInput( view$ );
-    let i = 0;
     const rootElem$ = Most.create( add => {
       view$
         .flatMap( parseTree )
         .reduce( ( buffer, x ) => {
-          console.log( i );
           const [ viewContainer, view ] = buffer;
-
-          if ( viewContainer === rootElem ) {
-            if ( rootElem.hasChildNodes() ) {
-              rootElem.innerHTML = ``;
-            }
-            rootElem.appendChild( renderContainer );
-          }
+          add(
+            viewContainer === rootElem ?
+              firstRender( viewContainer, view ) : view.elm
+          );
           patch( view, x );
-          add( rootElem );
-          const newBuffer = [ view, x ];
-          i++;
-          return newBuffer;
+          return [ view, x ];
         }, [ rootElem, renderContainer ]);
     });
 
     return {
-      select: makeElementSelector( rootElem$ ),
+      select: makeElementSelector( rootElem$.skipRepeats() ),
     };
   };
 }

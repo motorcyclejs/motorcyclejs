@@ -76,6 +76,14 @@ function validateDOMDriverInput(view$) {
   }
 }
 
+function firstRender(rootElem, renderContainer) {
+  if (rootElem.hasChildNodes) {
+    rootElem.innerHTML = '';
+  }
+  rootElem.appendChild(renderContainer);
+  return rootElem;
+}
+
 function makeDOMDriver(container) {
   var modules = arguments.length <= 1 || arguments[1] === undefined ? [require('snabbdom/modules/class'), require('snabbdom/modules/props'), require('snabbdom/modules/attributes'), require('snabbdom/modules/style')] : arguments[1];
 
@@ -85,32 +93,21 @@ function makeDOMDriver(container) {
 
   return function DOMDriver(view$) {
     validateDOMDriverInput(view$);
-    var i = 0;
     var rootElem$ = _most2.default.create(function (add) {
-      view$.debounce(0.2).flatMap(_parseTree2.default).reduce(function (buffer, x) {
-        console.log(i);
-
+      view$.flatMap(_parseTree2.default).reduce(function (buffer, x) {
         var _buffer = _slicedToArray(buffer, 2);
 
         var viewContainer = _buffer[0];
         var view = _buffer[1];
 
-        if (viewContainer === rootElem) {
-          if (rootElem.hasChildNodes()) {
-            rootElem.innerHTML = '';
-          }
-          rootElem.appendChild(renderContainer);
-        }
+        add(viewContainer === rootElem ? firstRender(viewContainer, view) : view.elm);
         patch(view, x);
-        add(rootElem);
-        var newBuffer = [view, x];
-        i++;
-        return newBuffer;
+        return [view, x];
       }, [rootElem, renderContainer]);
     });
 
     return {
-      select: makeElementSelector(rootElem$)
+      select: makeElementSelector(rootElem$.skipRepeats())
     };
   };
 }
