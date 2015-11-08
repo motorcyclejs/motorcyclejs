@@ -1,3 +1,4 @@
+const Stream = require( `most/lib/stream` );
 import Stream from 'most/lib/Stream';
 import MulticastSource from 'most/lib/source/MulticastSource';
 
@@ -78,4 +79,4 @@ const fromEvent = ( event, source, useCapture = false ) => {
   return new Stream( s );
 };
 
-export default fromEvent;
+module.exports = fromEvent;
