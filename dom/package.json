@@ -1,6 +1,6 @@
 {
   "name": "@motorcycle/dom",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Snabbdom driver for motorcycle.js",
   "main": "lib/index.js",
   "directories": {
@@ -9,7 +9,7 @@
   "scripts": {
     "eslint": "eslint src/",
     "mocha": "mocha --compilers js:babel-core/register",
-    "test": "npm run eslint && npm run mocha",
+    "test": "npm run eslint && npm run test-browser",
     "compile-lib": "babel src/ -d lib/",
     "pretest-browser": "browserify test/browser/index.js -t babelify -o test/browser/page/tests-bundle.js",
     "test-browser": "testem",
@@ -34,7 +34,7 @@
   },
   "homepage": "https://github.com/motorcyclejs/motorcycle-dom#readme",
   "peerDependencies": {
-    "most": "*"
+    "@motorcycle/core": "*"
   },
   "devDependencies": {
     "assert": "^1.3.0",

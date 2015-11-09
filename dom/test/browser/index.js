@@ -1,6 +1,6 @@
 /* global describe, it, beforeEach */
 import assert from 'assert';
-import { run } from 'cycle-more';
+import { run } from '@motorcycle/core';
 import { makeDOMDriver, h } from '../../src';
 import most from 'most';
 
