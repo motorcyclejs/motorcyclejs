@@ -13,16 +13,18 @@ function makeEventsSelector( element$ ) {
       throw new Error( `DOM driver's events() expects argument to be a ` +
         `string representing the event type to listen for.` );
     }
-    return element$.flatMap( element => {
-      if ( !element ) {
-        return Most.empty();
-      }
-      return Most.merge(
-        ...map( element, el => {
-          return fromEvent( eventName, el, useCapture );
-        })
-      );
-    });
+    return element$
+      .flatMap( element => {
+        if ( !element ) {
+          return Most.empty();
+        }
+        return Most.merge(
+          ...map( element, el => {
+            return fromEvent( eventName, el, useCapture )
+              .takeUntil( element$.skip(1).skipRepeats() );
+          })
+        );
+      });
   };
 }
 

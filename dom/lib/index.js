@@ -49,7 +49,7 @@ function makeEventsSelector(element$) {
         return _most2.default.empty();
       }
       return _most2.default.merge.apply(_most2.default, _toConsumableArray((0, _map2.default)(element, function (el) {
-        return (0, _fromEvent2.default)(eventName, el, useCapture);
+        return (0, _fromEvent2.default)(eventName, el, useCapture).takeUntil(element$.skip(1).skipRepeats());
       })));
     });
   };
