@@ -75,7 +75,7 @@ describe(`Rendering`, () => {
     const [sinks, sources] = run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
-    
+
     sources.DOM.select('.myelementclass').events('click').observe(ev => {
       assert.strictEqual(ev.type, 'click');
       assert.strictEqual(ev.target.textContent, 'Foobar')
@@ -83,13 +83,13 @@ describe(`Rendering`, () => {
     });
 
     sources.DOM.select(':root').observable.observe(root => {
-      let myElement = root.querySelector('.myElementclass');
+      let myElement = root.querySelector('.myelementclass');
       assert.notStrictEqual(myElement, null);
       assert.notStrictEqual(typeof myElement, 'undefined');
       assert.strictEqual(myElement.tagName, 'H3');
       assert.doesNotThrow(() => {
         console.log( myElement );
-        myElement.click() 
+        myElement.click()
       });
     });
   })

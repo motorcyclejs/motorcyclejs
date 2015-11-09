@@ -1,3 +1,5 @@
-# Cycle-More-Snabbdom
+# Motorcycle.js DOM Driver 
 
-Snabbdom driver for Cycle-More
+The Standard DOM Driver for motorcycle.js
+
+More information available soon!

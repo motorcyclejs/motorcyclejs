@@ -7,10 +7,5 @@
   },
   "rules": {
     "new-cap": 0,
-    "arrow-spacing": 2,
-    "object-curly-spacing": [2, "always"],
-    "array-bracket-spacing": [2, "always"],
-    "space-in-parens": 0, 
-    "semi": [2, "always"]
   }
 }

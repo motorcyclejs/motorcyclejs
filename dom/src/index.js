@@ -14,17 +14,17 @@ function makeEventsSelector( element$ ) {
         `string representing the event type to listen for.` );
     }
     return element$
-      .flatMap( element => {
-        if ( !element ) {
+      .flatMap( elements => {
+        if ( !elements ) {
           return Most.empty();
         }
         return Most.merge(
-          ...map( element, el => {
-            return fromEvent( eventName, el, useCapture )
-              .takeUntil( element$.skip(1).skipRepeats() );
+          ...map( elements, el => {
+            console.log( el );
+            return fromEvent( eventName, el, useCapture );
           })
         );
-      });
+      }).multicast();
   };
 }
 
@@ -40,7 +40,7 @@ function makeElementSelector( rootElem$ ) {
       });
     return {
       observable: element$,
-      events: makeEventsSelector( element$ ),
+      events: makeEventsSelector( element$, rootElem$ ),
     };
   };
 }
@@ -72,6 +72,7 @@ function makeDOMDriver( container, modules = [
 
   return function DOMDriver( view$ ) {
     validateDOMDriverInput( view$ );
+
     const rootElem$ = Most.create( add => {
       view$
         .flatMap( parseTree )

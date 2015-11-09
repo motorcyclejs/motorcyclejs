@@ -44,14 +44,15 @@ function makeEventsSelector(element$) {
     if (typeof eventName !== 'string') {
       throw new Error('DOM driver\'s events() expects argument to be a ' + 'string representing the event type to listen for.');
     }
-    return element$.flatMap(function (element) {
-      if (!element) {
+    return element$.flatMap(function (elements) {
+      if (!elements) {
         return _most2.default.empty();
       }
-      return _most2.default.merge.apply(_most2.default, _toConsumableArray((0, _map2.default)(element, function (el) {
-        return (0, _fromEvent2.default)(eventName, el, useCapture).takeUntil(element$.skip(1).skipRepeats());
+      return _most2.default.merge.apply(_most2.default, _toConsumableArray((0, _map2.default)(elements, function (el) {
+        console.log(el);
+        return (0, _fromEvent2.default)(eventName, el, useCapture);
       })));
-    });
+    }).multicast();
   };
 }
 
@@ -65,7 +66,7 @@ function makeElementSelector(rootElem$) {
     });
     return {
       observable: element$,
-      events: makeEventsSelector(element$)
+      events: makeEventsSelector(element$, rootElem$)
     };
   };
 }
@@ -93,6 +94,7 @@ function makeDOMDriver(container) {
 
   return function DOMDriver(view$) {
     validateDOMDriverInput(view$);
+
     var rootElem$ = _most2.default.create(function (add) {
       view$.flatMap(_parseTree2.default).reduce(function (buffer, x) {
         var _buffer = _slicedToArray(buffer, 2);

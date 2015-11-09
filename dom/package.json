@@ -1,7 +1,7 @@
 {
-  "name": "cycle-more-snabbdom",
+  "name": "@motorcycle/dom",
   "version": "0.1.0",
-  "description": "Snabbdom driver for cycle-more-snabbdom",
+  "description": "Snabbdom driver for motorcycle.js",
   "main": "lib/index.js",
   "directories": {
     "test": "test"
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tylors/cycle-more-snabbdom.git"
+    "url": "git+https://github.com/motorcyclejs/motorcycle-dom.git"
   },
   "keywords": [
     "Cyclejs",
@@ -30,12 +30,11 @@
   "author": "Tylor Steinberger <tlsteinberger167@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tylors/cycle-more-snabbdom/issues"
+    "url": "https://github.com/motorcyclejs/motorcycle-dom/issues"
   },
-  "homepage": "https://github.com/tylors/cycle-more-snabbdom#readme",
+  "homepage": "https://github.com/motorcyclejs/motorcycle-dom#readme",
   "peerDependencies": {
-    "most": "*",
-    "most-bus": "*"
+    "most": "*"
   },
   "devDependencies": {
     "assert": "^1.3.0",
