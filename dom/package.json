@@ -1,6 +1,6 @@
 {
   "name": "@motorcycle/dom",
-  "version": "0.1.2",
+  "version": "0.1.3 ",
   "description": "Snabbdom driver for motorcycle.js",
   "main": "lib/index.js",
   "directories": {
@@ -37,6 +37,7 @@
     "@motorcycle/core": "*"
   },
   "devDependencies": {
+    "@motorcycle/core": "^0.1.x",
     "assert": "^1.3.0",
     "babel-cli": "^6.0.14",
     "babel-core": "^6.0.14",
