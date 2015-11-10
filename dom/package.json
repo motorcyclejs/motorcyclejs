@@ -13,7 +13,10 @@
     "compile-lib": "babel src/ -d lib/",
     "pretest-browser": "browserify test/browser/index.js -t babelify -o test/browser/page/tests-bundle.js",
     "test-browser": "testem",
-    "posttest-browser": "rm test/browser/page/tests-bundle.js"
+    "posttest-browser": "rm test/browser/page/tests-bundle.js",
+    "pretest-browser-perf": "browserify test/browser/perf/index.js -t babelify -o test/browser/page/tests-bundle.js",
+    "test-browser-perf": "testem",
+    "posttest-browser-perf": "rm test/browser/page/tests-bundle.js"
   },
   "repository": {
     "type": "git",
@@ -51,7 +54,6 @@
     "eslint-plugin-no-class": "^0.1.0",
     "mocha": "^2.3.3",
     "most": "^0.15.0",
-    "most-bus": "^0.0.3",
     "testem": "^0.9.8"
   },
   "dependencies": {
