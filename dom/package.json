@@ -16,7 +16,8 @@
     "posttest-browser": "rm test/browser/page/tests-bundle.js",
     "pretest-browser-perf": "browserify test/browser/perf/index.js -t babelify -o test/browser/page/tests-bundle.js",
     "test-browser-perf": "testem",
-    "posttest-browser-perf": "rm test/browser/page/tests-bundle.js"
+    "posttest-browser-perf": "rm test/browser/page/tests-bundle.js",
+    "prepublish": "npm run test && npm run compile-lib"
   },
   "repository": {
     "type": "git",
