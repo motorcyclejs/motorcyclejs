@@ -20,7 +20,6 @@ function makeEventsSelector(element$) {
         }
         return Most.merge(
           ...map(elements, el => {
-            console.log(el)
             return fromEvent(eventName, el, useCapture)
           })
        )
