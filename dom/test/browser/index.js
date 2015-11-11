@@ -1,7 +1,7 @@
 /* global describe, it, beforeEach */
 import assert from 'assert';
 import { run } from '@motorcycle/core';
-import { makeDOMDriver, h } from '../../src';
+import { makeDOMDriver, div, p, span, h3 } from '../../src';
 import most from 'most';
 
 function click(el){
@@ -57,9 +57,9 @@ describe(`Rendering`, () => {
       function app() {
         return {
           DOM: most.just(
-            h('div.top-most', [
-              h('p', 'Foo'),
-              h('span', 'Bar')
+            div('.top-most', [
+              p('Foo'),
+              span('Bar')
             ])
           )
         };
@@ -81,7 +81,7 @@ describe(`Rendering`, () => {
   it('should catch interactions coming from wrapped view', done => {
     const app = () => ({
       DOM: most.just(
-          h('h3.myelementclass', {}, 'Foobar')
+          h3('.myelementclass', {}, 'Foobar')
       )
     });
 

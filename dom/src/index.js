@@ -1,16 +1,29 @@
 import Most from 'most'
 import snabbdom from 'snabbdom'
 import h from 'snabbdom/h'
+const {
+  a, abbr, address, area, article, aside, audio, b, base,
+  bdi, bdo, blockquote, body, br, button, canvas, caption,
+  cite, code, col, colgroup, dd, del, dfn, dir, div, dl,
+  dt, em, embed, fieldset, figcaption, figure, footer, form,
+  h1, h2, h3, h4, h5, h6, head, header, hgroup, hr, html,
+  i, iframe, img, input, ins, kbd, keygen, label, legend,
+  li, link, map, mark, menu, meta, nav, noscript, object,
+  ol, optgroup, option, p, param, pre, q, rp, rt, ruby, s,
+  samp, script, section, select, small, source, span, strong,
+  style, sub, sup, table, tbody, td, textarea, tfoot, th,
+  thead, title, tr, u, ul, video,
+} = require(`hyperscript-helpers`)(h)
+import fastMap from 'fast.js/array/map'
+
 import {getDomElement} from './utils'
 import fromEvent from './fromEvent'
 import parseTree from './parseTree'
 
-import map from 'fast.js/array/map'
-
 function makeEventsSelector(element$) {
   return function events(eventName, useCapture = false) {
     if (typeof eventName !== `string`) {
-      throw new Error(`DOM driver's events() expects argument to be a ` +
+      throw new Error(`DOM drivers events() expects argument to be a ` +
         `string representing the event type to listen for.`)
     }
     return element$
@@ -19,7 +32,7 @@ function makeEventsSelector(element$) {
           return Most.empty()
         }
         return Most.merge(
-          ...map(elements, el => {
+          ...fastMap(elements, el => {
             return fromEvent(eventName, el, useCapture)
           })
        )
@@ -28,9 +41,9 @@ function makeEventsSelector(element$) {
 }
 
 function makeElementSelector(rootElem$) {
-  return function select(selector) {
+  return function DOMSelect(selector) {
     if (typeof selector !== `string`) {
-      throw new Error(`DOM driver's select() expects first argument to be a ` +
+      throw new Error(`DOM drivers select() expects first argument to be a ` +
         `string as a CSS selector`)
     }
     let element$ = selector.trim() === `:root` ? rootElem$ :
@@ -92,4 +105,18 @@ function makeDOMDriver(container, modules = [
   }
 }
 
-export {makeDOMDriver, h}
+export {
+  makeDOMDriver,
+  h,
+  a, abbr, address, area, article, aside, audio, b, base,
+  bdi, bdo, blockquote, body, br, button, canvas, caption,
+  cite, code, col, colgroup, dd, del, dfn, dir, div, dl,
+  dt, em, embed, fieldset, figcaption, figure, footer, form,
+  h1, h2, h3, h4, h5, h6, head, header, hgroup, hr, html,
+  i, iframe, img, input, ins, kbd, keygen, label, legend,
+  li, link, map, mark, menu, meta, nav, noscript, object,
+  ol, optgroup, option, p, param, pre, q, rp, rt, ruby, s,
+  samp, script, section, select, small, source, span, strong,
+  style, sub, sup, table, tbody, td, textarea, tfoot, th,
+  thead, title, tr, u, ul, video
+}
