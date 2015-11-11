@@ -41,7 +41,7 @@
     "@motorcycle/core": "*"
   },
   "devDependencies": {
-    "@motorcycle/core": "^0.1.4",
+    "@motorcycle/core": "^0.1.5",
     "assert": "^1.3.0",
     "babel-cli": "^6.1.4",
     "babel-core": "^6.1.4",
