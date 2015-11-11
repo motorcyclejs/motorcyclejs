@@ -14,7 +14,7 @@ function makeEventsSelector(element$) {
         `string representing the event type to listen for.`)
     }
     return element$
-      .flatMap(elements => {
+      .map(elements => {
         if (!elements) {
           return Most.empty()
         }
@@ -23,7 +23,7 @@ function makeEventsSelector(element$) {
             return fromEvent(eventName, el, useCapture)
           })
        )
-      }).multicast()
+      }).switch().multicast()
   }
 }
 
@@ -39,7 +39,7 @@ function makeElementSelector(rootElem$) {
       })
     return {
       observable: element$,
-      events: makeEventsSelector(element$, rootElem$),
+      events: makeEventsSelector(element$),
     }
   }
 }
