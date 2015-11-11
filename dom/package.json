@@ -55,7 +55,8 @@
     "eslint-plugin-no-class": "^0.1.0",
     "mocha": "^2.3.3",
     "most": "^0.15.0",
-    "testem": "^0.9.8"
+    "testem": "^0.9.8",
+    "wallabify": "0.0.10"
   },
   "dependencies": {
     "fast.js": "^0.1.1",

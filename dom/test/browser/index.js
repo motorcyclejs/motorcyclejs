@@ -4,6 +4,19 @@ import { run } from '@motorcycle/core';
 import { makeDOMDriver, h } from '../../src';
 import most from 'most';
 
+function click(el){
+    var ev = document.createEvent("MouseEvent");
+    ev.initMouseEvent(
+        "click",
+        true /* bubble */, true /* cancelable */,
+        window, null,
+        0, 0, 0, 0, /* coordinates */
+        false, false, false, false, /* modifier keys */
+        0 /*left*/, null
+    );
+    el.dispatchEvent(ev);
+}
+
 function createRenderTarget( id = null ) {
   let element = document.createElement(`div`);
   element.className = `cycletest`;
@@ -86,10 +99,10 @@ describe(`Rendering`, () => {
       let myElement = root.querySelector('.myelementclass');
       assert.notStrictEqual(myElement, null);
       assert.notStrictEqual(typeof myElement, 'undefined');
+      console.log(myElement);
       assert.strictEqual(myElement.tagName, 'H3');
       assert.doesNotThrow(() => {
-        console.log( myElement );
-        myElement.click()
+        click(myElement);
       });
     });
   })
