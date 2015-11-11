@@ -64,7 +64,7 @@ describe(`Rendering`, () => {
           )
         };
       }
-      let [sinks, sources] = run(app, {
+      let {sinks, sources} = run(app, {
         DOM: makeDOMDriver(createRenderTarget(`fuckThisTest`))
       });
 
@@ -85,7 +85,7 @@ describe(`Rendering`, () => {
       )
     });
 
-    const [sinks, sources] = run(app, {
+    const {sinks, sources} = run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
