@@ -68,7 +68,7 @@ function Main( sources ) {
     DOM: sources.DOM, value$: most.just( 100 ),
   });
 
-  const component$s$ = inputCount.value$.map(
+  const components$ = inputCount.value$.map(
     value => most.combine(
       (...components) => components,
       ...map(
@@ -76,13 +76,13 @@ function Main( sources ) {
         (v, i) => CycleJSLogo(i+1).DOM
       )
     )
-  ).flatMap(components => components).skipRepeats();
+  ).switch().skipRepeats();
 
   const view$ = most.combine(
     view,
     inputCount.value$,
     inputCount.DOM,
-    component$s$
+    components$
   ).skipRepeats();
 
   return {
