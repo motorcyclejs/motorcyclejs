@@ -1,6 +1,7 @@
 import { run } from '@motorcycle/core';
 import { makeDOMDriver, h } from '../../../src';
 import most from 'most';
+import map from 'fast.js/array/map';
 
 // InputCount component
 function InputCount( sources ) {
@@ -68,15 +69,20 @@ function Main( sources ) {
   });
 
   const component$s$ = inputCount.value$.map(
-    value => Array.apply( null, Array( parseInt( value ) ) )
-        .map( ( v, i ) => CycleJSLogo( i + 1 ).DOM )
-  );
+    value => most.combine(
+      (...components) => components,
+      ...map(
+        Array(parseInt(value)),
+        (v, i) => CycleJSLogo(i+1).DOM
+      )
+    )
+  ).flatMap(components => components).skipRepeats();
 
   const view$ = most.combine(
     view,
-    inputCount.value$.skipRepeats(),
-    inputCount.DOM.skipRepeats(),
-    component$s$.skipRepeats()
+    inputCount.value$,
+    inputCount.DOM,
+    component$s$
   ).skipRepeats();
 
   return {
