@@ -1,6 +1,6 @@
 {
   "name": "@motorcycle/dom",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Snabbdom driver for motorcycle.js",
   "main": "lib/index.js",
   "directories": {
