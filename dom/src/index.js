@@ -1,4 +1,4 @@
-import Most from 'most'
+import most from 'most'
 import snabbdom from 'snabbdom'
 import h from 'snabbdom/h'
 const {
@@ -20,90 +20,90 @@ import {getDomElement} from './utils'
 import fromEvent from './fromEvent'
 import parseTree from './parseTree'
 
-function makeEventsSelector(element$) {
-  return function events(eventName, useCapture = false) {
-    if (typeof eventName !== `string`) {
-      throw new Error(`DOM drivers events() expects argument to be a ` +
-        `string representing the event type to listen for.`)
-    }
-    return element$
-      .map(elements => {
-        if (!elements) {
-          return Most.empty()
-        }
-        return Most.merge(
-          ...fastMap(elements, el => {
-            return fromEvent(eventName, el, useCapture)
-          })
-       )
-      }).switch().multicast()
-  }
-}
-
-function makeElementSelector(rootElem$) {
-  return function DOMSelect(selector) {
-    if (typeof selector !== `string`) {
-      throw new Error(`DOM drivers select() expects first argument to be a ` +
-        `string as a CSS selector`)
-    }
-    let element$ = selector.trim() === `:root` ? rootElem$ :
-      rootElem$.map(rootElem => {
-        return rootElem.querySelectorAll(selector)
-      })
-    return {
-      observable: element$,
-      events: makeEventsSelector(element$),
-    }
-  }
-}
-
-function validateDOMDriverInput(view$) {
-  if (!view$ || typeof view$.observe !== `function`) {
-    throw new Error(`The DOM driver function expects as input an ` +
-      `Observable of virtual DOM elements`)
-  }
-}
-
-function firstRender(rootElem, renderContainer) {
-  if (rootElem.hasChildNodes) {
-    rootElem.innerHTML = ``
-  }
-  rootElem.appendChild(renderContainer)
-  return rootElem
-}
-
-function makeDOMDriver(container, modules = [
-  require(`snabbdom/modules/class`),
-  require(`snabbdom/modules/props`),
-  require(`snabbdom/modules/attributes`),
-  require(`snabbdom/modules/style`),
-]) {
-  const patch = snabbdom.init(modules)
-  const rootElem = getDomElement(container)
-  const renderContainer = document.createElement(`div`)
-
-  return function DOMDriver(view$) {
-    validateDOMDriverInput(view$)
-
-    const rootElem$ = Most.create(add => {
-      view$
-        .flatMap(parseTree)
-        .reduce((buffer, x) => {
-          const [viewContainer, view] = buffer
-          add(
-            viewContainer === rootElem ?
-              firstRender(viewContainer, view) : view.elm
+const makeEventsSelector =
+  element$ =>
+    (eventName, useCapture = false) => {
+      if (typeof eventName !== `string`) {
+        throw new Error(`DOM drivers events() expects argument to be a ` +
+          `string representing the event type to listen for.`)
+      }
+      return element$
+        .map(elements => {
+          if (!elements) {
+            return most.empty()
+          }
+          return most.merge(
+            ...fastMap(elements, el => {
+              return fromEvent(eventName, el, useCapture)
+            })
          )
-          patch(view, x)
-          return [view, x]
-        }, [rootElem, renderContainer])
-    })
+        }).switch().multicast()
+    }
 
-    return {
-      select: makeElementSelector(rootElem$.skipRepeats()),
+const makeElementSelector =
+  rootElem$ =>
+    selector => {
+      if (typeof selector !== `string`) {
+        throw new Error(`DOM drivers select() expects first argument to be a ` +
+          `string as a CSS selector`)
+      }
+      let element$ =
+        selector.trim() === `:root` ?
+          rootElem$ :
+          rootElem$.map(
+            rootElem =>
+              rootElem.querySelectorAll(selector)
+          )
+      return {
+        observable: element$,
+        events: makeEventsSelector(element$),
+      }
+    }
+
+const validateDOMDriverInput =
+  view$ => {
+    if (!view$ || typeof view$.observe !== `function`) {
+      throw new Error(`The DOM driver function expects as input an ` +
+        `Observable of virtual DOM elements`)
     }
   }
-}
+
+const makeDOMDriver =
+  (container, modules = [
+    require(`snabbdom/modules/class`),
+    require(`snabbdom/modules/props`),
+    require(`snabbdom/modules/attributes`),
+    require(`snabbdom/modules/style`),
+  ]) => {
+    const patch = snabbdom.init(modules)
+    const rootElem = getDomElement(container)
+
+    const DOMDriver =
+      view$ => {
+        validateDOMDriverInput(view$)
+
+        const rootElem$ =
+          most.create(
+            add =>
+              view$
+                .flatMap(parseTree)
+                .reduce(
+                  (prevView, newView) => {
+                    patch(prevView, newView)
+                    add(newView.elm)
+                    return newView
+                  }
+                  , rootElem
+                )
+          )
+
+        return {
+          select: makeElementSelector(rootElem$.skipRepeats()),
+        }
+      }
+
+    return DOMDriver
+  }
 
 export {
   makeDOMDriver,

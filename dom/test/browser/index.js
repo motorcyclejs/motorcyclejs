@@ -71,9 +71,8 @@ describe(`Rendering`, () => {
       sources.DOM.select(':root').observable.forEach(root => {
         let classNameRegex = /top\-most/;
         assert.strictEqual(root.tagName, 'DIV');
-        let child = root.children[0];
-        assert.notStrictEqual(classNameRegex.exec(child.className), null);
-        assert.strictEqual(classNameRegex.exec(child.className)[0], 'top-most');
+        assert.notStrictEqual(classNameRegex.exec(root.className), null);
+        assert.strictEqual(classNameRegex.exec(root.className)[0], 'top-most');
         done();
       });
     });
@@ -81,7 +80,10 @@ describe(`Rendering`, () => {
   it('should catch interactions coming from wrapped view', done => {
     const app = () => ({
       DOM: most.just(
+        div(`#top-most`, [
           h3('.myelementclass', {}, 'Foobar')
+        ])
+
       )
     });
 
@@ -96,10 +98,9 @@ describe(`Rendering`, () => {
     });
 
     sources.DOM.select(':root').observable.observe(root => {
-      let myElement = root.querySelector('.myelementclass');
+      let myElement = root.querySelector(`.myelementclass`)
       assert.notStrictEqual(myElement, null);
       assert.notStrictEqual(typeof myElement, 'undefined');
-      console.log(myElement);
       assert.strictEqual(myElement.tagName, 'H3');
       assert.doesNotThrow(() => {
         click(myElement);
