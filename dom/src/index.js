@@ -96,6 +96,7 @@ const makeDOMDriver =
                   , rootElem
                 )
           )
+          rootElem$.drain()
 
         return {
           select: makeElementSelector(rootElem$.skipRepeats()),
