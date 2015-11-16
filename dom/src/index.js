@@ -96,10 +96,10 @@ const makeDOMDriver =
                   , rootElem
                 )
           )
-          rootElem$.drain()
+        rootElem$.drain()
 
         return {
-          select: makeElementSelector(rootElem$.skipRepeats()),
+          select: makeElementSelector(rootElem$),
         }
       }
 
