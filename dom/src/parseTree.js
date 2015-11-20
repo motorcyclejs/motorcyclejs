@@ -18,7 +18,7 @@ const parseTree =
     } else if (`object` === typeof vTree) {
       const vtree$ = most.just(vTree)
       if (vTree.children && vTree.children.length > 0) {
-        return most.zip(
+        return most.combine(
           combineVTreeStreams,
           vtree$,
           ...map(vTree.children, parseTree)
