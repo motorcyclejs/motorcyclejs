@@ -53,8 +53,9 @@
     "eslint-config-cycle": "^3.1.0",
     "eslint-plugin-cycle": "^1.0.2",
     "eslint-plugin-no-class": "^0.1.0",
+    "matches-selector": "^1.0.0",
     "mocha": "^2.3.3",
-    "most": "^0.15.0",
+    "most": "^0.16.0",
     "testem": "^0.9.8",
     "wallabify": "0.0.10"
   },
