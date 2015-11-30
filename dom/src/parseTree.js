@@ -1,5 +1,6 @@
 import most from 'most'
 import map from 'fast.js/array/map'
+import filter from 'fast.js/array/filter'
 
 const combineVTreeStreams =
   (vTree, ...children) => ({
@@ -13,7 +14,9 @@ const combineVTreeStreams =
 
 const parseTree =
   vTree => {
-    if (vTree.observe) {
+    if (!vTree) {
+      return null
+    } else if (vTree.observe) {
       return vTree.flatMap(parseTree)
     } else if (`object` === typeof vTree) {
       const vtree$ = most.just(vTree)
@@ -21,7 +24,10 @@ const parseTree =
         return most.combine(
           combineVTreeStreams,
           vtree$,
-          ...map(vTree.children, parseTree)
+          ...filter(
+            map(vTree.children, parseTree),
+            x => x !== null
+          )
         )
       }
       return vtree$
