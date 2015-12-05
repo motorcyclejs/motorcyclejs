@@ -1,27 +1,36 @@
 {
   "name": "@motorcycle/dom",
   "version": "0.6.1",
-  "description": "Snabbdom driver for motorcycle.js",
+  "description": "Snabbdom driver for MotorcycleJS.",
   "main": "lib/index.js",
   "directories": {
-    "test": "test"
+    "lib": "./lib"
   },
+  "files": [
+    "lib/"
+  ],
   "scripts": {
     "eslint": "eslint src/",
     "mocha": "mocha --compilers js:babel-core/register",
-    "test": "npm run eslint && npm run test-browser",
-    "compile-lib": "babel src/ -d lib/",
-    "pretest-browser": "browserify test/browser/index.js -t babelify -o test/browser/page/tests-bundle.js",
-    "test-browser": "testem",
-    "posttest-browser": "rm test/browser/page/tests-bundle.js",
     "pretest-browser-perf": "browserify test/browser/perf/index.js -t babelify -o test/browser/page/tests-bundle.js",
-    "test-browser-perf": "testem",
     "posttest-browser-perf": "rm test/browser/page/tests-bundle.js",
-    "prepublish": "npm run test && npm run compile-lib"
+    "test-browser-perf": "testem",
+    "pretest-browser": "browserify test/browser/index.js -t babelify -o test/browser/page/tests-bundle.js",
+    "posttest-browser": "rm test/browser/page/tests-bundle.js",
+    "test-browser": "testem",
+    "test": "npm run eslint && npm run test-browser",
+    "start": "npm install && npm prune && validate-commit-msg",
+    "precompile": "rm -rf lib/ && mkdir -p lib",
+    "compile": "babel -d lib/ src/",
+    "prepublish": "npm run compile",
+    "release": "npm run release-patch",
+    "release-patch": "git checkout master && release patch && npm publish --access=public",
+    "release-minor": "git checkout master && release minor && npm publish --access=public",
+    "release-major": "git checkout master && release major && npm publish --access=public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/motorcyclejs/motorcycle-dom.git"
+    "url": "https://github.com/motorcyclejs/motorcycle-dom.git"
   },
   "keywords": [
     "Cyclejs",
@@ -37,6 +46,9 @@
     "url": "https://github.com/motorcyclejs/motorcycle-dom/issues"
   },
   "homepage": "https://github.com/motorcyclejs/motorcycle-dom#readme",
+  "contributors": [
+    "Frederik Krautwald <fkrautwald@gmail.com> (https://github.com/Frikki)"
+  ],
   "peerDependencies": {
     "@motorcycle/core": "*"
   },
@@ -49,6 +61,7 @@
     "babel-preset-es2015": "^6.1.4",
     "babelify": "^7.2.0",
     "browserify": "^12.0.1",
+    "cli-release": "^1.0.3",
     "eslint": "1.0.x",
     "eslint-config-cycle": "^3.1.0",
     "eslint-plugin-cycle": "^1.0.2",
@@ -56,7 +69,7 @@
     "mocha": "^2.3.3",
     "most": "^0.16.0",
     "testem": "^0.9.8",
-    "wallabify": "0.0.10"
+    "validate-commit-message": "^3.0.1"
   },
   "dependencies": {
     "fast.js": "^0.1.1",
