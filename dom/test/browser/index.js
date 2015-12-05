@@ -123,6 +123,26 @@ describe(`Rendering`, () => {
     })
   })
 
+  it(`should render when children === falsey in a child stream`, done => {
+    const app = () => ({
+      DOM: most.just(div({}, [
+        most.just(h2('Hello, world!'))
+      ]))
+    })
+
+    const {sources} = run(app, {
+      DOM: makeDOMDriver(createRenderTarget()),
+    })
+
+    sources.DOM.select(`:root`).observable.observe(root => {
+      let myElement = root.querySelector(`h2`)
+      assert.notStrictEqual(myElement, null)
+      assert.notStrictEqual(typeof myElement, `undefined`)
+      assert.strictEqual(myElement.tagName, `H2`)
+      done()
+    })
+  })
+
   describe(`isolateSource`, () => {
     it(`should have the same effect as DOM.select()`, done => {
       function app() {
