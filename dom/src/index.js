@@ -102,7 +102,11 @@ function makeElementSelector(rootElem$) {
                       return [element]
                     } else {
                       let nodeList = element.querySelectorAll(scopedSelector)
-                      return Array.prototype.slice.call(nodeList)
+                      const nodeListArray = new Array(nodeList.length)
+                      for (let j = 0; j < nodeListArray.length; j++) {
+                        nodeListArray[j] = nodeList[j]
+                      }
+                      return nodeListArray
                     }
                   }
                 ),
