@@ -21,7 +21,7 @@ first to discover the differences between Matt Esch's *Virtual-DOM*.
 
 A less obvious difference is how this driver patches the DOM.
 
-For Example - Given the view `h1('Hello, World!')`  being patched to `<div id='#app'></div>` this is how it will look after being patched.
+For Example, Given the view `h1('Hello, World!')`  being patched to `<div id='#app'></div>`, this is how it will look after being patched:
 ```html
 <!-- Cycle-DOM -->
 <div id='#app'>
@@ -91,7 +91,7 @@ makeDOMDriver('#app', [
 import {h} from '@motorcycle/dom'
 ```
 
-For more information on how to use `h()` please refer to the original documentation - https://github.com/paldepind/snabbdom#snabbdomh
+For more information on how to use `h()`, please refer to the [original documentation](https://github.com/paldepind/snabbdom#snabbdomh).
 
 ### hyperscript-helpers
 
@@ -100,5 +100,4 @@ For more information on how to use `h()` please refer to the original documentat
 import {div, h1, p} from '@motorcycle/dom'
 ```
 
-For more information on how to use hyperscript-helpers -
-https://github.com/ohanhi/hyperscript-helpers#how-to-use
+For more information on [how to use hyperscript-helpers](https://github.com/ohanhi/hyperscript-helpers#how-to-use).
