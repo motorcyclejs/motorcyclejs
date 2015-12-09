@@ -19,6 +19,7 @@
     "posttest-browser": "rm test/browser/page/tests-bundle.js",
     "test-browser": "testem",
     "test": "npm run eslint && npm run test-browser",
+    "test-ci": "testem ci",
     "start": "npm install && npm prune && validate-commit-msg",
     "precompile": "rm -rf lib/ && mkdir -p lib",
     "compile": "babel -d lib/ src/",
