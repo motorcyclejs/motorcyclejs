@@ -222,7 +222,6 @@ describe(`Rendering`, () => {
       // Make assertions
       sources.DOM.select(`:root`).observable
         .observe(root => {
-          console.log(root)
           assert.notStrictEqual(root, null)
           assert.notStrictEqual(typeof root, `undefined`)
           assert.strictEqual(root.tagName, `H3`)
@@ -289,6 +288,33 @@ describe(`Rendering`, () => {
         done()
       })
     })
+  })
+
+  it('should not redundantly repeat the scope className', done => {
+    const app = ({DOM}) => {
+      const tab1$ = most.just(span('.tab1', 'Hi'))
+      const tab2$ = most.just(span('.tab2', 'Hello'))
+      const first$ = DOM.isolateSink(tab1$, '1')
+      const second$ = DOM.isolateSink(tab2$, '2')
+      const switched$ = most.from([1, 2, 1, 2, 1, 2])
+        .flatMap(i => i === 1? first$ : second$)
+      return {
+        DOM: switched$,
+      }
+    }
+
+    const {sources} = run(app, {
+      DOM: makeDOMDriver(createRenderTarget('tab1')),
+    })
+
+    sources.DOM.select(':root').observable.skip(4).take(1)
+      .observe(root => {
+        assert.notStrictEqual(root, null)
+        assert.notStrictEqual(typeof root, 'undefined')
+        assert.strictEqual(root.tagName, 'SPAN')
+        assert.strictEqual(root.className, 'tab1 cycle-scope-1')
+        done()
+      })
   })
 
   it(`should catch interaction events using id in DOM.select`, done => {
