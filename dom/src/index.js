@@ -14,7 +14,12 @@ const {
   style, sub, sup, table, tbody, td, textarea, tfoot, th,
   thead, title, tr, u, ul, video,
 } = require(`hyperscript-helpers`)(h)
-import matchesSelector from 'matches-selector'
+let matchesSelector
+try {
+  matchesSelector = require(`matches-selector`)
+} catch (e) {
+  matchesSelector = () => {}
+}
 import fastMap from 'fast.js/array/map'
 import reduce from 'fast.js/array/reduce'
 import filter from 'fast.js/array/filter'
@@ -31,8 +36,10 @@ const isolateSink =
   (sink, scope) =>
     sink.map(
       vtree => {
-        const c = `${vtree.sel} cycle-scope-${scope}`.trim()
-        vtree.sel = c
+        if (vtree.sel.indexOf(`cycle-scope-${scope}`) === -1) {
+          const c = `${vtree.sel}.cycle-scope-${scope}`
+          vtree.sel = c
+        }
         return vtree
       }
     )
@@ -70,11 +77,7 @@ const makeEventsSelector =
           if (!elements) {
             return most.empty()
           }
-          return most.merge(
-            ...fastMap(elements, el => {
-              return fromEvent(eventName, el, useCapture)
-            })
-         )
+          return fromEvent(eventName, elements, useCapture)
         }).switch().multicast()
     }
 
@@ -102,7 +105,11 @@ function makeElementSelector(rootElem$) {
                       return [element]
                     } else {
                       let nodeList = element.querySelectorAll(scopedSelector)
-                      return Array.prototype.slice.call(nodeList)
+                      const nodeListArray = new Array(nodeList.length)
+                      for (let j = 0; j < nodeListArray.length; j++) {
+                        nodeListArray[j] = nodeList[j]
+                      }
+                      return nodeListArray
                     }
                   }
                 ),

@@ -2,6 +2,7 @@
 import assert from 'assert'
 import {run} from '@motorcycle/core'
 import {makeDOMDriver, div, p, span, h2, h3, h4} from '../../src'
+import fromEvent from '../../src/fromEvent'
 import most from 'most'
 
 function click(el) {
@@ -123,6 +124,26 @@ describe(`Rendering`, () => {
     })
   })
 
+  it(`should render when children === falsey in a child stream`, done => {
+    const app = () => ({
+      DOM: most.just(div({}, [
+        most.just(h2('Hello, world!'))
+      ]))
+    })
+
+    const {sources} = run(app, {
+      DOM: makeDOMDriver(createRenderTarget()),
+    })
+
+    sources.DOM.select(`:root`).observable.observe(root => {
+      let myElement = root.querySelector(`h2`)
+      assert.notStrictEqual(myElement, null)
+      assert.notStrictEqual(typeof myElement, `undefined`)
+      assert.strictEqual(myElement.tagName, `H2`)
+      done()
+    })
+  })
+
   describe(`isolateSource`, () => {
     it(`should have the same effect as DOM.select()`, done => {
       function app() {
@@ -202,7 +223,6 @@ describe(`Rendering`, () => {
       // Make assertions
       sources.DOM.select(`:root`).observable
         .observe(root => {
-          console.log(root)
           assert.notStrictEqual(root, null)
           assert.notStrictEqual(typeof root, `undefined`)
           assert.strictEqual(root.tagName, `H3`)
@@ -269,6 +289,33 @@ describe(`Rendering`, () => {
         done()
       })
     })
+  })
+
+  it('should not redundantly repeat the scope className', done => {
+    const app = ({DOM}) => {
+      const tab1$ = most.just(span('.tab1', 'Hi'))
+      const tab2$ = most.just(span('.tab2', 'Hello'))
+      const first$ = DOM.isolateSink(tab1$, '1')
+      const second$ = DOM.isolateSink(tab2$, '2')
+      const switched$ = most.from([1, 2, 1, 2, 1, 2])
+        .flatMap(i => i === 1? first$ : second$)
+      return {
+        DOM: switched$,
+      }
+    }
+
+    const {sources} = run(app, {
+      DOM: makeDOMDriver(createRenderTarget('tab1')),
+    })
+
+    sources.DOM.select(':root').observable.skip(4).take(1)
+      .observe(root => {
+        assert.notStrictEqual(root, null)
+        assert.notStrictEqual(typeof root, 'undefined')
+        assert.strictEqual(root.tagName, 'SPAN')
+        assert.strictEqual(root.className, 'tab1 cycle-scope-1')
+        done()
+      })
   })
 
   it(`should catch interaction events using id in DOM.select`, done => {
@@ -373,5 +420,40 @@ describe(`Rendering`, () => {
           done()
         })
     })
+  })
+})
+
+function createRenderTargetWithChildren(id = null) {
+  const element = createRenderTarget()
+  const child = document.createElement('h1')
+  child.textContent = 'Hello'
+  element.appendChild(child)
+  return element
+}
+
+describe(`fromEvent`, () => {
+  it(`should accept a NodeList as input`, done => {
+    const element = createRenderTargetWithChildren()
+    const source = element.querySelectorAll('h1')
+
+    const event$ = fromEvent('click', source, false)
+
+    event$.observe(event => {
+      assert.strictEqual(event.type, 'click')
+      assert.strictEqual(event.target.textContent, 'Hello')
+      done()
+    })
+
+    click(source[0])
+  })
+
+  it(`should throw error if not given a NodeList`, done => {
+    const element = createRenderTargetWithChildren()
+    const source = element.querySelector('h1')
+    assert.throws(
+      () => fromEvent('click', source, false),
+      /source must be a NodeList or an Array of DOM Nodes/
+    )
+    done()
   })
 })
