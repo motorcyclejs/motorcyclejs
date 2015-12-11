@@ -14,7 +14,12 @@ const {
   style, sub, sup, table, tbody, td, textarea, tfoot, th,
   thead, title, tr, u, ul, video,
 } = require(`hyperscript-helpers`)(h)
-import matchesSelector from 'matches-selector'
+let matchesSelector
+try {
+  matchesSelector = require(`matches-selector`)
+} catch (e) {
+  matchesSelector = () => {}
+}
 import fastMap from 'fast.js/array/map'
 import reduce from 'fast.js/array/reduce'
 import filter from 'fast.js/array/filter'
