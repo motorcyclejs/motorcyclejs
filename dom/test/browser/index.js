@@ -2,6 +2,7 @@
 import assert from 'assert'
 import {run} from '@motorcycle/core'
 import {makeDOMDriver, div, p, span, h2, h3, h4} from '../../src'
+import fromEvent from '../../src/fromEvent'
 import most from 'most'
 
 function click(el) {
@@ -419,5 +420,40 @@ describe(`Rendering`, () => {
           done()
         })
     })
+  })
+})
+
+function createRenderTargetWithChildren(id = null) {
+  const element = createRenderTarget()
+  const child = document.createElement('h1')
+  child.textContent = 'Hello'
+  element.appendChild(child)
+  return element
+}
+
+describe(`fromEvent`, () => {
+  it(`should accept a NodeList as input`, done => {
+    const element = createRenderTargetWithChildren()
+    const source = element.querySelectorAll('h1')
+
+    const event$ = fromEvent('click', source, false)
+
+    event$.observe(event => {
+      assert.strictEqual(event.type, 'click')
+      assert.strictEqual(event.target.textContent, 'Hello')
+      done()
+    })
+
+    click(source[0])
+  })
+
+  it(`should throw error if not given a NodeList`, done => {
+    const element = createRenderTargetWithChildren()
+    const source = element.querySelector('h1')
+    assert.throws(
+      () => fromEvent('click', source, false),
+      /source must be a NodeList or an Array of DOM Nodes/
+    )
+    done()
   })
 })

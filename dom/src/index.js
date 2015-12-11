@@ -72,11 +72,7 @@ const makeEventsSelector =
           if (!elements) {
             return most.empty()
           }
-          return most.merge(
-            ...fastMap(elements, el => {
-              return fromEvent(eventName, el, useCapture)
-            })
-         )
+          return fromEvent(eventName, elements, useCapture)
         }).switch().multicast()
     }
 
