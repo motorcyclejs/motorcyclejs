@@ -31,8 +31,10 @@ const isolateSink =
   (sink, scope) =>
     sink.map(
       vtree => {
-        const c = `${vtree.sel} cycle-scope-${scope}`.trim()
-        vtree.sel = c
+        if (vtree.sel.indexOf(`cycle-scope-${scope}`) === -1) {
+          const c = `${vtree.sel}.cycle-scope-${scope}`
+          vtree.sel = c
+        }
         return vtree
       }
     )
@@ -70,11 +72,7 @@ const makeEventsSelector =
           if (!elements) {
             return most.empty()
           }
-          return most.merge(
-            ...fastMap(elements, el => {
-              return fromEvent(eventName, el, useCapture)
-            })
-         )
+          return fromEvent(eventName, elements, useCapture)
         }).switch().multicast()
     }
 
