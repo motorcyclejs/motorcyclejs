@@ -75,6 +75,13 @@ EventTargetSource.prototype.run = function run(sink, scheduler) {
 
 const fromEvent =
   (event, source, useCapture = false) => {
+    // is not a NodeList
+    if (!source.length) {
+      throw new Error(
+        `source must be a NodeList or an Array of DOM Nodes`
+     )
+    }
+
     let s
     if (source[0].addEventListener && source[0].removeEventListener) {
       s = new MulticastSource(
