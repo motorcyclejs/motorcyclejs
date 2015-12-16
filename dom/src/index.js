@@ -1,4 +1,5 @@
 import most from 'most'
+import hold from '@most/hold'
 import snabbdom from 'snabbdom'
 import h from 'snabbdom/h'
 const {
@@ -14,15 +15,11 @@ const {
   style, sub, sup, table, tbody, td, textarea, tfoot, th,
   thead, title, tr, u, ul, video,
 } = require(`hyperscript-helpers`)(h)
-let matchesSelector
-try {
-  matchesSelector = require(`matches-selector`)
-} catch (e) {
-  matchesSelector = () => {}
-}
-import fastMap from 'fast.js/array/map'
-import reduce from 'fast.js/array/reduce'
+import matchesSelector from 'snabbdom-selector'
 import filter from 'fast.js/array/filter'
+import reduce from 'fast.js/array/reduce'
+import concat from 'fast.js/array/concat'
+import fastMap from 'fast.js/array/map'
 
 import {getDomElement} from './utils'
 import fromEvent from './fromEvent'
@@ -53,7 +50,8 @@ const makeIsStrictlyInRootScope =
           return matched && namespace.indexOf(`.${c}`) === -1
         }
 
-      for (let el = leaf.parentElement; el !== null; el = el.parentElement) {
+      for (let el = leaf.elm.parentElement;
+        el !== null; el = el.parentElement) {
         if (rootList.indexOf(el) >= 0) {
           return true
         }
@@ -81,6 +79,23 @@ const makeEventsSelector =
         }).switch().multicast()
     }
 
+const mapToElement = element => Array.isArray(element) ?
+   fastMap(element, el => el.elm) :
+   element.elm
+
+function makeFindBySelector(selector, namespace) {
+  return function findBySelector(rootElem) {
+    const matches = Array.isArray(rootElem) ?
+      reduce(rootElem, (m, el) =>
+        concat(matchesSelector(selector, el), m),
+      []) : matchesSelector(selector, rootElem)
+    return filter(
+      matches,
+      makeIsStrictlyInRootScope(matches, namespace)
+    )
+  }
+}
+
 // Use function not 'const = x => {}' for this.namespace below
 function makeElementSelector(rootElem$) {
   return function DOMSelect(selector) {
@@ -93,38 +108,12 @@ function makeElementSelector(rootElem$) {
     const element$ =
       selector.trim() === `:root` ?
         rootElem$ :
-        rootElem$.map(
-          x => {
-            const array = Array.isArray(x) ? x : [x]
-            return filter(
-              reduce(
-                fastMap(
-                  array,
-                  element => {
-                    if (matchesSelector(element, scopedSelector)) {
-                      return [element]
-                    } else {
-                      let nodeList = element.querySelectorAll(scopedSelector)
-                      const nodeListArray = new Array(nodeList.length)
-                      for (let j = 0; j < nodeListArray.length; j++) {
-                        nodeListArray[j] = nodeList[j]
-                      }
-                      return nodeListArray
-                    }
-                  }
-                ),
-                (prev, curr) => prev.concat(curr),
-                []
-              ),
-              makeIsStrictlyInRootScope(array, namespace)
-            )
-          }
-      )
+        rootElem$.map(makeFindBySelector(scopedSelector, namespace))
     return {
-      observable: element$,
+      observable: element$.map(mapToElement),
       namespace: namespace.concat(selector),
       select: makeElementSelector(element$),
-      events: makeEventsSelector(element$),
+      events: makeEventsSelector(element$.map(mapToElement)),
       isolateSource,
       isolateSink,
     }
@@ -154,24 +143,15 @@ const makeDOMDriver =
         validateDOMDriverInput(view$)
 
         const rootElem$ =
-          most.create(
-            add =>
-              view$
-                .flatMap(parseTree)
-                .reduce(
-                  (prevView, newView) => {
-                    patch(prevView, newView)
-                    add(newView.elm)
-                    return newView
-                  }
-                  , rootElem
-                )
-          )
-        rootElem$.drain()
+          view$
+            .map(parseTree)
+            .switch()
+            .scan((oldVnode, vnode) => patch(oldVnode, vnode), rootElem)
+            .skip(1)
 
         return {
           namespace: [],
-          select: makeElementSelector(rootElem$),
+          select: makeElementSelector(hold(rootElem$)),
           isolateSink,
           isolateSource,
         }
@@ -193,5 +173,5 @@ export {
   ol, optgroup, option, p, param, pre, q, rp, rt, ruby, s,
   samp, script, section, select, small, source, span, strong,
   style, sub, sup, table, tbody, td, textarea, tfoot, th,
-  thead, title, tr, u, ul, video
+  thead, title, tr, u, ul, video,
 }
