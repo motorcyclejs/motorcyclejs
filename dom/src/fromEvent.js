@@ -6,7 +6,7 @@ const tryEvent =
   (t, x, sink) => {
     try {
       sink.event(t, x)
-    } catch(e) {
+    } catch (e) {
       sink.error(t, e)
     }
   }
