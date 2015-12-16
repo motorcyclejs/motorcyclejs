@@ -147,7 +147,8 @@ const makeDOMDriver =
             .map(parseTree)
             .switch()
             .scan((oldVnode, vnode) => patch(oldVnode, vnode), rootElem)
-            .skip(1) // emits rootElem first
+            .skip(1)
+
         return {
           namespace: [],
           select: makeElementSelector(hold(rootElem$)),
