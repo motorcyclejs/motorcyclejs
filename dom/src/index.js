@@ -87,7 +87,7 @@ function makeFindBySelector(selector, namespace) {
   return function findBySelector(rootElem) {
     const matches = Array.isArray(rootElem) ?
       reduce(rootElem, (m, el) =>
-        concat(matchesSelector(`${namespace.join(` `)}selector`, el), m),
+        concat(matchesSelector(selector, el), m),
       []) : matchesSelector(selector, rootElem)
     return filter(
       matches,
