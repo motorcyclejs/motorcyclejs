@@ -2,6 +2,7 @@ import most from 'most'
 import hold from '@most/hold'
 import snabbdom from 'snabbdom'
 import h from 'snabbdom/h'
+import thunk from 'snabbdom/thunk'
 const {
   a, abbr, address, area, article, aside, audio, b, base,
   bdi, bdo, blockquote, body, br, button, canvas, caption,
@@ -162,7 +163,7 @@ const makeDOMDriver =
 
 export {
   makeDOMDriver,
-  h,
+  h, thunk,
   a, abbr, address, area, article, aside, audio, b, base,
   bdi, bdo, blockquote, body, br, button, canvas, caption,
   cite, code, col, colgroup, dd, del, dfn, dir, div, dl,
