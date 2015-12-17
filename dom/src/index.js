@@ -50,8 +50,8 @@ const makeIsStrictlyInRootScope =
           const matched = c.match(/cycle-scope-(\S+)/)
           return matched && namespace.indexOf(`.${c}`) === -1
         }
-
-      for (let el = leaf.elm.parentElement;
+      for (let el = leaf.data.vnode ?
+        leaf.data.vnode.elm.parentElement : leaf.elm.parentElement;
         el !== null; el = el.parentElement) {
         if (rootList.indexOf(el) >= 0) {
           return true
@@ -80,9 +80,12 @@ const makeEventsSelector =
         }).switch().multicast()
     }
 
+const getElement = vnode => vnode.data && vnode.data.vnode ?
+  vnode.data.vnode.elm : vnode.elm
+
 const mapToElement = element => Array.isArray(element) ?
-   fastMap(element, el => el.elm) :
-   element.elm
+   fastMap(element, getElement) :
+   getElement(element)
 
 function makeFindBySelector(selector, namespace) {
   return function findBySelector(rootElem) {
