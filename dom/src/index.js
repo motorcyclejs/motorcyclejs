@@ -16,6 +16,7 @@ const {
   thead, title, tr, u, ul, video,
 } = require(`hyperscript-helpers`)(h)
 import matchesSelector from 'snabbdom-selector'
+import getClasses from 'snabbdom-selector/lib/getClasses'
 import filter from 'fast.js/array/filter'
 import reduce from 'fast.js/array/reduce'
 import concat from 'fast.js/array/concat'
@@ -42,26 +43,29 @@ const isolateSink =
     )
 
 const makeIsStrictlyInRootScope =
-  (rootList, namespace) =>
-    leaf => {
-      const classIsForeign =
-        c => {
-          const matched = c.match(/cycle-scope-(\S+)/)
-          return matched && namespace.indexOf(`.${c}`) === -1
-        }
-
-      for (let el = leaf.elm.parentElement;
-        el !== null; el = el.parentElement) {
-        if (rootList.indexOf(el) >= 0) {
-          return true
-        }
-        const classList = el.className.split(` `)
-        if (classList.some(classIsForeign)) {
-          return false
-        }
+  namespace => leaf => {
+    const classIsForeign =
+      c => {
+        const matched = c.match(/cycle-scope-(\S+)/)
+        return matched && namespace.indexOf(`.${c}`) === -1
       }
-      return true
+    const classIsDomestic =
+      c => {
+        const matched = c.match(/cycle-scope-(\S+)/)
+        return matched && namespace.indexOf(`.${c}`) !== -1
+      }
+
+    for (let el = leaf; typeof el !== `undefined`; el = el.parent) {
+      const classList = getClasses(el).split(` `)
+      if (classList.some(classIsDomestic)) {
+        return true
+      }
+      if (classList.some(classIsForeign)) {
+        return false
+      }
     }
+    return true
+  }
 
 const makeEventsSelector =
   element$ =>
@@ -89,10 +93,7 @@ function makeFindBySelector(selector, namespace) {
       reduce(rootElem, (m, el) =>
         concat(matchesSelector(selector, el), m),
       []) : matchesSelector(selector, rootElem)
-    return filter(
-      matches,
-      makeIsStrictlyInRootScope(matches, namespace)
-    )
+    return filter(matches, makeIsStrictlyInRootScope(namespace))
   }
 }
 
@@ -108,7 +109,9 @@ function makeElementSelector(rootElem$) {
     const element$ =
       selector.trim() === `:root` ?
         rootElem$ :
-        rootElem$.map(makeFindBySelector(scopedSelector, namespace))
+        rootElem$.map(
+          makeFindBySelector(scopedSelector, namespace.concat(selector))
+        )
     return {
       observable: element$.map(mapToElement),
       namespace: namespace.concat(selector),
