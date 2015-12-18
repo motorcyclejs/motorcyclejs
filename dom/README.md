@@ -12,28 +12,6 @@ $ npm install @motorcycle/dom
 If you found an issue or want to contribute code, please read
 the [contributing guidelines](https://github.com/motorcyclejs/motorcycle/blob/master/CONTRIBUTING.md).
 
-## Differences from [Cycle-DOM](https://github.com/cyclejs/cycle-dom)
-
-Many of the differences come from Snabbdom itself, and I highly recommend
-reading through their
-[documentation](https://github.com/paldepind/snabbdom#introduction)
-first to discover the differences between Matt Esch's *Virtual-DOM*.
-
-A less obvious difference is how this driver patches the DOM.
-
-For Example, Given the view `h1('Hello, World!')`  being patched to `<div id='#app'></div>`, this is how it will look after being patched:
-```html
-<!-- Cycle-DOM -->
-<div id='#app'>
-  <h1>Hello, World!</h1>
-</div>
-
-<!-- Motorcycle-DOM -->
-<h1>Hello, World</h1>
-```
-This library does **not** keep the root element it is patched to for
-performance reasons.
-
 ## Examples
 Basic usage
 
