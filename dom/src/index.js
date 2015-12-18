@@ -15,8 +15,11 @@ const {
   style, sub, sup, table, tbody, td, textarea, tfoot, th,
   thead, title, tr, u, ul, video,
 } = require(`hyperscript-helpers`)(h)
+
 import matchesSelector from 'snabbdom-selector'
 import getClasses from 'snabbdom-selector/lib/getClasses'
+import parseSelector from 'snabbdom-selector/lib/parseSelector'
+
 import filter from 'fast.js/array/filter'
 import reduce from 'fast.js/array/reduce'
 import concat from 'fast.js/array/concat'
@@ -123,6 +126,26 @@ function makeElementSelector(rootElem$) {
   }
 }
 
+function wrapVnode(vnode, rootElem) {
+  const {tagName: selTagName, id: selId} = parseSelector(vnode.sel)
+  const classNames = getClasses(vnode)
+  const vnodeId = vnode.data && vnode.data.props && vnode.data.props.id ?
+    vnode.data.props.id : selId
+
+  const sameId = vnodeId === rootElem.id
+  const sameTagName = selTagName === rootElem.tagName
+  const sameClassList = classNames === rootElem.className
+
+  if (sameId && sameTagName && sameClassList) {
+    return vnode
+  }
+  const {tagName, id, className} = rootElem
+  let sel = tagName
+  sel += id ? `#${id}` : ``
+  sel += className ? `.${className.split(` `).join(`.`)}` : ``
+  return h(sel, {}, [vnode])
+}
+
 const validateDOMDriverInput =
   view$ => {
     if (!view$ || typeof view$.observe !== `function`) {
@@ -149,7 +172,10 @@ const makeDOMDriver =
           view$
             .map(parseTree)
             .switch()
-            .scan((oldVnode, vnode) => patch(oldVnode, vnode), rootElem)
+            .scan(
+              (oldVnode, vnode) => patch(oldVnode, wrapVnode(vnode, rootElem)),
+              rootElem
+            )
             .skip(1)
 
         return {
