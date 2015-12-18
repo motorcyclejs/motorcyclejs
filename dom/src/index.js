@@ -34,15 +34,14 @@ const SCOPE_PREFIX = `cycle-scope-`
 
 const isolateSource =
   (_source, _scope) =>
-    _source.select(`.cycle-scope-${_scope}`)
+    _source.select(`.${SCOPE_PREFIX}${_scope}`)
 
 const isolateSink =
   (sink, scope) =>
     sink.map(
       vtree => {
-        if (vtree.sel.indexOf(`cycle-scope-${scope}`) === -1) {
-          const c = `${vtree.sel}.cycle-scope-${scope}`
-          vtree.sel = c
+        if (vtree.sel.indexOf(`${SCOPE_PREFIX}${scope}`) === -1) {
+          vtree.sel = `${vtree.sel}.${SCOPE_PREFIX}${scope}`
         }
         return vtree
       }
