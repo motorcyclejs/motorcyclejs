@@ -2,6 +2,7 @@ import most from 'most'
 import hold from '@most/hold'
 import snabbdom from 'snabbdom'
 import h from 'snabbdom/h'
+import thunk from 'snabbdom/thunk'
 const {
   a, abbr, address, area, article, aside, audio, b, base,
   bdi, bdo, blockquote, body, br, button, canvas, caption,
@@ -86,9 +87,12 @@ const makeEventsSelector =
         }).switch().multicast()
     }
 
+const getElement = vnode => vnode.data && vnode.data.vnode ?
+  vnode.data.vnode.elm : vnode.elm
+
 const mapToElement = element => Array.isArray(element) ?
-   fastMap(element, el => el.elm) :
-   element.elm
+   fastMap(element, getElement) :
+   getElement(element)
 
 function makeFindBySelector(selector, namespace) {
   return function findBySelector(rootElem) {
@@ -191,7 +195,7 @@ const makeDOMDriver =
 
 export {
   makeDOMDriver,
-  h,
+  h, thunk,
   a, abbr, address, area, article, aside, audio, b, base,
   bdi, bdo, blockquote, body, br, button, canvas, caption,
   cite, code, col, colgroup, dd, del, dfn, dir, div, dl,
