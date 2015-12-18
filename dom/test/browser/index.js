@@ -1,7 +1,7 @@
 /* global describe, it */
 import assert from 'assert'
 import {run} from '@motorcycle/core'
-import {makeDOMDriver, div, p, span, h2, h3, h4} from '../../src'
+import {makeDOMDriver, div, p, span, h2, h3, h4, thunk} from '../../src'
 import fromEvent from '../../src/fromEvent'
 import most from 'most'
 
@@ -84,6 +84,32 @@ describe(`Rendering`, () => {
         assert.strictEqual(classNameRegex.exec(root.className)[0], `top-most`)
         done()
       })
+    })
+  })
+
+  it('should render thunks', done => {
+    const exampleThunk = number => div([
+      h2('this is a thunk'),
+      h4(`${number}`)
+    ])
+    const app = sources => ({
+      DOM: most.just(div([
+        thunk('example', exampleThunk, sources.number)
+      ]))
+    })
+
+    const {sources} = run(app, {
+      DOM: makeDOMDriver(createRenderTarget()),
+      number: () => 7,
+    })
+
+    sources.DOM.select(`:root`).observable.observe(root => {
+      const myElement = root.querySelector('h2')
+      assert.notStrictEqual(myElement, null)
+      assert.notStrictEqual(typeof myElement, `undefined`)
+      assert.strictEqual(myElement.tagName, 'H2')
+      assert.strictEqual(myElement.textContent, 'this is a thunk')
+      done()
     })
   })
 
@@ -490,7 +516,37 @@ describe(`Rendering`, () => {
 
           done()
         })
+      })
     })
+
+  it(`should be able to select a thunk`, done => {
+    const exampleThunk = number => div('.exampleThunk', [
+      h2('this is a thunk'),
+      h4(`${number}`)
+    ])
+    function app(sources) {
+      return {
+        DOM: most.just(div([
+          thunk('example', exampleThunk, sources.number)
+        ])),
+      }
+    }
+    let {sources} = run(app, {
+      DOM: makeDOMDriver(createRenderTarget()),
+      number: () => 7
+    })
+    // Make assertions
+    sources.DOM.select(`.exampleThunk`).observable
+      .observe(elements => {
+        assert.strictEqual(Array.isArray(elements), true)
+        assert.strictEqual(elements.length, 1)
+        const element = elements[0]
+        assert.notStrictEqual(element, null)
+        assert.notStrictEqual(typeof element, `undefined`)
+        assert.strictEqual(element.tagName, `DIV`)
+        assert.strictEqual(element.children.length, 2)
+        done()
+      })
   })
 })
 
