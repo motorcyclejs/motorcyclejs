@@ -344,7 +344,7 @@ describe(`Rendering`, () => {
       })
     })
 
-    it(`should prevent parent from DOM.selecting() in it's own isolation island`,
+    it(`should allow parent to DOM.select() in its own isolation island`,
       done => {
         function app(sources) {
           const {isolateSink, isolateSource} = sources.DOM
