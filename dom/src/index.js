@@ -30,6 +30,8 @@ import {getDomElement} from './utils'
 import fromEvent from './fromEvent'
 import parseTree from './parseTree'
 
+const SCOPE_PREFIX = `cycle-scope-`
+
 const isolateSource =
   (_source, _scope) =>
     _source.select(`.cycle-scope-${_scope}`)
@@ -48,23 +50,19 @@ const isolateSink =
 
 const makeIsStrictlyInRootScope =
   namespace => leaf => {
-    const classIsForeign =
-      c => {
-        const matched = c.match(/cycle-scope-(\S+)/)
-        return matched && namespace.indexOf(`.${c}`) === -1
-      }
-    const classIsDomestic =
-      c => {
-        const matched = c.match(/cycle-scope-(\S+)/)
-        return matched && namespace.indexOf(`.${c}`) !== -1
-      }
+    const isClassForeign =
+      className => className.indexOf(SCOPE_PREFIX) > -1 &&
+        namespace.indexOf(`.${className}`) === -1
+    const isClassDomestic =
+      className => className.indexOf(SCOPE_PREFIX) > -1 &&
+        namespace.indexOf(`.${className}`) > -1
 
-    for (let el = leaf; typeof el !== `undefined`; el = el.parent) {
-      const classList = getClasses(el).split(` `)
-      if (classList.some(classIsDomestic)) {
+    for (let el = leaf; el !== void 0; el = el.parent) {
+      const classNames = getClasses(el).split(` `)
+      if (classNames.some(isClassDomestic)) {
         return true
       }
-      if (classList.some(classIsForeign)) {
+      if (classNames.some(isClassForeign)) {
         return false
       }
     }
