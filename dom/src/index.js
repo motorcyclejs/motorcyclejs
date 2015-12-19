@@ -142,7 +142,7 @@ function makeSelectorParser(vNode$) {
   }
 }
 
-function wrapVNode(vNode, rootElement) {
+function vNodeWrapper(vNode, rootElement) {
   const {tagName: selectorTagName, id: selectorId} = selectorParser(vNode.sel)
   const vNodeClassName = classNameFromVNode(vNode)
   const {data: vNodeData = {}} = vNode
@@ -194,7 +194,7 @@ const makeDOMDriver =
             .switch()
             .scan(
               (prevVNode, vNode) =>
-                patch(prevVNode, wrapVNode(vNode, rootElement)),
+                patch(prevVNode, vNodeWrapper(vNode, rootElement)),
               rootElement
             )
             .skip(1)
