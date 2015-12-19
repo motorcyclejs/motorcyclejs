@@ -18,8 +18,8 @@ const {
 } = require(`hyperscript-helpers`)(h)
 
 import matchesSelector from 'snabbdom-selector'
-import getClasses from 'snabbdom-selector/lib/getClasses'
-import parseSelector from 'snabbdom-selector/lib/parseSelector'
+import classNameFromVNode from 'snabbdom-selector/lib/classNameFromVNode'
+import selectorParser from 'snabbdom-selector/lib/selectorParser'
 
 import filter from 'fast.js/array/filter'
 import reduce from 'fast.js/array/reduce'
@@ -61,7 +61,7 @@ const makeIsVNodeStrictlyInRootScope =
 
     let vNode = leaf
     for (; vNode; vNode = vNode.parent) {
-      const classNames = getClasses(vNode).split(` `)
+      const classNames = classNameFromVNode(vNode).split(` `)
       if (classNames.some(isClassDomestic)) {
         return true
       }
@@ -116,7 +116,7 @@ function makeVNodesBySelectorFilter(selectors, namespace) {
 function makeSelectorParser(vNode$) {
   // We use a regular `function` instead of a lambda function
   // because we need to have access to `this.namespace`.
-  return function selectorParser(selectors) {
+  return function selectorParser_(selectors) {
     if (typeof selectors !== `string`) {
       throw new Error(`DOM drivers select() expects first argument to be a ` +
         `string containing one or more CSS selectors.`)
@@ -143,8 +143,8 @@ function makeSelectorParser(vNode$) {
 }
 
 function wrapVNode(vNode, rootElement) {
-  const {tagName: selectorTagName, id: selectorId} = parseSelector(vNode.sel)
-  const vNodeClassName = getClasses(vNode)
+  const {tagName: selectorTagName, id: selectorId} = selectorParser(vNode.sel)
+  const vNodeClassName = classNameFromVNode(vNode)
   const {data: vNodeData = {}} = vNode
   const {props: vNodeDataProps = {}} = vNodeData
   const {id: vNodeId = selectorId} = vNodeDataProps
