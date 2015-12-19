@@ -5,15 +5,15 @@ const isElement =
     (obj.nodeType === 1 || obj.nodeType === 11) &&
     typeof obj.nodeName === `string`
 
-const getDomElement =
-  _el => {
+const domSelectorParser =
+  selectors => {
     const domElement =
-      typeof _el === `string` ?
-        document.querySelector(_el) :
-        _el
+      typeof selectors === `string` ?
+        document.querySelector(selectors) :
+        selectors
 
     if (typeof domElement === `string` && domElement === null) {
-      throw new Error(`Cannot render into unknown element \`${_el}\``)
+      throw new Error(`Cannot render into unknown element \`${selectors}\``)
     } else if (!isElement(domElement)) {
       throw new Error(`Given container is not a DOM element neither a ` +
         `selector string.`)
@@ -21,4 +21,4 @@ const getDomElement =
     return domElement
   }
 
-export {getDomElement}
+export {domSelectorParser}

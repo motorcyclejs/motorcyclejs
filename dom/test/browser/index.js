@@ -589,9 +589,9 @@ function createRenderTargetWithChildren(id = null) {
 describe(`fromEvent`, () => {
   it(`should accept a NodeList as input`, done => {
     const element = createRenderTargetWithChildren()
-    const source = element.querySelectorAll('h1')
+    const nodes = element.querySelectorAll('h1')
 
-    const event$ = fromEvent('click', source, false)
+    const event$ = fromEvent('click', nodes, false)
 
     event$.observe(event => {
       assert.strictEqual(event.type, 'click')
@@ -599,15 +599,15 @@ describe(`fromEvent`, () => {
       done()
     })
 
-    click(source[0])
+    click(nodes[0])
   })
 
   it(`should throw error if not given a NodeList`, done => {
     const element = createRenderTargetWithChildren()
-    const source = element.querySelector('h1')
+    const nodes = element.querySelector('h1')
     assert.throws(
-      () => fromEvent('click', source, false),
-      /source must be a NodeList or an Array of DOM Nodes/
+      () => fromEvent('click', nodes, false),
+      /nodes must be a NodeList or an Array of DOM Nodes/
     )
     done()
   })
