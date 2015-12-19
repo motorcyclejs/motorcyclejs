@@ -76,7 +76,7 @@ EventTargetSource.prototype.run = function run(sink, scheduler) {
 const fromEvent =
   (type, nodes, useCapture = false) => {
     if (!nodes.length) {
-      throw new Error(`source must be a NodeList or an Array of DOM Nodes`)
+      throw new Error(`nodes must be a NodeList or an Array of DOM Nodes`)
     }
 
     let source
@@ -86,7 +86,7 @@ const fromEvent =
       )
     } else {
       throw new Error(
-        `source must support addEventListener/removeEventListener`
+        `nodes must support addEventListener/removeEventListener`
       )
     }
     return new Stream(source)
