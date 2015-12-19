@@ -102,8 +102,8 @@ const mapVNodeToElement =
       fastMap(vNode, elementFromVNode) :
       elementFromVNode(vNode)
 
-function makeVNodesBySelectorFilter(selectors, namespace) {
-  return function vNodesBySelectorFilter(vNode) {
+function makeVNodesSelectorFilter(selectors, namespace) {
+  return vNode => {
     const matches = Array.isArray(vNode) ?
       reduce(vNode, (accumulator, kValue) =>
         concat(matchesSelector(selectors, kValue), accumulator),
@@ -127,7 +127,7 @@ function makeSelectorParser(vNode$) {
       selectors.trim() === `:root` ?
         vNode$ :
         vNode$.map(
-          makeVNodesBySelectorFilter(
+          makeVNodesSelectorFilter(
             scopedSelectors, namespace.concat(selectors)
           )
         )
