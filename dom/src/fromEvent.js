@@ -5,7 +5,7 @@ import forEach from 'fast.js/array/forEach'
 const tryEvent =
   (time, event, sink) => {
     try {
-      sink.type(time, event)
+      sink.event(time, event)
     } catch (err) {
       sink.error(time, err)
     }
