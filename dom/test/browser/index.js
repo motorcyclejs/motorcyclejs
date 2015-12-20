@@ -1,7 +1,7 @@
 /* global describe, it */
 import assert from 'assert'
 import {run} from '@motorcycle/core'
-import {makeDOMDriver, div, p, span, h2, h3, h4, thunk} from '../../src'
+import {makeDomDriver, div, p, span, h2, h3, h4, thunk} from '../../src'
 import {sameElements} from '../../src/select'
 import fromEvent from '../../src/fromEvent'
 import most from 'most'
