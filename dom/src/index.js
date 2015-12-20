@@ -2,6 +2,7 @@ import most from 'most'
 import hold from '@most/hold'
 import snabbdom from 'snabbdom'
 import h from 'snabbdom/h'
+import thunk from 'snabbdom/thunk'
 const {
   a, abbr, address, area, article, aside, audio, b, base,
   bdi, bdo, blockquote, body, br, button, canvas, caption,
@@ -15,52 +16,56 @@ const {
   style, sub, sup, table, tbody, td, textarea, tfoot, th,
   thead, title, tr, u, ul, video,
 } = require(`hyperscript-helpers`)(h)
+
 import matchesSelector from 'snabbdom-selector'
-import getClasses from 'snabbdom-selector/lib/getClasses'
+import classNameFromVNode from 'snabbdom-selector/lib/classNameFromVNode'
+import selectorParser from 'snabbdom-selector/lib/selectorParser'
+
 import filter from 'fast.js/array/filter'
 import reduce from 'fast.js/array/reduce'
 import concat from 'fast.js/array/concat'
 import fastMap from 'fast.js/array/map'
 
-import {getDomElement} from './utils'
+import {domSelectorParser} from './utils'
 import fromEvent from './fromEvent'
-import parseTree from './parseTree'
+import vTreeParser from './vTreeParser'
+
+const SCOPE_PREFIX = `cycle-scope-`
 
 const isolateSource =
-  (_source, _scope) =>
-    _source.select(`.cycle-scope-${_scope}`)
+  (source_, scope) =>
+    source_.select(`.${SCOPE_PREFIX}${scope}`)
 
 const isolateSink =
   (sink, scope) =>
     sink.map(
-      vtree => {
-        if (vtree.sel.indexOf(`cycle-scope-${scope}`) === -1) {
-          const c = `${vtree.sel}.cycle-scope-${scope}`
-          vtree.sel = c
+      vTree => {
+        if (vTree.sel.indexOf(`${SCOPE_PREFIX}${scope}`) === -1) {
+          vTree.sel = `${vTree.sel}.${SCOPE_PREFIX}${scope}`
         }
-        return vtree
+        return vTree
       }
     )
 
-const makeIsStrictlyInRootScope =
+const makeIsVNodeStrictlyInRootScope =
   namespace => leaf => {
-    const classIsForeign =
-      c => {
-        const matched = c.match(/cycle-scope-(\S+)/)
-        return matched && namespace.indexOf(`.${c}`) === -1
-      }
-    const classIsDomestic =
-      c => {
-        const matched = c.match(/cycle-scope-(\S+)/)
-        return matched && namespace.indexOf(`.${c}`) !== -1
-      }
+    const isClassForeign =
+      className =>
+        className.indexOf(SCOPE_PREFIX) > -1 &&
+        namespace.indexOf(`.${className}`) === -1
 
-    for (let el = leaf; typeof el !== `undefined`; el = el.parent) {
-      const classList = getClasses(el).split(` `)
-      if (classList.some(classIsDomestic)) {
+    const isClassDomestic =
+      className =>
+        className.indexOf(SCOPE_PREFIX) > -1 &&
+        namespace.indexOf(`.${className}`) > -1
+
+    let vNode = leaf
+    for (; vNode; vNode = vNode.parent) {
+      const classNames = classNameFromVNode(vNode).split(` `)
+      if (classNames.some(isClassDomestic)) {
         return true
       }
-      if (classList.some(classIsForeign)) {
+      if (classNames.some(isClassForeign)) {
         return false
       }
     }
@@ -69,61 +74,99 @@ const makeIsStrictlyInRootScope =
 
 const makeEventsSelector =
   element$ =>
-    (eventName, useCapture = false) => {
-      if (typeof eventName !== `string`) {
+    (type, useCapture = false) => {
+      if (typeof type !== `string`) {
         throw new Error(`DOM drivers events() expects argument to be a ` +
           `string representing the event type to listen for.`)
       }
       return element$
-        .map(elements => {
-          if (!elements) {
-            return most.empty()
-          }
-          return fromEvent(eventName, elements, useCapture)
-        }).switch().multicast()
+        .map(
+          elements =>
+            elements ?
+              fromEvent(type, elements, useCapture) :
+              most.empty()
+        )
+        .switch()
+        .multicast()
     }
 
-const mapToElement = element => Array.isArray(element) ?
-   fastMap(element, el => el.elm) :
-   element.elm
+const elementFromVNode =
+  vNode =>
+    vNode.data && vNode.data.vnode ?
+      vNode.data.vnode.elm :
+      vNode.elm
 
-function makeFindBySelector(selector, namespace) {
-  return function findBySelector(rootElem) {
-    const matches = Array.isArray(rootElem) ?
-      reduce(rootElem, (m, el) =>
-        concat(matchesSelector(selector, el), m),
-      []) : matchesSelector(selector, rootElem)
-    return filter(matches, makeIsStrictlyInRootScope(namespace))
+const mapVNodeToElement =
+  vNode =>
+    Array.isArray(vNode) ?
+      fastMap(vNode, elementFromVNode) :
+      elementFromVNode(vNode)
+
+function makeVNodesSelectorFilter(selectors, namespace) {
+  return vNode => {
+    const matches = Array.isArray(vNode) ?
+      reduce(vNode, (accumulator, kValue) =>
+        concat(matchesSelector(selectors, kValue), accumulator),
+      []) :
+      matchesSelector(selectors, vNode)
+    return filter(matches, makeIsVNodeStrictlyInRootScope(namespace))
   }
 }
 
-// Use function not 'const = x => {}' for this.namespace below
-function makeElementSelector(rootElem$) {
-  return function DOMSelect(selector) {
-    if (typeof selector !== `string`) {
+function makeSelectorParser(vNode$) {
+  // We use a regular `function` instead of a lambda function
+  // because we need to have access to `this.namespace`.
+  return function selectorParser_(selectors) {
+    if (typeof selectors !== `string`) {
       throw new Error(`DOM drivers select() expects first argument to be a ` +
-        `string as a CSS selector`)
+        `string containing one or more CSS selectors.`)
     }
     const namespace = this.namespace
-    const scopedSelector = `${namespace.join(` `)} ${selector}`.trim()
-    const element$ =
-      selector.trim() === `:root` ?
-        rootElem$ :
-        rootElem$.map(
-          makeFindBySelector(scopedSelector, namespace.concat(selector))
+    const scopedSelectors = `${namespace.join(` `)} ${selectors}`.trim()
+    const filteredVNode$ =
+      selectors.trim() === `:root` ?
+        vNode$ :
+        vNode$.map(
+          makeVNodesSelectorFilter(
+            scopedSelectors, namespace.concat(selectors)
+          )
         )
     return {
-      observable: element$.map(mapToElement),
-      namespace: namespace.concat(selector),
-      select: makeElementSelector(element$),
-      events: makeEventsSelector(element$.map(mapToElement)),
+      observable: filteredVNode$.map(mapVNodeToElement),
+      namespace: namespace.concat(selectors),
+      select: makeSelectorParser(filteredVNode$),
+      events: makeEventsSelector(filteredVNode$.map(mapVNodeToElement)),
       isolateSource,
       isolateSink,
     }
   }
 }
 
-const validateDOMDriverInput =
+function vNodeWrapper(vNode, rootElement) {
+  const {tagName: selectorTagName, id: selectorId} = selectorParser(vNode.sel)
+  const vNodeClassName = classNameFromVNode(vNode)
+  const {data: vNodeData = {}} = vNode
+  const {props: vNodeDataProps = {}} = vNodeData
+  const {id: vNodeId = selectorId} = vNodeDataProps
+
+  const isVNodeAndRootElementIdentical =
+    vNodeId === rootElement.id &&
+    selectorTagName === rootElement.tagName &&
+    vNodeClassName === rootElement.className
+
+  if (isVNodeAndRootElementIdentical) {
+    return vNode
+  }
+
+  const {tagName, id, className} = rootElement
+  const elementId = id ? `#${id}` : ``
+  const elementClassName = className ?
+    `.${className.split(` `).join(`.`)}` :
+    ``
+  return h(`${tagName}${elementId}${elementClassName}`, {}, [vNode])
+}
+
+const domDriverInputGuard =
   view$ => {
     if (!view$ || typeof view$.observe !== `function`) {
       throw new Error(`The DOM driver function expects as input an ` +
@@ -132,29 +175,33 @@ const validateDOMDriverInput =
   }
 
 const makeDOMDriver =
-  (container, modules = [
+  (containerElementSelectors, modules = [
     require(`snabbdom/modules/class`),
     require(`snabbdom/modules/props`),
     require(`snabbdom/modules/attributes`),
     require(`snabbdom/modules/style`),
   ]) => {
     const patch = snabbdom.init(modules)
-    const rootElem = getDomElement(container)
+    const rootElement = domSelectorParser(containerElementSelectors)
 
     const DOMDriver =
       view$ => {
-        validateDOMDriverInput(view$)
+        domDriverInputGuard(view$)
 
-        const rootElem$ =
+        const rootVNode$ =
           view$
-            .map(parseTree)
+            .map(vTreeParser)
             .switch()
-            .scan((oldVnode, vnode) => patch(oldVnode, vnode), rootElem)
+            .scan(
+              (prevVNode, vNode) =>
+                patch(prevVNode, vNodeWrapper(vNode, rootElement)),
+              rootElement
+            )
             .skip(1)
 
         return {
           namespace: [],
-          select: makeElementSelector(hold(rootElem$)),
+          select: makeSelectorParser(hold(rootVNode$)),
           isolateSink,
           isolateSource,
         }
@@ -165,7 +212,7 @@ const makeDOMDriver =
 
 export {
   makeDOMDriver,
-  h,
+  h, thunk,
   a, abbr, address, area, article, aside, audio, b, base,
   bdi, bdo, blockquote, body, br, button, canvas, caption,
   cite, code, col, colgroup, dd, del, dfn, dir, div, dl,

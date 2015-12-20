@@ -54,11 +54,11 @@
     "@motorcycle/core": "*"
   },
   "dependencies": {
-    "@most/hold": "^0.2.0",
+    "@most/hold": "0.2.0",
     "fast.js": "0.1.1",
     "hyperscript-helpers": "2.0.2",
-    "snabbdom": "0.2.7",
-    "snabbdom-selector": "^0.1.0"
+    "snabbdom": "0.2.8",
+    "snabbdom-selector": "0.3.2"
   },
   "devDependencies": {
     "@motorcycle/core": "0.1.7",
