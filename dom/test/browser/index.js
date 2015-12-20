@@ -1,6 +1,5 @@
 /* global describe, it */
 import assert from 'assert'
-import sinon from 'sinon'
 import {run} from '@motorcycle/core'
 import {makeDOMDriver, div, p, span, h2, h3, h4, thunk} from '../../src'
 import {sameElements} from '../../src/dom-driver'
