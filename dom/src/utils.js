@@ -1,3 +1,5 @@
+const SCOPE_PREFIX = `cycle-scope-`
+
 const isElement =
   obj => typeof HTMLElement === `object` ?
     obj instanceof HTMLElement || obj instanceof DocumentFragment :
@@ -21,4 +23,4 @@ const domSelectorParser =
     return domElement
   }
 
-export {domSelectorParser}
+export {domSelectorParser, SCOPE_PREFIX}
