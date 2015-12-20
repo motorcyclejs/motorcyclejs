@@ -1,7 +1,9 @@
 /* global describe, it */
 import assert from 'assert'
+import sinon from 'sinon'
 import {run} from '@motorcycle/core'
 import {makeDOMDriver, div, p, span, h2, h3, h4, thunk} from '../../src'
+import {sameElements} from '../../src/dom-driver'
 import fromEvent from '../../src/fromEvent'
 import most from 'most'
 
@@ -514,6 +516,39 @@ describe(`Rendering`, () => {
 
           done()
         })
+
+      describe(`events()`, () => {
+        it.only(`should reuse eventListeners`, done => {
+          const sandbox = sinon.sandbox.create()
+          sandbox.stub(sameElements)
+
+          const main = sources => ({
+            DOM: sources.other.map(x => div([
+              h2('.test', x)
+            ]))
+          })
+
+          const driver = () => most.from([1, 2])
+
+          const {sinks, sources} = run(main, {
+            DOM: makeDOMDriver(createRenderTarget()),
+            other: driver
+          })
+
+          sources.DOM.select('.test').events('click').drain()
+
+          sources.DOM.select('.test').observable
+            .observe(([element]) => {
+              click(element)
+              setTimeout(() => {
+                sinon.assert.calledTwice(sameElements)
+                sandbox.restore()
+                done()
+              }, 100)
+            })
+
+        })
+      })
     })
 
     it(`should not select element outside the given scope`, done => {
@@ -585,6 +620,28 @@ function createRenderTargetWithChildren(id = null) {
   element.appendChild(child)
   return element
 }
+
+describe(`sameElements`, () => {
+  it(`should return true when given same Array`, done => {
+    const array = [createRenderTarget()]
+    assert.strictEqual(sameElements(array, array), true)
+    done()
+  })
+
+  it(`should return false when give array of different length`, done => {
+    const array1 = [createRenderTarget()]
+    const array2 = array1.push(createRenderTarget())
+    assert.strictEqual(sameElements(array1, array2), false)
+    done()
+  })
+
+  it(`should return false when array of different DOM nodes`, done => {
+    const array1 = [createRenderTarget()]
+    const array2 = [createRenderTarget()]
+    assert.strictEqual(sameElements(array1, array2), false)
+    done()
+  })
+})
 
 describe(`fromEvent`, () => {
   it(`should accept a NodeList as input`, done => {
