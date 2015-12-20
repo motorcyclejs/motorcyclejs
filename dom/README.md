@@ -20,7 +20,7 @@ Basic usage
 
 import most from 'most'
 import {run} from '@motorcycle/core'
-import {makeDOMDriver, h} from '@motorcycle/dom'
+import {makeDomDriver, h} from '@motorcycle/dom'
 
 function main(sources) {
   ...
@@ -30,7 +30,7 @@ function main(sources) {
 }
 
 run(main, {
-  DOM: makeDOMDriver('#app')
+  DOM: makeDomDriver('#app')
 })
 ```
 
@@ -38,7 +38,7 @@ More examples can be found [here](https://github.com/motorcyclejs/examples).
 
 ## API
 
-### makeDOMDriver(container, modules)
+### makeDomDriver(container, modules)
 
 ###### Arguments
 
@@ -47,15 +47,15 @@ More examples can be found [here](https://github.com/motorcyclejs/examples).
 **modules** :: Array - An array of [Snabbdom modules](https://github.com/paldepind/snabbdom#creating-modules) which will be used by Snabbdom to add/remove behaviors that are available to you from the `h()` or `hyperscript-helpers` functions.
 
 ```js
-import {makeDOMDriver} from '@motorcycle/dom'
+import {makeDomDriver} from '@motorcycle/dom'
 
-makeDOMDriver('#app')
+makeDomDriver('#app')
 // or
-makeDOMDriver(document.querySelector('#app'))
+makeDomDriver(document.querySelector('#app'))
 
 /* with modules */
 /* these are the default modules used */
-makeDOMDriver('#app', [
+makeDomDriver('#app', [
   require(`snabbdom/modules/class`),
   require(`snabbdom/modules/props`),
   require(`snabbdom/modules/attributes`),
