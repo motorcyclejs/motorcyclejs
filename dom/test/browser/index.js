@@ -515,39 +515,6 @@ describe(`Rendering`, () => {
 
           done()
         })
-
-      describe(`events()`, () => {
-        it.only(`should reuse eventListeners`, done => {
-          const sandbox = sinon.sandbox.create()
-          sandbox.stub(sameElements)
-
-          const main = sources => ({
-            DOM: sources.other.map(x => div([
-              h2('.test', x)
-            ]))
-          })
-
-          const driver = () => most.from([1, 2])
-
-          const {sinks, sources} = run(main, {
-            DOM: makeDOMDriver(createRenderTarget()),
-            other: driver
-          })
-
-          sources.DOM.select('.test').events('click').drain()
-
-          sources.DOM.select('.test').observable
-            .observe(([element]) => {
-              click(element)
-              setTimeout(() => {
-                sinon.assert.calledTwice(sameElements)
-                sandbox.restore()
-                done()
-              }, 100)
-            })
-
-        })
-      })
     })
 
     it(`should not select element outside the given scope`, done => {
