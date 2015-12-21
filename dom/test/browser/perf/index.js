@@ -1,6 +1,7 @@
 import { run } from '@motorcycle/core'
-import { makeDomDriver, input, div, h2 } from '../../../src'
+import { makeDomDriver, h} from '../../../src'
 import most from 'most'
+import {combineArray} from 'most/lib/combinator/combine'
 import map from 'fast.js/array/map'
 
 function InputCount(dom) {
@@ -9,10 +10,10 @@ function InputCount(dom) {
       .events(`input`)
       .map(ev => ev.target.value)
       .startWith(100)
-      .skipRepeats()
+      .multicast()
 
   return {
-    dom: value$.map(value => input(id, {
+    dom: value$.map(value => h(`input${id}`, {
       props: {
         type: 'range',
         max: 250,
@@ -29,15 +30,14 @@ function InputCount(dom) {
 
 function CycleJSLogo(id) {
   return {
-    dom: most.just(div({
-      key: id,
+    dom: most.just(h('div', {
       style: {
         alignItems: 'center',
         background: 'url(./cyclejs_logo.svg)',
         boxSizing: 'border-box',
         display: 'inline-flex',
         fontFamily: 'sans-serif',
-        fontWeight: '700',
+        fontWeight: 700,
         fontSize: '8px',
         height: '32px',
         justifyContent: 'center',
@@ -49,30 +49,29 @@ function CycleJSLogo(id) {
 }
 
 function view(value, inputCountVTree, componentDOMs) {
-  return div([
-    h2([`# of Components: ${value}`]),
+  return h('div', [
+    h('h2', [`# of Components: ${value}`]),
     inputCountVTree,
-    div(componentDOMs)
+    h('div', componentDOMs)
   ])
 }
 
-function Main(sources) {
+function main(sources) {
   const inputCount = InputCount(sources.dom)
 
   const components$ = inputCount.value$
-    .map(value => most.combine(
+    .map(value => combineArray(
       (...components) => components,
-      ...map(Array(parseInt(value)), (v, i) => CycleJSLogo(i+1).dom)
+      map(Array(parseInt(value)), (v, i) => CycleJSLogo(i+1).dom)
     ))
     .switch()
 
-  const view$ =
-    most.combine(view, inputCount.value$, inputCount.dom, components$)
-
-  return {dom: view$}
+  return {
+    dom: most.combine(view, inputCount.value$, inputCount.dom, components$)
+  }
 }
 
-run(Main, {dom: makeDomDriver(`#test-container`, [
+run(main, {dom: makeDomDriver(`#test-container`, [
   require('snabbdom/modules/props'),
   require('snabbdom/modules/style')
 ])});
