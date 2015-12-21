@@ -1,109 +1,77 @@
 import { run } from '@motorcycle/core'
-import { makeDomDriver, input, div, h2 } from '../../../src'
+import { makeDomDriver, h} from '../../../src'
 import most from 'most'
+import {combineArray} from 'most/lib/combinator/combine'
 import map from 'fast.js/array/map'
 
-const InputCount =
-  sources => {
-    const id = `.component-count`
-    const value$ =
-      sources.DOM
-        .select(id)
-        .events(`input`)
-        .map(ev => ev.target.value)
-        .merge(sources.value$)
+function InputCount(dom) {
+  const id = `.component-count`
+  const value$ = dom.select(id)
+      .events(`input`)
+      .map(ev => ev.target.value)
+      .startWith(100)
+      .multicast()
 
-    return {
-      value$
-      , DOM: value$.map(
-        value => input(
-          `${id}`
-          , {
-              props: {
-                type: `range`
-                , max: `250`
-                , min: `0`
-                , value
-                ,
-              }
-            , style: {
-                width: `100%`
-                ,
-              }
-            ,
-          }
-        )
-      )
-    }
-  }
-
-const CycleJSLogo =
-  id => ({
-    DOM: most.just(
-      div({
-        style: {
-          alignItems: `center`
-          , background: `url(http://cycle.js.org/img/cyclejs_logo.svg)`
-          , boxSizing: `border-box`
-          , display: `inline-flex`
-          , fontFamily: `sans-serif`
-          , fontWeight: `700`
-          , fontSize: `8px`
-          , height: `32px`
-          , justifyContent: `center`
-          , margin: `8px`
-          , width: `32px`
-        }
+  return {
+    dom: value$.map(value => h(`input${id}`, {
+      props: {
+        type: 'range',
+        max: 250,
+        min: 1,
+        value,
+      },
+      style: {
+        width: '100%'
       }
-      , [
-        id
-      ])
-    )
-  })
-
-const view =
-  (value, inputCountVTree, componentDOMs) =>
-    div([
-      h2([`# of Components: ${value}`])
-      , inputCountVTree
-      , div(componentDOMs)
-    ])
-
-const Main =
-  sources => {
-    const inputCount = InputCount({
-      DOM: sources.DOM
-      , value$: most.just(100)
-    })
-
-    const components$ =
-      inputCount
-        .value$
-        .map(
-          value =>
-          most.combine(
-            (...components) => components
-            , ...map(
-              Array(parseInt(value))
-              , (v, i) => CycleJSLogo(i+1).DOM
-            )
-          )
-        )
-          .switch()
-          .skipRepeats()
-
-    const view$ =
-      most.combine(
-        view
-        , inputCount.value$
-        , inputCount.DOM
-        , components$
-      )
-        .skipRepeats()
-
-    return {
-      DOM: view$
-    }
+    })),
+    value$
   }
+}
 
-run(Main, {DOM: makeDomDriver(`#mocha`)});
+function CycleJSLogo(id) {
+  return {
+    dom: most.just(h('div', {
+      style: {
+        alignItems: 'center',
+        background: 'url(./cyclejs_logo.svg)',
+        boxSizing: 'border-box',
+        display: 'inline-flex',
+        fontFamily: 'sans-serif',
+        fontWeight: 700,
+        fontSize: '8px',
+        height: '32px',
+        justifyContent: 'center',
+        margin: '8px',
+        width: '32px'
+      }
+    }, `${id}`))
+  }
+}
+
+function view(value, inputCountVTree, componentDOMs) {
+  return h('div', [
+    h('h2', [`# of Components: ${value}`]),
+    inputCountVTree,
+    h('div', componentDOMs)
+  ])
+}
+
+function main(sources) {
+  const inputCount = InputCount(sources.dom)
+
+  const components$ = inputCount.value$
+    .map(value => combineArray(
+      (...components) => components,
+      map(Array(parseInt(value)), (v, i) => CycleJSLogo(i+1).dom)
+    ))
+    .switch()
+
+  return {
+    dom: most.combine(view, inputCount.value$, inputCount.dom, components$)
+  }
+}
+
+run(main, {dom: makeDomDriver(`#test-container`, [
+  require('snabbdom/modules/props'),
+  require('snabbdom/modules/style')
+])});
