@@ -17,7 +17,7 @@ const vTreeParser =
     if (!vTree) {
       return null
     } else if (vTree.observe) {
-      return vTree.flatMap(vTreeParser)
+      return vTree.map(vTreeParser).switch()
     } else if (`object` === typeof vTree) {
       const vTree$ = most.just(vTree)
       if (vTree.children && vTree.children.length > 0) {
