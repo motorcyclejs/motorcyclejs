@@ -1,5 +1,5 @@
 import { run } from '@motorcycle/core'
-import { makeDOMDriver, input, div, h2 } from '../../../src'
+import { makeDomDriver, input, div, h2 } from '../../../src'
 import most from 'most'
 import map from 'fast.js/array/map'
 
@@ -106,4 +106,4 @@ const Main =
     }
   }
 
-run(Main, {DOM: makeDOMDriver(`#mocha`)});
+run(Main, {DOM: makeDomDriver(`#mocha`)});
