@@ -139,6 +139,39 @@ describe(`Rendering`, () => {
     })
   })
 
+  it('should ignore values emitted from previous child observables', function (done) {
+      function app() {
+        return {
+          DOM: most.just(div([
+              div([
+              most
+                .from([1, 2])
+                .map((outer) =>
+                  most.from([1, 2])
+                  .delay(outer * 10)
+                  .map((inner) => div('.target', outer+'/'+inner))
+                )
+              ])
+            ])
+          )
+        }
+      }
+
+      let {sinks, sources} = run(app, {
+        DOM: makeDomDriver(createRenderTarget())
+      })
+
+      const expected = most
+        .from(['1/1','2/1','2/2'])
+
+      sources.DOM.select('.target').observable
+        .map((els) => els[0].innerHTML)
+        .observe((areSame) => {
+          assert.strictEqual(areSame, '2/2')
+          done()
+        })
+    })
+
   it(`should have isolateSource() and isolateSink() in source`, done => {
     function app() {
       return {
