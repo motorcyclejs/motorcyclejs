@@ -465,13 +465,13 @@ describe(`Rendering`, () => {
         DOM: makeDomDriver(createRenderTarget('tab1')),
       })
 
-      sources.DOM.select(':root').observable.skip(4).take(1)
+      sources.DOM.select(':root').observable
         .observe(root => {
           const child = root.children[0]
           assert.notStrictEqual(child, null)
           assert.notStrictEqual(typeof child, 'undefined')
           assert.strictEqual(child.tagName, 'SPAN')
-          assert.strictEqual(child.className, 'tab1 cycle-scope-1')
+          assert.strictEqual(child.className, 'tab2 cycle-scope-2')
           done()
         })
     })
