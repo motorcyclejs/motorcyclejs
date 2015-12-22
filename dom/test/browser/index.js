@@ -1,7 +1,7 @@
 /* global describe, it */
 import assert from 'assert'
 import {run} from '@motorcycle/core'
-import {makeDomDriver, div, p, span, h2, h3, h4, thunk} from '../../src'
+import {makeDOMDriver, div, p, span, h2, h3, h4, thunk} from '../../src'
 import {sameElements} from '../../src/select'
 import fromEvent from '../../src/fromEvent'
 import most from 'most'
@@ -30,26 +30,26 @@ function createRenderTarget(id = null) {
 }
 
 describe(`Rendering`, () => {
-  describe(`makeDomDriver`, () => {
+  describe(`makeDOMDriver`, () => {
     it(`should accept a DOM element as input`, () => {
-      assert.doesNotThrow(() => makeDomDriver(createRenderTarget()))
+      assert.doesNotThrow(() => makeDOMDriver(createRenderTarget()))
     })
 
     it(`should accept a DocumentFragment as input`, () => {
       let element = document.createDocumentFragment()
-      assert.doesNotThrow(() => makeDomDriver(element))
+      assert.doesNotThrow(() => makeDOMDriver(element))
     })
 
     it(`should accept a string selection to an existing element as input`,
       () => {
         let id = `testShouldAcceptSelectorToExisting`
         createRenderTarget(id)
-        assert.doesNotThrow(() => makeDomDriver(`#${id}`))
+        assert.doesNotThrow(() => makeDOMDriver(`#${id}`))
       })
 
     it(`should not accept a selector to an unknown element`, done => {
       assert.throws(() => {
-        makeDomDriver('#nothing')
+        makeDOMDriver('#nothing')
       }, /Given container is not a DOM element neither a selector string\./)
       done()
     })
@@ -57,7 +57,7 @@ describe(`Rendering`, () => {
 
   describe(`DOM Driver`, () => {
     it(`should throw if input is not an Observable<VTree>`, () => {
-      let domDriver = makeDomDriver(createRenderTarget())
+      let domDriver = makeDOMDriver(createRenderTarget())
       assert.throws(() => {
         domDriver({})
       }, /The DOM driver function expects as input an Observable of virtual/)
@@ -75,7 +75,7 @@ describe(`Rendering`, () => {
         }
       }
       let {sources} = run(app, {
-        DOM: makeDomDriver(createRenderTarget(`test`)),
+        DOM: makeDOMDriver(createRenderTarget(`test`)),
       })
 
       sources.DOM.select(`:root`).observable.forEach(root => {
@@ -94,7 +94,7 @@ describe(`Rendering`, () => {
       })
 
       const {sources} = run(app, {
-        DOM: makeDomDriver(createRenderTarget('example'))
+        DOM: makeDOMDriver(createRenderTarget('example'))
       })
 
       sources.DOM.select(`:root`).observable.observe(root => {
@@ -125,7 +125,7 @@ describe(`Rendering`, () => {
     })
 
     const {sources} = run(app, {
-      DOM: makeDomDriver(createRenderTarget()),
+      DOM: makeDOMDriver(createRenderTarget()),
       number: () => 7,
     })
 
@@ -158,7 +158,7 @@ describe(`Rendering`, () => {
       }
 
       let {sinks, sources} = run(app, {
-        DOM: makeDomDriver(createRenderTarget())
+        DOM: makeDOMDriver(createRenderTarget())
       })
 
       const expected = most
@@ -179,7 +179,7 @@ describe(`Rendering`, () => {
       }
     }
     const {sources} = run(app, {
-      DOM: makeDomDriver(createRenderTarget()),
+      DOM: makeDOMDriver(createRenderTarget()),
     })
     assert.strictEqual(typeof sources.DOM.isolateSource, `function`)
     assert.strictEqual(typeof sources.DOM.isolateSink, `function`)
@@ -196,7 +196,7 @@ describe(`Rendering`, () => {
     })
 
     const {sources} = run(app, {
-      DOM: makeDomDriver(createRenderTarget()),
+      DOM: makeDOMDriver(createRenderTarget()),
     })
 
     sources.DOM.select(`.myelementclass`).events(`click`).observe(ev => {
@@ -224,7 +224,7 @@ describe(`Rendering`, () => {
     })
 
     const {sources} = run(app, {
-      DOM: makeDomDriver(createRenderTarget()),
+      DOM: makeDOMDriver(createRenderTarget()),
     })
 
     sources.DOM.select(`:root`).observable.observe(root => {
@@ -251,7 +251,7 @@ describe(`Rendering`, () => {
         }
       }
       let {sources} = run(app, {
-        DOM: makeDomDriver(createRenderTarget()),
+        DOM: makeDOMDriver(createRenderTarget()),
       })
       let isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, `foo`)
       // Make assertions
@@ -287,7 +287,7 @@ describe(`Rendering`, () => {
             }
           }
           let {sources} = run(app, {
-            DOM: makeDomDriver(createRenderTarget()),
+            DOM: makeDOMDriver(createRenderTarget()),
           })
           let isolatedDOMSource =
             sources.DOM.isolateSource(sources.DOM, `top-most`)
@@ -310,7 +310,7 @@ describe(`Rendering`, () => {
         }
       }
       let {sources} = run(app, {
-        DOM: makeDomDriver(createRenderTarget()),
+        DOM: makeDOMDriver(createRenderTarget()),
       })
       // Make assertions
       sources.DOM.select(`:root`).observable
@@ -334,7 +334,7 @@ describe(`Rendering`, () => {
         }
       }
       let {sources} = run(app, {
-        DOM: makeDomDriver(createRenderTarget()),
+        DOM: makeDOMDriver(createRenderTarget()),
       })
       // Make assertions
       sources.DOM.select(`:root`).observable
@@ -364,7 +364,7 @@ describe(`Rendering`, () => {
         }
       }
       const {sources} = run(app, {
-        DOM: makeDomDriver(createRenderTarget())
+        DOM: makeDOMDriver(createRenderTarget())
       })
       sources.DOM.select('.bar').observable.take(1).observe(elements => {
         assert.strictEqual(Array.isArray(elements), true)
@@ -403,7 +403,7 @@ describe(`Rendering`, () => {
           }
         }
         let {sinks} = run(app, {
-          DOM: makeDomDriver(createRenderTarget()),
+          DOM: makeDOMDriver(createRenderTarget()),
         })
         sinks.island.observe(elements => {
           assert.strictEqual(Array.isArray(elements), true)
@@ -432,7 +432,7 @@ describe(`Rendering`, () => {
         }
       }
       let {sinks, sources} = run(app, {
-        DOM: makeDomDriver(createRenderTarget())
+        DOM: makeDOMDriver(createRenderTarget())
       })
       const {isolateSource} = sources.DOM
       isolateSource(sources.DOM, 'ISOLATION')
@@ -462,7 +462,7 @@ describe(`Rendering`, () => {
       }
 
       const {sources} = run(app, {
-        DOM: makeDomDriver(createRenderTarget('tab1')),
+        DOM: makeDOMDriver(createRenderTarget('tab1')),
       })
 
       sources.DOM.select(':root').observable
@@ -484,7 +484,7 @@ describe(`Rendering`, () => {
       }
     }
     let {sources} = run(app, {
-      DOM: makeDomDriver(createRenderTarget(`parent-002`)),
+      DOM: makeDOMDriver(createRenderTarget(`parent-002`)),
     })
     // Make assertions
     sources.DOM.select(`#myElementId`).events(`click`).observe(ev => {
@@ -513,7 +513,7 @@ describe(`Rendering`, () => {
         }
       }
       let {sources} = run(app, {
-        DOM: makeDomDriver(createRenderTarget()),
+        DOM: makeDOMDriver(createRenderTarget()),
       })
       // Make assertions
       const selection = sources.DOM.select(`.myelementclass`)
@@ -532,7 +532,7 @@ describe(`Rendering`, () => {
         }
       }
       let {sources} = run(app, {
-        DOM: makeDomDriver(createRenderTarget()),
+        DOM: makeDOMDriver(createRenderTarget()),
       })
       // Make assertions
       sources.DOM.select(`.myelementclass`).observable
@@ -564,7 +564,7 @@ describe(`Rendering`, () => {
         }
       }
       let {sources} = run(app, {
-        DOM: makeDomDriver(createRenderTarget()),
+        DOM: makeDOMDriver(createRenderTarget()),
       })
       // Make assertions
       sources.DOM.select(`.foo`).select(`.bar`).observable
@@ -594,7 +594,7 @@ describe(`Rendering`, () => {
       }
     }
     let {sources} = run(app, {
-      DOM: makeDomDriver(createRenderTarget()),
+      DOM: makeDOMDriver(createRenderTarget()),
       number: () => 7
     })
     // Make assertions

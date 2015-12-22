@@ -41,7 +41,7 @@ const domDriverInputGuard =
     }
   }
 
-const makeDomDriver =
+const makeDOMDriver =
   (containerElementSelectors, modules = [
     require(`snabbdom/modules/class`),
     require(`snabbdom/modules/props`),
@@ -77,4 +77,4 @@ const makeDomDriver =
     return DomDriver
   }
 
-export default makeDomDriver
+export default makeDOMDriver
