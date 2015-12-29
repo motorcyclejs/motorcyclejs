@@ -44,13 +44,19 @@ const domDriverInputGuard =
     }
   }
 
-const makeDOMDriver =
-  (containerElementSelectors, modules = [
+const defaultOptions = {
+  modules: [
     require(`snabbdom/modules/class`),
     require(`snabbdom/modules/props`),
     require(`snabbdom/modules/attributes`),
     require(`snabbdom/modules/style`),
-  ]) => {
+  ],
+}
+
+const makeDOMDriver =
+  (containerElementSelectors,
+    {modules = defaultOptions.modules} = defaultOptions
+  ) => {
     const patch = snabbdom.init(modules)
     const rootElement = domSelectorParser(containerElementSelectors)
 
@@ -58,17 +64,15 @@ const makeDOMDriver =
       view$ => {
         domDriverInputGuard(view$)
 
-        const rootElement$ = hold(create(add => {
+        const rootElement$ = hold(
           view$
             .map(vTreeParser)
             .switch()
             .map(makeVNodeWrapper(rootElement))
-            .reduce((prev, curr) => {
-              const vNode = patch(prev, curr)
-              add(vNode.elm)
-              return vNode
-            }, rootElement)
-        }))
+            .scan(patch, rootElement)
+            .skip(1)
+            .map(({elm}) => elm)
+        )
 
         rootElement$.drain()
 
