@@ -1,5 +1,5 @@
 import {run} from '@motorcycle/core'
-import {makeDomDriver, h} from '../../../src'
+import {makeDOMDriver, h} from '../../../src'
 import most from 'most'
 import {combineArray} from 'most/lib/combinator/combine'
 import map from 'fast.js/array/map'
@@ -72,7 +72,7 @@ function main(sources) {
   }
 }
 
-run(main, {dom: makeDomDriver(`#test-container`, [
+run(main, {dom: makeDOMDriver(`#test-container`, [
   require('snabbdom/modules/props'),
   require('snabbdom/modules/style')
 ])});
