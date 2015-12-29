@@ -13,6 +13,6 @@ const isolateSink =
         }
         return vTree
       }
-    )
+    ).multicast()
 
 export {isolateSink, isolateSource}
