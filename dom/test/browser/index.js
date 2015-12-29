@@ -2,7 +2,6 @@
 import assert from 'assert'
 import {run} from '@motorcycle/core'
 import {makeDOMDriver, div, p, span, h2, h3, h4, thunk} from '../../src'
-import {sameElements} from '../../src/select'
 import fromEvent from '../../src/fromEvent'
 import most from 'most'
 
@@ -250,7 +249,7 @@ describe(`Rendering`, () => {
           ),
         }
       }
-      let {sources} = run(app, {
+      let {sources, dispose} = run(app, {
         DOM: makeDOMDriver(createRenderTarget()),
       })
       let isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, `foo`)
@@ -258,11 +257,11 @@ describe(`Rendering`, () => {
       isolatedDOMSource.select(`.bar`).events(`click`).observe(ev => {
         assert.strictEqual(ev.type, `click`)
         assert.strictEqual(ev.target.textContent, `Correct`)
-
         done()
       })
       sources.DOM.select(`:root`).observable
         .observe(root => {
+          console.log(root)
           let wrongElement = root.querySelector(`.bar`)
           let correctElement = root.querySelector(`.cycle-scope-foo .bar`)
           assert.notStrictEqual(wrongElement, null)
@@ -619,52 +618,3 @@ function createRenderTargetWithChildren(id = null) {
   element.appendChild(child)
   return element
 }
-
-describe(`sameElements`, () => {
-  it(`should return true when given same Array`, done => {
-    const array = [createRenderTarget()]
-    assert.strictEqual(sameElements(array, array), true)
-    done()
-  })
-
-  it(`should return false when give array of different length`, done => {
-    const array1 = [createRenderTarget()]
-    const array2 = array1.push(createRenderTarget())
-    assert.strictEqual(sameElements(array1, array2), false)
-    done()
-  })
-
-  it(`should return false when array of different DOM nodes`, done => {
-    const array1 = [createRenderTarget()]
-    const array2 = [createRenderTarget()]
-    assert.strictEqual(sameElements(array1, array2), false)
-    done()
-  })
-})
-
-describe(`fromEvent`, () => {
-  it(`should accept a NodeList as input`, done => {
-    const element = createRenderTargetWithChildren()
-    const nodes = element.querySelectorAll('h1')
-
-    const event$ = fromEvent('click', nodes, false)
-
-    event$.observe(event => {
-      assert.strictEqual(event.type, 'click')
-      assert.strictEqual(event.target.textContent, 'Hello')
-      done()
-    })
-
-    click(nodes[0])
-  })
-
-  it(`should throw error if not given a NodeList`, done => {
-    const element = createRenderTargetWithChildren()
-    const nodes = element.querySelector('h1')
-    assert.throws(
-      () => fromEvent('click', nodes, false),
-      /nodes must be a NodeList or an Array of DOM Nodes/
-    )
-    done()
-  })
-})
