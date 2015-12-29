@@ -6,7 +6,7 @@ import map from 'fast.js/array/map'
 
 function InputCount(dom, initialValue) {
   const id = `.component-count`
-  const value$ = dom.select(id)
+  const value$ = dom.select(id, true)
       .events(`input`)
       .map(ev => ev.target.value)
       .startWith(initialValue)
@@ -51,7 +51,7 @@ function CycleJSLogo(id) {
 }
 
 function view(value, inputCountVTree, componentDOMs) {
-  return h('div', [
+  return h('div', {static: true}, [
     h('h2', [`# of Components: ${value}`]),
     inputCountVTree,
     h('div', componentDOMs)
