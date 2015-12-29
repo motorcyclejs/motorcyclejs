@@ -34,10 +34,10 @@ function makeEventsSelector(element$, selector) {
 
         return fromEvent(type, elements, useCapture)
           .filter(ev => {
-            if (matchesSelector(ev.srcElement, selector.join(` `)) ||
-              matchesSelector(ev.srcElement, selector.join(``)))
+            if (matchesSelector(ev.target, selector.join(` `)) ||
+              matchesSelector(ev.target, selector.join(``)))
             {
-              return makeIsStrictlyInRootScope(selector)(ev.srcElement)
+              return makeIsStrictlyInRootScope(selector)(ev.target)
             }
             return false
           })
