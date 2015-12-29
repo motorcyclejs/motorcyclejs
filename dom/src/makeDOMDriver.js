@@ -63,6 +63,10 @@ const makeDOMDriver =
     const DomDriver =
       view$ => {
         domDriverInputGuard(view$)
+        if (!Array.isArray(modules)) {
+          throw new Error(`Optional modules option must be ` +
+          `an array for snabbdom modules`)
+        }
 
         const rootElement$ = hold(
           view$
