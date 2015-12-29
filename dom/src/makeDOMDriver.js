@@ -1,4 +1,3 @@
-import {create} from 'most'
 import hold from '@most/hold'
 import snabbdom from 'snabbdom'
 import h from 'snabbdom/h'
