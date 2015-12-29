@@ -72,7 +72,7 @@ function main(sources) {
   }
 }
 
-run(main, {dom: makeDOMDriver(`#test-container`, [
+run(main, {dom: makeDOMDriver(`#test-container`, {modules: [
   require('snabbdom/modules/props'),
   require('snabbdom/modules/style')
-])});
+]})});
