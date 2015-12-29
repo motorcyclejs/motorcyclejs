@@ -16,6 +16,13 @@ function makeEventsSelector(element$, selector) {
         `string representing the event type to listen for.`)
     }
     return element$
+      .map(element => {
+        return {element, selector}
+      })
+      .skipRepeatsWith((prev, curr) => {
+        return prev.selector.join(``) === curr.selector.join(``)
+      })
+      .map(({element}) => element)
       .map(elements => {
         if (!elements) {
           return empty()
