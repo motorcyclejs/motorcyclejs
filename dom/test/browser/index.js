@@ -52,6 +52,22 @@ describe(`Rendering`, () => {
       }, /Given container is not a DOM element neither a selector string\./)
       done()
     })
+
+    it(`should accept an options object with key modules`, done => {
+      assert.doesNotThrow(() => {
+        makeDOMDriver(createRenderTarget(), {modules: [
+          require('snabbdom/modules/props')
+        ]})
+      })
+      done()
+    })
+
+    it(`should throw an error if modules are not an array`, done => {
+      assert.throws(() => {
+        makeDOMDriver(createRenderTarget(), {modules: `1`})(most.just(div()))
+      }, /Optional modules option must be an array for snabbdom modules/)
+      done()
+    })
   })
 
   describe(`DOM Driver`, () => {
