@@ -14,7 +14,9 @@ const combineVTreeStreams =
 
 const vTreeParser =
   vTree => {
-    if (!vTree) {
+    if (vTree.data && vTree.data.static) {
+      return most.just(vTree)
+    } else if (!vTree) {
       return null
     } else if (vTree.observe) {
       return vTree.map(vTreeParser).switch()

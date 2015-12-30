@@ -1,6 +1,5 @@
 import Stream from 'most/lib/Stream'
 import MulticastSource from 'most/lib/source/MulticastSource'
-import forEach from 'fast.js/array/forEach'
 
 const tryEvent =
   (time, event, sink) => {
@@ -41,16 +40,10 @@ EventAdapter.prototype.dispose = function dispose() {
 
 const initEventTarget =
   (nodes, type, listener, useCapture) => { // eslint-disable-line
-    forEach(
-      nodes,
-      kValue => kValue.addEventListener(type, listener, useCapture)
-    )
+    nodes.addEventListener(type, listener, useCapture)
 
     const dispose = (type_, target) => {
-      forEach(
-        target,
-        kValue => kValue.removeEventListener(type_, listener, useCapture)
-      )
+      target.removeEventListener(type_, listener, useCapture)
     }
 
     return dispose
@@ -75,12 +68,8 @@ EventTargetSource.prototype.run = function run(sink, scheduler) {
 
 const fromEvent =
   (type, nodes, useCapture = false) => {
-    if (!nodes.length) {
-      throw new Error(`nodes must be a NodeList or an Array of DOM Nodes`)
-    }
-
     let source
-    if (nodes[0].addEventListener && nodes[0].removeEventListener) {
+    if (nodes.addEventListener && nodes.removeEventListener) {
       source = new MulticastSource(
         new EventTargetSource(type, nodes, useCapture)
       )
