@@ -1,72 +1,65 @@
 import Stream from 'most/lib/Stream'
 import MulticastSource from 'most/lib/source/MulticastSource'
-import forEach from 'fast.js/array/forEach'
 
 const tryEvent =
-  (t, x, sink) => {
+  (time, event, sink) => {
     try {
-      sink.event(t, x)
-    } catch(e) {
-      sink.error(t, e)
+      sink.event(time, event)
+    } catch (err) {
+      sink.error(time, err)
     }
   }
 
 const EventAdapter = function EventAdapter(// eslint-disable-line
   init,
-  event,
-  source,
+  type,
+  nodes,
   useCapture,
   sink,
   scheduler
 ) {
-  this.event = event
-  this.source = source
+  this.type = type
+  this.nodes = nodes
   this.useCapture = useCapture
 
-  const addEvent = ev => {
-    tryEvent(scheduler.now(), ev, sink)
+  const listener = event => {
+    tryEvent(scheduler.now(), event, sink)
   }
 
   this._dispose = init(
-    source,
-    event,
-    addEvent,
+    nodes,
+    type,
+    listener,
     useCapture
  )
 }
 
 EventAdapter.prototype.dispose = function dispose() {
-  return this._dispose(this.event, this.source)
+  return this._dispose(this.type, this.nodes)
 }
 
 const initEventTarget =
-  (source, event, addEvent, useCapture) => { // eslint-disable-line
-    forEach(
-      source,
-      s => s.addEventListener(event, addEvent, useCapture)
-    )
+  (nodes, type, listener, useCapture) => { // eslint-disable-line
+    nodes.addEventListener(type, listener, useCapture)
 
-    const dispose = (_event, target) => {
-      forEach(
-        target,
-        t => t.removeEventListener(_event, addEvent, useCapture)
-      )
+    const dispose = (type_, target) => {
+      target.removeEventListener(type_, listener, useCapture)
     }
 
     return dispose
   }
 
-function EventTargetSource(event, source, useCapture) {
-  this.event = event
-  this.source = source
+function EventTargetSource(type, nodes, useCapture) {
+  this.type = type
+  this.nodes = nodes
   this.useCapture = useCapture
 }
 
 EventTargetSource.prototype.run = function run(sink, scheduler) {
   return new EventAdapter(
     initEventTarget,
-    this.event,
-    this.source,
+    this.type,
+    this.nodes,
     this.useCapture,
     sink,
     scheduler
@@ -74,25 +67,18 @@ EventTargetSource.prototype.run = function run(sink, scheduler) {
 }
 
 const fromEvent =
-  (event, source, useCapture = false) => {
-    // is not a NodeList
-    if (!source.length) {
-      throw new Error(
-        `source must be a NodeList or an Array of DOM Nodes`
-     )
-    }
-
-    let s
-    if (source[0].addEventListener && source[0].removeEventListener) {
-      s = new MulticastSource(
-        new EventTargetSource(event, source, useCapture)
-     )
+  (type, nodes, useCapture = false) => {
+    let source
+    if (nodes.addEventListener && nodes.removeEventListener) {
+      source = new MulticastSource(
+        new EventTargetSource(type, nodes, useCapture)
+      )
     } else {
       throw new Error(
-        `source must support addEventListener/removeEventListener`
-     )
+        `nodes must support addEventListener/removeEventListener`
+      )
     }
-    return new Stream(s)
+    return new Stream(source)
   }
 
 export default fromEvent

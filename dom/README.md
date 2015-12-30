@@ -1,4 +1,5 @@
 # Motorcycle.js DOM Driver [![Build Status](https://travis-ci.org/motorcyclejs/dom.svg?branch=develop)](https://travis-ci.org/motorcyclejs/dom)
+[![Motorcycle.js](https://img.shields.io/badge/Motorcycle.js-compatible-brightgreen.svg)](https://github.com/motorcyclejs)[![isolate](https://img.shields.io/badge/isolate-compatible-brightgreen.svg)](https://github.com/cyclejs/isolate)
 
 The Standard DOM Driver for Motorcycle. Built using [Snabbdom](https://github.com/paldepind/snabbdom) for it's modularity and it's faster *virtual-dom* implementation. This library exports the fantastic [hyperscript-helpers](https://github.com/ohanhi/hyperscript-helpers) library for ease-of-use.
 
@@ -11,28 +12,6 @@ $ npm install @motorcycle/dom
 
 If you found an issue or want to contribute code, please read
 the [contributing guidelines](https://github.com/motorcyclejs/motorcycle/blob/master/CONTRIBUTING.md).
-
-## Differences from [Cycle-DOM](https://github.com/cyclejs/cycle-dom)
-
-Many of the differences come from Snabbdom itself, and I highly recommend
-reading through their
-[documentation](https://github.com/paldepind/snabbdom#introduction)
-first to discover the differences between Matt Esch's *Virtual-DOM*.
-
-A less obvious difference is how this driver patches the DOM.
-
-For Example, Given the view `h1('Hello, World!')`  being patched to `<div id='#app'></div>`, this is how it will look after being patched:
-```html
-<!-- Cycle-DOM -->
-<div id='#app'>
-  <h1>Hello, World!</h1>
-</div>
-
-<!-- Motorcycle-DOM -->
-<h1>Hello, World</h1>
-```
-This library does **not** keep the root element it is patched to for
-performance reasons.
 
 ## Examples
 Basic usage

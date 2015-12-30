@@ -12,28 +12,30 @@ const combineVTreeStreams =
     children,
   })
 
-const parseTree =
+const vTreeParser =
   vTree => {
-    if (!vTree) {
+    if (vTree.data && vTree.data.static) {
+      return most.just(vTree)
+    } else if (!vTree) {
       return null
     } else if (vTree.observe) {
-      return vTree.flatMap(parseTree)
+      return vTree.map(vTreeParser).switch()
     } else if (`object` === typeof vTree) {
-      const vtree$ = most.just(vTree)
+      const vTree$ = most.just(vTree)
       if (vTree.children && vTree.children.length > 0) {
         return most.combine(
           combineVTreeStreams,
-          vtree$,
+          vTree$,
           ...filter(
-            map(vTree.children, parseTree),
+            map(vTree.children, vTreeParser),
             x => x !== null
           )
         )
       }
-      return vtree$
+      return vTree$
     } else {
       throw new Error(`Unhandled tree value`)
     }
   }
 
-export default parseTree
+export default vTreeParser

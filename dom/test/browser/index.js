@@ -1,7 +1,7 @@
 /* global describe, it */
 import assert from 'assert'
 import {run} from '@motorcycle/core'
-import {makeDOMDriver, div, p, span, h2, h3, h4} from '../../src'
+import {makeDOMDriver, div, p, span, h2, h3, h4, thunk} from '../../src'
 import fromEvent from '../../src/fromEvent'
 import most from 'most'
 
@@ -29,7 +29,7 @@ function createRenderTarget(id = null) {
 }
 
 describe(`Rendering`, () => {
-  describe(`makeDomDriver`, () => {
+  describe(`makeDOMDriver`, () => {
     it(`should accept a DOM element as input`, () => {
       assert.doesNotThrow(() => makeDOMDriver(createRenderTarget()))
     })
@@ -45,6 +45,29 @@ describe(`Rendering`, () => {
         createRenderTarget(id)
         assert.doesNotThrow(() => makeDOMDriver(`#${id}`))
       })
+
+    it(`should not accept a selector to an unknown element`, done => {
+      assert.throws(() => {
+        makeDOMDriver('#nothing')
+      }, /Given container is not a DOM element neither a selector string\./)
+      done()
+    })
+
+    it(`should accept an options object with key modules`, done => {
+      assert.doesNotThrow(() => {
+        makeDOMDriver(createRenderTarget(), {modules: [
+          require('snabbdom/modules/props')
+        ]})
+      })
+      done()
+    })
+
+    it(`should throw an error if modules are not an array`, done => {
+      assert.throws(() => {
+        makeDOMDriver(createRenderTarget(), {modules: `1`})(most.just(div()))
+      }, /Optional modules option must be an array for snabbdom modules/)
+      done()
+    })
   })
 
   describe(`DOM Driver`, () => {
@@ -55,7 +78,7 @@ describe(`Rendering`, () => {
       }, /The DOM driver function expects as input an Observable of virtual/)
     })
 
-    it(`should have Observable ':root' in response`, done => {
+    it(`should have Observable ':root' in DOM source`, done => {
       function app() {
         return {
           DOM: most.just(
@@ -67,18 +90,102 @@ describe(`Rendering`, () => {
         }
       }
       let {sources} = run(app, {
-        DOM: makeDOMDriver(createRenderTarget(`fuckThisTest`)),
+        DOM: makeDOMDriver(createRenderTarget(`test`)),
       })
 
       sources.DOM.select(`:root`).observable.forEach(root => {
         let classNameRegex = /top\-most/
+        const child = root.children[0]
+        assert.strictEqual(child.tagName, `DIV`)
+        assert.notStrictEqual(classNameRegex.exec(child.className), null)
+        assert.strictEqual(classNameRegex.exec(child.className)[0], `top-most`)
+        done()
+      })
+    })
+
+    it(`should wrap a DOM sink in the rootElem`, done => {
+      const app = sources => ({
+        DOM: most.just(h2('Hello'))
+      })
+
+      const {sources} = run(app, {
+        DOM: makeDOMDriver(createRenderTarget('example'))
+      })
+
+      sources.DOM.select(`:root`).observable.observe(root => {
+        assert.notStrictEqual(root, null)
+        assert.notStrictEqual(typeof root, `undefined`)
         assert.strictEqual(root.tagName, `DIV`)
-        assert.notStrictEqual(classNameRegex.exec(root.className), null)
-        assert.strictEqual(classNameRegex.exec(root.className)[0], `top-most`)
+        assert.strictEqual(root.className, `cycletest`)
+        assert.strictEqual(root.id, `example`)
+        const child = root.children[0]
+        assert.notStrictEqual(child, null)
+        assert.notStrictEqual(typeof child, `undefined`)
+        assert.strictEqual(child.tagName, `H2`)
+        assert.strictEqual(child.textContent, `Hello`)
         done()
       })
     })
   })
+
+  it('should render thunks', done => {
+    const exampleThunk = number => div([
+      h2('this is a thunk'),
+      h4(`${number}`)
+    ])
+    const app = sources => ({
+      DOM: most.just(div([
+        thunk('example', exampleThunk, sources.number)
+      ]))
+    })
+
+    const {sources} = run(app, {
+      DOM: makeDOMDriver(createRenderTarget()),
+      number: () => 7,
+    })
+
+    sources.DOM.select(`:root`).observable.observe(root => {
+      const myElement = root.querySelector('h2')
+      assert.notStrictEqual(myElement, null)
+      assert.notStrictEqual(typeof myElement, `undefined`)
+      assert.strictEqual(myElement.tagName, 'H2')
+      assert.strictEqual(myElement.textContent, 'this is a thunk')
+      done()
+    })
+  })
+
+  it('should ignore values emitted from previous child observables', function (done) {
+      function app() {
+        return {
+          DOM: most.just(div([
+              div([
+              most
+                .from([1, 2])
+                .map((outer) =>
+                  most.from([1, 2])
+                  .delay(outer * 10)
+                  .map((inner) => div('.target', outer+'/'+inner))
+                )
+              ])
+            ])
+          )
+        }
+      }
+
+      let {sinks, sources} = run(app, {
+        DOM: makeDOMDriver(createRenderTarget())
+      })
+
+      const expected = most
+        .from(['1/1','2/1','2/2'])
+
+      sources.DOM.select('.target').observable
+        .map((els) => els[0].innerHTML)
+        .observe((areSame) => {
+          assert.strictEqual(areSame, '2/2')
+          done()
+        })
+    })
 
   it(`should have isolateSource() and isolateSink() in source`, done => {
     function app() {
@@ -158,7 +265,7 @@ describe(`Rendering`, () => {
           ),
         }
       }
-      let {sources} = run(app, {
+      let {sources, dispose} = run(app, {
         DOM: makeDOMDriver(createRenderTarget()),
       })
       let isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, `foo`)
@@ -166,11 +273,11 @@ describe(`Rendering`, () => {
       isolatedDOMSource.select(`.bar`).events(`click`).observe(ev => {
         assert.strictEqual(ev.type, `click`)
         assert.strictEqual(ev.target.textContent, `Correct`)
-
         done()
       })
       sources.DOM.select(`:root`).observable
         .observe(root => {
+          console.log(root)
           let wrongElement = root.querySelector(`.bar`)
           let correctElement = root.querySelector(`.cycle-scope-foo .bar`)
           assert.notStrictEqual(wrongElement, null)
@@ -223,99 +330,166 @@ describe(`Rendering`, () => {
       // Make assertions
       sources.DOM.select(`:root`).observable
         .observe(root => {
-          assert.notStrictEqual(root, null)
-          assert.notStrictEqual(typeof root, `undefined`)
-          assert.strictEqual(root.tagName, `H3`)
-          assert.strictEqual(root.className, `top-most cycle-scope-foo`)
+          const child = root.children[0]
+          assert.notStrictEqual(child, null)
+          assert.notStrictEqual(typeof child, `undefined`)
+          assert.strictEqual(child.tagName, `H3`)
+          assert.strictEqual(child.className, `top-most cycle-scope-foo`)
           done()
         })
     })
 
-    it(`should prevent parent from DOM.selecting() inside the isolation`,
+    it(`should add a className to a vtree sink that had none`, done => {
+      function app(sources) {
+        let vtree$ = most.just(
+            h3('Hello')
+          )
+        return {
+          DOM: sources.DOM.isolateSink(vtree$, `foo`),
+        }
+      }
+      let {sources} = run(app, {
+        DOM: makeDOMDriver(createRenderTarget()),
+      })
+      // Make assertions
+      sources.DOM.select(`:root`).observable
+        .observe(root => {
+          const child = root.children[0]
+          assert.notStrictEqual(child, null)
+          assert.notStrictEqual(typeof child, `undefined`)
+          assert.strictEqual(child.tagName, `H3`)
+          assert.strictEqual(child.className, `cycle-scope-foo`)
+          done()
+        })
+    })
+
+    it(`should prevent parent from DOM.selecting inside the isolation`, done => {
+      function app(sources) {
+        return {
+          DOM: most.just(
+            h3('.top-most', [
+              sources.DOM.isolateSink(most.just(
+                div('.foo', [
+                  h4('.bar', 'Wrong')
+                ])
+              ), 'ISOLATION'),
+              h2('.bar', 'Correct')
+            ])
+          )
+        }
+      }
+      const {sources} = run(app, {
+        DOM: makeDOMDriver(createRenderTarget())
+      })
+      sources.DOM.select('.bar').observable.take(1).observe(elements => {
+        assert.strictEqual(Array.isArray(elements), true)
+        assert.strictEqual(elements.length, 1)
+        const correctElement = elements[0]
+        assert.notStrictEqual(correctElement, null)
+        assert.notStrictEqual(typeof correctElement, 'undefined')
+        assert.strictEqual(correctElement.tagName, 'H2')
+        assert.strictEqual(correctElement.textContent, 'Correct')
+        done()
+      })
+    })
+
+    it(`should allow parent to DOM.select() in its own isolation island`,
       done => {
         function app(sources) {
+          const {isolateSink, isolateSource} = sources.DOM
+          const islandElement$ = isolateSource(sources.DOM, 'island')
+            .select('.bar').observable
+          const islandVTree$ = isolateSink(
+            most.just(div([h3('.bar', 'Correct')])), 'island'
+          )
           return {
             DOM: most.just(
               h3(`.top-most`, [
                 sources.DOM.isolateSink(most.just(
                   div(`.foo`, [
+                    islandVTree$,
                     h4(`.bar`, `Wrong`),
                   ])
                 ), `ISOLATION`),
                 h2(`.bar`, `Correct`),
               ])
             ),
+            island: islandElement$
           }
         }
-        let {sources} = run(app, {
+        let {sinks} = run(app, {
           DOM: makeDOMDriver(createRenderTarget()),
         })
-        sources.DOM.select(`.bar`).observable.observe(elements => {
+        sinks.island.observe(elements => {
           assert.strictEqual(Array.isArray(elements), true)
           assert.strictEqual(elements.length, 1)
           const correctElement = elements[0]
           assert.notStrictEqual(correctElement, null)
           assert.notStrictEqual(typeof correctElement, `undefined`)
-          assert.strictEqual(correctElement.tagName, `H2`)
+          assert.strictEqual(correctElement.tagName, `H3`)
           assert.strictEqual(correctElement.textContent, `Correct`)
           done()
         })
       })
 
-    it(`should allow parent to DOM.select() an isolation boundary`, done => {
+    it('should allow a child component to DOM.select() its own root', done => {
       function app(sources) {
         return {
           DOM: most.just(
-            h3(`.top-most`, [
+            h3('.top-most', [
               sources.DOM.isolateSink(most.just(
-                span(`.foo`, [
-                  h4(`.foo`, `Wrong`),
+                span('.foo', [
+                  h4('.bar', 'Wrong')
                 ])
-              ), `ISOLATION`),
+              ), 'ISOLATION')
             ])
-          ),
+          )
         }
       }
-      let {sources} = run(app, {
-        DOM: makeDOMDriver(createRenderTarget()),
+      let {sinks, sources} = run(app, {
+        DOM: makeDOMDriver(createRenderTarget())
       })
-      sources.DOM.select(`.foo`).observable.observe(elements => {
-        assert.strictEqual(Array.isArray(elements), true)
-        assert.strictEqual(elements.length, 1)
-        const correctElement = elements[0]
-        assert.notStrictEqual(correctElement, null)
-        assert.notStrictEqual(typeof correctElement, `undefined`)
-        assert.strictEqual(correctElement.tagName, `SPAN`)
-        done()
-      })
+      const {isolateSource} = sources.DOM
+      isolateSource(sources.DOM, 'ISOLATION')
+        .select(':root').observable
+        .observe(function (elements) {
+          assert.strictEqual(Array.isArray(elements), true)
+          assert.strictEqual(elements.length, 1)
+          const correctElement = elements[0]
+          assert.notStrictEqual(correctElement, null)
+          assert.notStrictEqual(typeof correctElement, 'undefined')
+          assert.strictEqual(correctElement.tagName, 'SPAN')
+          done()
+        })
     })
-  })
 
-  it('should not redundantly repeat the scope className', done => {
-    const app = ({DOM}) => {
-      const tab1$ = most.just(span('.tab1', 'Hi'))
-      const tab2$ = most.just(span('.tab2', 'Hello'))
-      const first$ = DOM.isolateSink(tab1$, '1')
-      const second$ = DOM.isolateSink(tab2$, '2')
-      const switched$ = most.from([1, 2, 1, 2, 1, 2])
-        .flatMap(i => i === 1? first$ : second$)
-      return {
-        DOM: switched$,
+    it('should not redundantly repeat the scope className', done => {
+      const app = ({DOM}) => {
+        const tab1$ = most.just(span('.tab1', 'Hi'))
+        const tab2$ = most.just(span('.tab2', 'Hello'))
+        const first$ = DOM.isolateSink(tab1$, '1')
+        const second$ = DOM.isolateSink(tab2$, '2')
+        const switched$ = most.from([1, 2, 1, 2, 1, 2])
+          .flatMap(i => i === 1? first$ : second$)
+        return {
+          DOM: switched$,
+        }
       }
-    }
 
-    const {sources} = run(app, {
-      DOM: makeDOMDriver(createRenderTarget('tab1')),
-    })
-
-    sources.DOM.select(':root').observable.skip(4).take(1)
-      .observe(root => {
-        assert.notStrictEqual(root, null)
-        assert.notStrictEqual(typeof root, 'undefined')
-        assert.strictEqual(root.tagName, 'SPAN')
-        assert.strictEqual(root.className, 'tab1 cycle-scope-1')
-        done()
+      const {sources} = run(app, {
+        DOM: makeDOMDriver(createRenderTarget('tab1')),
       })
+
+      sources.DOM.select(':root').observable
+        .observe(root => {
+          const child = root.children[0]
+          assert.notStrictEqual(child, null)
+          assert.notStrictEqual(typeof child, 'undefined')
+          assert.strictEqual(child.tagName, 'SPAN')
+          assert.strictEqual(child.className, 'tab2 cycle-scope-2')
+          done()
+        })
+    })
   })
 
   it(`should catch interaction events using id in DOM.select`, done => {
@@ -419,7 +593,37 @@ describe(`Rendering`, () => {
 
           done()
         })
+      })
     })
+
+  it(`should be able to select a thunk`, done => {
+    const exampleThunk = number => div('.exampleThunk', [
+      h2('this is a thunk'),
+      h4(`${number}`)
+    ])
+    function app(sources) {
+      return {
+        DOM: most.just(div([
+          thunk('example', exampleThunk, sources.number)
+        ])),
+      }
+    }
+    let {sources} = run(app, {
+      DOM: makeDOMDriver(createRenderTarget()),
+      number: () => 7
+    })
+    // Make assertions
+    sources.DOM.select(`.exampleThunk`).observable
+      .observe(elements => {
+        assert.strictEqual(Array.isArray(elements), true)
+        assert.strictEqual(elements.length, 1)
+        const element = elements[0]
+        assert.notStrictEqual(element, null)
+        assert.notStrictEqual(typeof element, `undefined`)
+        assert.strictEqual(element.tagName, `DIV`)
+        assert.strictEqual(element.children.length, 2)
+        done()
+      })
   })
 })
 
@@ -430,30 +634,3 @@ function createRenderTargetWithChildren(id = null) {
   element.appendChild(child)
   return element
 }
-
-describe(`fromEvent`, () => {
-  it(`should accept a NodeList as input`, done => {
-    const element = createRenderTargetWithChildren()
-    const source = element.querySelectorAll('h1')
-
-    const event$ = fromEvent('click', source, false)
-
-    event$.observe(event => {
-      assert.strictEqual(event.type, 'click')
-      assert.strictEqual(event.target.textContent, 'Hello')
-      done()
-    })
-
-    click(source[0])
-  })
-
-  it(`should throw error if not given a NodeList`, done => {
-    const element = createRenderTargetWithChildren()
-    const source = element.querySelector('h1')
-    assert.throws(
-      () => fromEvent('click', source, false),
-      /source must be a NodeList or an Array of DOM Nodes/
-    )
-    done()
-  })
-})
