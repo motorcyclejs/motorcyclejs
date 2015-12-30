@@ -43,6 +43,10 @@ const domDriverInputGuard =
     }
   }
 
+// snabbdoms style module blows up server-side
+// because rAf is not defined
+global.requestAnimationFrame = setTimeout
+
 const defaultOptions = {
   modules: [
     require(`snabbdom/modules/class`),
