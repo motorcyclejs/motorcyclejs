@@ -39,8 +39,8 @@ EventAdapter.prototype.dispose = function dispose() {
 }
 
 const initEventTarget =
-  (nodes, type, listener, useCapture) => { // eslint-disable-line
-    nodes.addEventListener(type, listener, useCapture)
+  (node, type, listener, useCapture) => { // eslint-disable-line
+    node.addEventListener(type, listener, useCapture)
 
     const dispose = (type_, target) => {
       target.removeEventListener(type_, listener, useCapture)
@@ -67,11 +67,11 @@ EventTargetSource.prototype.run = function run(sink, scheduler) {
 }
 
 const fromEvent =
-  (type, nodes, useCapture = false) => {
+  (type, node, useCapture = false) => {
     let source
-    if (nodes.addEventListener && nodes.removeEventListener) {
+    if (node.addEventListener && node.removeEventListener) {
       source = new MulticastSource(
-        new EventTargetSource(type, nodes, useCapture)
+        new EventTargetSource(type, node, useCapture)
       )
     } else {
       throw new Error(

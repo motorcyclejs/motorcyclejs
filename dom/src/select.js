@@ -27,32 +27,39 @@ function makeIsStrictlyInRootScope(namespace) {
   }
 }
 
-function makeElementSelector(rootElem$) {
+function makeElementGetter(selector) {
+  return function elemenGetter(rootElement) {
+    if (selector.join(``) === ``) {
+      return rootElement
+    }
+    let nodeList = rootElement.querySelectorAll(selector.join(` `).trim())
+    if (nodeList.length === 0) {
+      nodeList = rootElement.querySelectorAll(selector.join(``))
+    }
+    const array = Array.prototype.slice.call(nodeList)
+    return filter(array, makeIsStrictlyInRootScope(selector))
+  }
+}
+
+function makeElementSelector(rootElement$) {
   return function DOMSelect(selector) {
     if (typeof selector !== `string`) {
       throw new Error(`DOM drivers select() expects first argument to be a ` +
         `string as a CSS selector`)
     }
+
     const namespace = this.namespace
+
     const scopedSelector = concat(
       namespace,
       selector.trim() === `:root` ? `` : selector.trim()
     )
+
     return {
-      observable: rootElem$.map(rootEl => {
-        if (scopedSelector.join(``) === ``) {
-          return rootEl
-        }
-        let nodeList = rootEl.querySelectorAll(scopedSelector.join(` `).trim())
-        if (nodeList.length === 0) {
-          nodeList = rootEl.querySelectorAll(scopedSelector.join(``))
-        }
-        const array = Array.prototype.slice.call(nodeList)
-        return filter(array, makeIsStrictlyInRootScope(scopedSelector))
-      }),
-      namespace: namespace.concat(selector),
-      select: makeElementSelector(rootElem$),
-      events: makeEventsSelector(rootElem$, scopedSelector),
+      observable: rootElement$.map(makeElementGetter(scopedSelector)),
+      namespace: scopedSelector,
+      select: makeElementSelector(rootElement$),
+      events: makeEventsSelector(rootElement$, scopedSelector),
       isolateSource,
       isolateSink,
     }

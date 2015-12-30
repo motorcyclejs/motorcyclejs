@@ -45,7 +45,9 @@ const domDriverInputGuard =
 
 // snabbdoms style module blows up server-side
 // because rAf is not defined
-global.requestAnimationFrame = setTimeout
+if (typeof window === `undefined`) {
+  global.requestAnimationFrame = setTimeout
+}
 
 const defaultOptions = {
   modules: [

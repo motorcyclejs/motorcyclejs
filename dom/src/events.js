@@ -9,30 +9,27 @@ try {
   matchesSelector = () => {}
 }
 
-function makeEventsSelector(element$, selector) {
+function makeEventsSelector(rootElement$, selector) {
   return function eventsSelector(type, useCapture = false) {
     if (typeof type !== `string`) {
       throw new Error(`DOM drivers events() expects argument to be a ` +
         `string representing the event type to listen for.`)
     }
-    return element$
-      .map(element => {
-        return {element, selector}
-      })
+    return rootElement$
+      .map(rootElement => ({rootElement, selector}))
       .skipRepeatsWith((prev, curr) => {
         return prev.selector.join(``) === curr.selector.join(``)
       })
-      .map(({element}) => element)
-      .map(elements => {
-        if (!elements) {
+      .map(({rootElement}) => {
+        if (!rootElement) {
           return empty()
         }
 
-        if (matchesSelector(elements, selector.join(` `))) {
-          return fromEvent(type, elements, useCapture)
+        if (matchesSelector(rootElement, selector.join(` `))) {
+          return fromEvent(type, rootElement, useCapture)
         }
 
-        return fromEvent(type, elements, useCapture)
+        return fromEvent(type, rootElement, useCapture)
           .filter(ev => {
             if (matchesSelector(ev.target, selector.join(` `)) ||
               matchesSelector(ev.target, selector.join(``)))
