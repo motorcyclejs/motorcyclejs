@@ -1,3 +1,12 @@
+# v1.0.2 (2015-12-30)
+
+
+## Bug Fixes
+
+- polyfill raf for snabbom
+  ([eb17a5db](https://github.com/motorcyclejs/dom/commits/eb17a5dbd07573f5c0ad849518c6c0588396a4dd))
+
+
 # v1.0.1 (2015-12-30)
 
 
