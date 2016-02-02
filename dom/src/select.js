@@ -32,7 +32,7 @@ function makeElementGetter(selector) {
     if (selector.join(``) === ``) {
       return rootElement
     }
-    let nodeList = rootElement.querySelectorAll(selector.join(` `).trim())
+    let nodeList = rootElement.querySelectorAll(selector.join(` `))
     if (nodeList.length === 0) {
       nodeList = rootElement.querySelectorAll(selector.join(``))
     }
