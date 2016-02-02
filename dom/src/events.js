@@ -1,4 +1,4 @@
-import fromEvent from './fromEvent'
+import {domEvent} from '@most/dom-event'
 import {makeIsStrictlyInRootScope} from './select'
 
 let matchesSelector
@@ -91,11 +91,11 @@ function makeEventsSelector(rootElement$, selector) {
       })
       .map(({rootElement}) => {
         if (!selector || selector.lenght === 0) {
-          return fromEvent(type, rootElement, useCapture)
+          return domEvent(type, rootElement, useCapture)
         }
 
         const simulateBubbling = makeSimulateBubbling(selector, rootElement)
-        return fromEvent(type, rootElement, useCapture)
+        return domEvent(type, rootElement, useCapture)
           .filter(simulateBubbling)
       })
       .switch()
