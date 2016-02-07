@@ -1,5 +1,4 @@
-import {empty} from 'most'
-import fromEvent from './fromEvent'
+import {domEvent} from '@most/dom-event'
 import {makeIsStrictlyInRootScope} from './select'
 
 let matchesSelector
@@ -9,11 +8,81 @@ try {
   matchesSelector = () => {}
 }
 
+const eventTypesThatDontBubble = [
+  `load`,
+  `unload`,
+  `focus`,
+  `blur`,
+  `mouseenter`,
+  `mouseleave`,
+  `submit`,
+  `change`,
+  `reset`,
+]
+
+function maybeMutateEventPropagationAttributes(event) {
+  if (!event.hasOwnProperty(`propagationHasBeenStopped`)) {
+    event.propagationHasBeenStopped = false
+    const oldStopPropagation = event.stopPropagation
+    event.stopPropagation = function stopPropagation() {
+      oldStopPropagation.call(this)
+      this.propagationHasBeenStopped = true
+    }
+  }
+}
+
+function mutateEventCurrentTarget(event, currentTargetElement) {
+  try {
+    Object.defineProperty(event, `currentTarget`, {
+      value: currentTargetElement,
+      configurable: true,
+    })
+  } catch (err) {
+    console.log(`please use event.ownerTarget`)
+  }
+  event.ownerTarget = currentTargetElement
+}
+
+function makeSimulateBubbling(namespace, rootEl) {
+  const isStrictlyInRootScope = makeIsStrictlyInRootScope(namespace)
+  const descendantSel = namespace.join(` `)
+  const topSel = namespace.join(``)
+  const roof = rootEl.parentElement
+
+  return function simulateBubbling(ev) {
+    maybeMutateEventPropagationAttributes(ev)
+    if (ev.propagationHasBeenStopped) {
+      return false
+    }
+    for (let el = ev.target; el && el !== roof; el = el.parentElement) {
+      if (!isStrictlyInRootScope(el)) {
+        continue
+      }
+      if (matchesSelector(el, descendantSel) || matchesSelector(el, topSel)) {
+        mutateEventCurrentTarget(ev, el)
+        return true
+      }
+    }
+    return false
+  }
+}
+
+const defaults = {
+  useCapture: false,
+}
+
 function makeEventsSelector(rootElement$, selector) {
-  return function eventsSelector(type, useCapture = false) {
+  return function eventsSelector(type, options = defaults) {
     if (typeof type !== `string`) {
       throw new Error(`DOM drivers events() expects argument to be a ` +
         `string representing the event type to listen for.`)
+    }
+    let useCapture = false
+    if (eventTypesThatDontBubble.indexOf(type) !== -1) {
+      useCapture = true
+    }
+    if (typeof options.useCapture === `boolean`) {
+      useCapture = options.useCapture
     }
     return rootElement$
       .map(rootElement => ({rootElement, selector}))
@@ -21,23 +90,13 @@ function makeEventsSelector(rootElement$, selector) {
         return prev.selector.join(``) === curr.selector.join(``)
       })
       .map(({rootElement}) => {
-        if (!rootElement) {
-          return empty()
+        if (!selector || selector.lenght === 0) {
+          return domEvent(type, rootElement, useCapture)
         }
 
-        if (matchesSelector(rootElement, selector.join(` `))) {
-          return fromEvent(type, rootElement, useCapture)
-        }
-
-        return fromEvent(type, rootElement, useCapture)
-          .filter(ev => {
-            if (matchesSelector(ev.target, selector.join(` `)) ||
-              matchesSelector(ev.target, selector.join(``)))
-            {
-              return makeIsStrictlyInRootScope(selector)(ev.target)
-            }
-            return false
-          })
+        const simulateBubbling = makeSimulateBubbling(selector, rootElement)
+        return domEvent(type, rootElement, useCapture)
+          .filter(simulateBubbling)
       })
       .switch()
       .multicast()

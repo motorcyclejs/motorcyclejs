@@ -2,7 +2,6 @@
 import assert from 'assert'
 import {run} from '@motorcycle/core'
 import {makeDOMDriver, div, p, span, h2, h3, h4, thunk} from '../../src'
-import fromEvent from '../../src/fromEvent'
 import most from 'most'
 
 function click(el) {
