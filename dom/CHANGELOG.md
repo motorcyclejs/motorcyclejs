@@ -1,3 +1,16 @@
+# v1.1.0 (2016-02-07)
+
+
+## Features
+
+- update event-delegation model
+  ([2543bea4](https://github.com/motorcyclejs/dom/commits/2543bea4dff32165b3211064c6cf53e5b340eb5d),
+   [#68]([object Object]/68))
+- **events:** use @most/dom-event instead of local fromEvent
+  ([daec57db](https://github.com/motorcyclejs/dom/commits/daec57db5f3561eccc5cf569117fa59f855939b5),
+   [#69]([object Object]/69))
+
+
 # v1.0.3 (2015-12-30)
 
 
