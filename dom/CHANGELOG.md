@@ -1,3 +1,12 @@
+# v1.2.0 (2016-02-19)
+
+
+## Bug Fixes
+
+- fix all failing tests of new test suite
+  ([7107cb8f](https://github.com/motorcyclejs/dom/commits/7107cb8f19109f000ff428a5a1acbe3ddfd59a01))
+
+
 # v1.1.0 (2016-02-07)
 
 
