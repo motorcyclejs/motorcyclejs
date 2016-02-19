@@ -56,8 +56,6 @@
   "dependencies": {
     "@most/dom-event": "1.1.0",
     "@most/hold": "1.1.0",
-    "@motorcycle/core": "1.1.0",
-    "fast.js": "0.1.1",
     "hyperscript-helpers": "2.1.0",
     "matches-selector": "1.0.0",
     "snabbdom": "0.3.1",
