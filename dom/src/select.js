@@ -1,19 +1,17 @@
-import makeEventsSelector from './events'
-import {isolateSink, isolateSource} from './isolate'
-
-import {filter, concat} from 'fast.js/array'
+import {makeEventsSelector} from './events'
+import {isolateSource, isolateSink} from './isolate'
 
 function makeIsStrictlyInRootScope(namespace) {
-  const classIsForeign = c => {
+  const classIsForeign = (c) => {
     const matched = c.match(/cycle-scope-(\S+)/)
     return matched && namespace.indexOf(`.${c}`) === -1
   }
-  const classIsDomestic = c => {
+  const classIsDomestic = (c) => {
     const matched = c.match(/cycle-scope-(\S+)/)
     return matched && namespace.indexOf(`.${c}`) !== -1
   }
   return function isStrictlyInRootScope(leaf) {
-    for (let el = leaf; el !== null; el = el.parentElement) {
+    for (let el = leaf; el; el = el.parentElement) {
       const split = String.prototype.split
       const classList = el.classList || split.call(el.className, ` `)
       if (Array.prototype.some.call(classList, classIsDomestic)) {
@@ -27,44 +25,51 @@ function makeIsStrictlyInRootScope(namespace) {
   }
 }
 
-function makeElementGetter(selector) {
-  return function elemenGetter(rootElement) {
-    if (selector.join(``) === ``) {
-      return rootElement
-    }
-    let nodeList = rootElement.querySelectorAll(selector.join(` `))
-    if (nodeList.length === 0) {
-      nodeList = rootElement.querySelectorAll(selector.join(``))
-    }
-    const array = Array.prototype.slice.call(nodeList)
-    return filter(array, makeIsStrictlyInRootScope(selector))
+const isValidString = param => typeof param === `string` && param.length > 0
+const startsWith = (string, start) => string[0] === start
+const isNotTagName = param =>
+    isValidString(param) && startsWith(param, `.`) || startsWith(param, `#`) ||
+    startsWith(param, `:`) || startsWith(param, `*`)
+
+function sortNamespace(a, b) {
+  if (isNotTagName(a) && isNotTagName(b)) {
+    return 0
   }
+  return isNotTagName(a) ? 1 : -1
 }
 
 function makeElementSelector(rootElement$) {
-  return function DOMSelect(selector) {
+  return function elementSelector(selector) {
     if (typeof selector !== `string`) {
-      throw new Error(`DOM drivers select() expects first argument to be a ` +
+      throw new Error(`DOM driver's select() expects the argument to be a ` +
         `string as a CSS selector`)
     }
 
     const namespace = this.namespace
-
-    const scopedSelector = concat(
-      namespace,
-      selector.trim() === `:root` ? `` : selector.trim()
-    )
-
+    const trimmedSelector = selector.trim()
+    const childNamespace = trimmedSelector === `:root` ?
+      namespace :
+      namespace.concat(trimmedSelector).sort(sortNamespace)
+    const element$ = rootElement$.map(rootEl => {
+      if (childNamespace.join(``) === ``) {
+        return rootEl
+      }
+      let nodeList = rootEl.querySelectorAll(childNamespace.join(` `))
+      if (nodeList.length === 0) {
+        nodeList = rootEl.querySelectorAll(childNamespace.join(``))
+      }
+      const array = Array.prototype.slice.call(nodeList)
+      return array.filter(makeIsStrictlyInRootScope(childNamespace))
+    })
     return {
-      observable: rootElement$.map(makeElementGetter(scopedSelector)),
-      namespace: scopedSelector,
+      observable: element$,
+      namespace: childNamespace,
       select: makeElementSelector(rootElement$),
-      events: makeEventsSelector(rootElement$, scopedSelector),
+      events: makeEventsSelector(rootElement$, childNamespace),
       isolateSource,
       isolateSink,
     }
   }
 }
 
-export default makeElementSelector
-export {makeIsStrictlyInRootScope}
+export {makeElementSelector, makeIsStrictlyInRootScope}

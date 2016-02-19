@@ -4,7 +4,7 @@ import {makeIsStrictlyInRootScope} from './select'
 let matchesSelector
 try {
   matchesSelector = require(`matches-selector`)
-} catch (err) {
+} catch (e) {
   matchesSelector = () => {}
 }
 
@@ -71,10 +71,10 @@ const defaults = {
   useCapture: false,
 }
 
-function makeEventsSelector(rootElement$, selector) {
+function makeEventsSelector(rootElement$, namespace) {
   return function eventsSelector(type, options = defaults) {
     if (typeof type !== `string`) {
-      throw new Error(`DOM drivers events() expects argument to be a ` +
+      throw new Error(`DOM driver's events() expects argument to be a ` +
         `string representing the event type to listen for.`)
     }
     let useCapture = false
@@ -84,17 +84,17 @@ function makeEventsSelector(rootElement$, selector) {
     if (typeof options.useCapture === `boolean`) {
       useCapture = options.useCapture
     }
+
     return rootElement$
-      .map(rootElement => ({rootElement, selector}))
+      .map(rootElement => ({rootElement, namespace}))
       .skipRepeatsWith((prev, curr) => {
-        return prev.selector.join(``) === curr.selector.join(``)
+        return prev.namespace.join(``) === curr.namespace.join(``)
       })
       .map(({rootElement}) => {
-        if (!selector || selector.lenght === 0) {
+        if (!namespace || namespace.length === 0) {
           return domEvent(type, rootElement, useCapture)
         }
-
-        const simulateBubbling = makeSimulateBubbling(selector, rootElement)
+        const simulateBubbling = makeSimulateBubbling(namespace, rootElement)
         return domEvent(type, rootElement, useCapture)
           .filter(simulateBubbling)
       })
@@ -103,4 +103,4 @@ function makeEventsSelector(rootElement$, selector) {
   }
 }
 
-export default makeEventsSelector
+export {makeEventsSelector}
