@@ -9,10 +9,15 @@ const isolateSink =
     sink.map(
       vTree => {
         if (vTree.sel.indexOf(`${SCOPE_PREFIX}${scope}`) === -1) {
-          vTree.sel = `${vTree.sel}.${SCOPE_PREFIX}${scope}`
+          if (vTree.data.ns) { // svg elements
+            const {attrs = {}} = vTree.data
+            attrs.class = `${attrs.class || ``} ${SCOPE_PREFIX}${scope}`
+          } else {
+            vTree.sel = `${vTree.sel}.${SCOPE_PREFIX}${scope}`
+          }
         }
         return vTree
       }
-    ).multicast()
+    )
 
 export {isolateSink, isolateSource}

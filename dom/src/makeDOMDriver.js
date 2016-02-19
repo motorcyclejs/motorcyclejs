@@ -1,13 +1,15 @@
 import hold from '@most/hold'
-import snabbdom from 'snabbdom'
+import {init} from 'snabbdom'
 import h from 'snabbdom/h'
 import classNameFromVNode from 'snabbdom-selector/lib/classNameFromVNode'
 import selectorParser from 'snabbdom-selector/lib/selectorParser'
 
 import {domSelectorParser} from './utils'
-import vTreeParser from './vTreeParser'
+import defaultModules from './modules'
+import {transposeVTree} from './transposition'
 import {isolateSink, isolateSource} from './isolate'
-import makeElementSelector from './select'
+import {makeElementSelector} from './select'
+import {makeEventsSelector} from './events'
 
 function makeVNodeWrapper(rootElement) {
   return function vNodeWrapper(vNode) {
@@ -18,9 +20,9 @@ function makeVNodeWrapper(rootElement) {
     const {id: vNodeId = selectorId} = vNodeDataProps
 
     const isVNodeAndRootElementIdentical =
-      vNodeId === rootElement.id &&
-      selectorTagName === rootElement.tagName &&
-      vNodeClassName === rootElement.className
+      vNodeId.toUpperCase() === rootElement.id.toUpperCase() &&
+      selectorTagName.toUpperCase() === rootElement.tagName.toUpperCase() &&
+      vNodeClassName.toUpperCase() === rootElement.className.toUpperCase()
 
     if (isVNodeAndRootElementIdentical) {
       return vNode
@@ -29,71 +31,56 @@ function makeVNodeWrapper(rootElement) {
     const {tagName, id, className} = rootElement
     const elementId = id ? `#${id}` : ``
     const elementClassName = className ?
-      `.${className.split(` `).join(`.`)}` :
-      ``
+      `.${className.split(` `).join(`.`)}` : ``
     return h(`${tagName}${elementId}${elementClassName}`, {}, [vNode])
   }
 }
 
-const domDriverInputGuard =
-  view$ => {
-    if (!view$ || typeof view$.observe !== `function`) {
-      throw new Error(`The DOM driver function expects as input an ` +
-        `Observable of virtual DOM elements`)
+function DOMDriverInputGuard(view$) {
+  if (!view$ || typeof view$.observe !== `function`) {
+    throw new Error(`The DOM driver function expects as input an ` +
+      `Observable of virtual DOM elements`)
+  }
+}
+
+const defaults = {
+  modules: defaultModules,
+}
+
+function makeDOMDriver(container, {modules = defaultModules} = defaults) {
+  const patch = init(modules)
+  const rootElement = domSelectorParser(container)
+
+  if (!Array.isArray(modules)) {
+    throw new Error(`Optional modules option must be ` +
+     `an array for snabbdom modules`)
+  }
+
+  function DOMDriver(view$) {
+    DOMDriverInputGuard(view$)
+
+    const rootElement$ = hold(
+      view$
+        .map(transposeVTree).switch()
+        .map(makeVNodeWrapper(rootElement))
+        .scan(patch, rootElement)
+        .skip(1)
+        .map(({elm}) => elm)
+    )
+
+    rootElement$.drain()
+
+    return {
+      observable: rootElement$,
+      namespace: [],
+      select: makeElementSelector(rootElement$),
+      events: makeEventsSelector(rootElement$),
+      isolateSink,
+      isolateSource,
     }
   }
 
-// snabbdoms style module blows up server-side
-// because rAf is not defined
-if (typeof window === `undefined`) {
-  global.requestAnimationFrame = setTimeout
+  return DOMDriver
 }
 
-const defaultOptions = {
-  modules: [
-    require(`snabbdom/modules/class`),
-    require(`snabbdom/modules/props`),
-    require(`snabbdom/modules/attributes`),
-    require(`snabbdom/modules/style`),
-  ],
-}
-
-const makeDOMDriver =
-  (containerElementSelectors,
-    {modules = defaultOptions.modules} = defaultOptions
-  ) => {
-    const patch = snabbdom.init(modules)
-    const rootElement = domSelectorParser(containerElementSelectors)
-
-    const DomDriver =
-      view$ => {
-        domDriverInputGuard(view$)
-        if (!Array.isArray(modules)) {
-          throw new Error(`Optional modules option must be ` +
-          `an array for snabbdom modules`)
-        }
-
-        const rootElement$ = hold(
-          view$
-            .map(vTreeParser)
-            .switch()
-            .map(makeVNodeWrapper(rootElement))
-            .scan(patch, rootElement)
-            .skip(1)
-            .map(({elm}) => elm)
-        )
-
-        rootElement$.drain()
-
-        return {
-          namespace: [],
-          select: makeElementSelector(rootElement$),
-          isolateSink,
-          isolateSource,
-        }
-      }
-
-    return DomDriver
-  }
-
-export default makeDOMDriver
+export {makeDOMDriver}
