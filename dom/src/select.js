@@ -73,9 +73,12 @@ function makeFindElements(namespace) {
     }
 
     return removeDuplicates(
-        slice.call(rootElement.querySelectorAll(namespace.join(` `)))
-        .concat(slice.call(rootElement.querySelectorAll(namespace.join(``))))
-      ).filter(makeIsStrictlyInRootScope(namespace))
+      slice.call(
+        rootElement.querySelectorAll(namespace.join(` `))
+      ).concat(slice.call(
+        rootElement.querySelectorAll(namespace.join(``))
+      ))
+    ).filter(makeIsStrictlyInRootScope(namespace))
   }
 }
 
