@@ -11,13 +11,14 @@ function makeIsStrictlyInRootScope(namespace) {
     return matched && namespace.indexOf(`.${c}`) !== -1
   }
   return function isStrictlyInRootScope(leaf) {
+    const some = Array.prototype.some
+    const split = String.prototype.split
     for (let el = leaf; el; el = el.parentElement) {
-      const split = String.prototype.split
       const classList = el.classList || split.call(el.className, ` `)
-      if (Array.prototype.some.call(classList, classIsDomestic)) {
+      if (some.call(classList, classIsDomestic)) {
         return true
       }
-      if (Array.prototype.some.call(classList, classIsForeign)) {
+      if (some.call(classList, classIsForeign)) {
         return false
       }
     }
@@ -26,16 +27,59 @@ function makeIsStrictlyInRootScope(namespace) {
 }
 
 const isValidString = param => typeof param === `string` && param.length > 0
-const startsWith = (string, start) => string[0] === start
+
+const contains = (str, match) => str.indexOf(match) > -1
+
 const isNotTagName = param =>
-    isValidString(param) && startsWith(param, `.`) || startsWith(param, `#`) ||
-    startsWith(param, `:`) || startsWith(param, `*`)
+    isValidString(param) && contains(param, `.`) ||
+    contains(param, `#`) || contains(param, `:`)
 
 function sortNamespace(a, b) {
   if (isNotTagName(a) && isNotTagName(b)) {
     return 0
   }
   return isNotTagName(a) ? 1 : -1
+}
+
+function removeDuplicates(arr) {
+  const newArray = []
+  arr.forEach((element) => {
+    if (newArray.indexOf(element) === -1) {
+      newArray.push(element)
+    }
+  })
+  return newArray
+}
+
+const getScope = namespace =>
+  namespace.filter(c => c.indexOf(`.cycle-scope`) > -1)
+
+function makeFindElements(namespace) {
+  return function findElements(rootElement) {
+    if (namespace.join(``) === ``) {
+      return rootElement
+    }
+    const slice = Array.prototype.slice
+
+    const scope = getScope(namespace)
+    // Uses global selector && is isolated
+    if (namespace.indexOf(`*`) > -1 && scope.length > 0) {
+      // grab top-level boundary of scope
+      const topNode = rootElement.querySelector(scope.join(` `))
+      // grab all children
+      const childNodes = topNode.getElementsByTagName(`*`)
+      return removeDuplicates([topNode].concat(slice.call(childNodes)))
+        .filter(makeIsStrictlyInRootScope(namespace))
+    }
+
+    return removeDuplicates(
+      slice.call(
+        rootElement.querySelectorAll(namespace.join(` `))
+      ).concat(slice.call(
+        rootElement.querySelectorAll(namespace.join(``))
+      ))
+    ).filter(makeIsStrictlyInRootScope(namespace))
+  }
 }
 
 function makeElementSelector(rootElement$) {
@@ -50,19 +94,9 @@ function makeElementSelector(rootElement$) {
     const childNamespace = trimmedSelector === `:root` ?
       namespace :
       namespace.concat(trimmedSelector).sort(sortNamespace)
-    const element$ = rootElement$.map(rootEl => {
-      if (childNamespace.join(``) === ``) {
-        return rootEl
-      }
-      let nodeList = rootEl.querySelectorAll(childNamespace.join(` `))
-      if (nodeList.length === 0) {
-        nodeList = rootEl.querySelectorAll(childNamespace.join(``))
-      }
-      const array = Array.prototype.slice.call(nodeList)
-      return array.filter(makeIsStrictlyInRootScope(childNamespace))
-    })
+
     return {
-      observable: element$,
+      observable: rootElement$.map(makeFindElements(childNamespace)),
       namespace: childNamespace,
       select: makeElementSelector(rootElement$),
       events: makeEventsSelector(rootElement$, childNamespace),

@@ -422,7 +422,7 @@ describe('isolation', function () {
       };
     }
 
-    const {sinks, sources} = run(app, {
+    const {sinks, sources, dispose} = run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
@@ -438,6 +438,7 @@ describe('isolation', function () {
         assert.notStrictEqual(correctElement, null);
         assert.notStrictEqual(typeof correctElement, 'undefined');
         assert.strictEqual(correctElement.tagName, 'SPAN');
+        dispose();
         done();
       });
   });
@@ -449,7 +450,10 @@ describe('isolation', function () {
           h3('.top-most', [
             sources.DOM.isolateSink(most.just(
               span([
-                h4('.bar', 'Wrong')
+                div([
+                  h4('.foo', 'hello'),
+                  h4('.bar', 'world')
+                ])
               ])
             ), 'ISOLATION')
           ])
@@ -457,23 +461,52 @@ describe('isolation', function () {
       };
     }
 
-    const {sinks, sources} = run(app, {
+    const {sinks, sources, dispose} = run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
     const {isolateSource} = sources.DOM;
 
     isolateSource(sources.DOM, 'ISOLATION')
-      .select('span').observable
-      .take(1)
-      .observe(function (elements) {
-        assert.strictEqual(Array.isArray(elements), true);
-        assert.strictEqual(elements.length, 1);
-        const correctElement = elements[0];
-        assert.notStrictEqual(correctElement, null);
-        assert.notStrictEqual(typeof correctElement, 'undefined');
-        assert.strictEqual(correctElement.tagName, 'SPAN');
-        done();
-      });
+    .select('*').observable
+    .take(1)
+    .observe(function (elements) {
+      assert.strictEqual(Array.isArray(elements), true);
+      assert.strictEqual(elements.length, 4);
+      dispose();
+      done();
+    });
+  });
+
+  it('should select() isolated element with tag + class', function (done) {
+    function app() {
+      return {
+        DOM: most.just(
+          h3('.top-most', [
+            h2('.bar', 'Wrong'),
+            div('.cycle-scope-foo', [
+              h4('.bar', 'Correct')
+            ])
+          ])
+        )
+      };
+    }
+
+    const {sinks, sources, dispose} = run(app, {
+      DOM: makeDOMDriver(createRenderTarget())
+    });
+    const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'foo');
+
+    // Make assertions
+    isolatedDOMSource.select('h4.bar').observable.take(1).observe(elements => {
+      assert.strictEqual(elements.length, 1);
+      const correctElement = elements[0];
+      assert.notStrictEqual(correctElement, null);
+      assert.notStrictEqual(typeof correctElement, 'undefined');
+      assert.strictEqual(correctElement.tagName, 'H4');
+      assert.strictEqual(correctElement.textContent, 'Correct');
+      dispose();
+      done();
+    });
   });
 });
