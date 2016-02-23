@@ -1,3 +1,12 @@
+# v1.2.1 (2016-02-23)
+
+
+## Bug Fixes
+
+- **select:** adjust select() semantics to match more css selectors properly
+  ([362cab6c](https://github.com/motorcyclejs/dom/commits/362cab6ca6f255e6ae693fabbd12fcf9becc7a0d))
+
+
 # v1.2.0 (2016-02-19)
 
 
