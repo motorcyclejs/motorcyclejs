@@ -4,7 +4,6 @@ browserify:
 browsers:
   - name: firefox
     version: 37..latest
-    platform: Mac 10.10
   - name: opera
     version: latest
     platform: Mac 10.10
