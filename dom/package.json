@@ -19,7 +19,7 @@
     "posttest-browser": "rm test/browser/page/tests-bundle.js",
     "test-browser": "testem",
     "test": "npm run eslint && npm run test-browser",
-    "test-ci": "testem ci",
+    "test-ci": "npm run eslint && zuul --no-coverage -- test/browser/index.js",
     "start": "npm install && npm prune && validate-commit-msg",
     "precompile": "rm -rf lib/ && mkdir -p lib",
     "compile": "babel -d lib/ src/",
@@ -73,6 +73,7 @@
     "babelify": "7.2.0",
     "browserify": "13.0.0",
     "cli-release": "1.0.4",
+    "creed": "^1.0.1",
     "eslint": "^1.10.3",
     "eslint-config-cycle": "3.2.0",
     "eslint-plugin-cycle": "1.0.2",
@@ -81,6 +82,7 @@
     "most": "0.18.0",
     "snabbdom-jsx": "0.3.0",
     "testem": "1.4.3",
-    "validate-commit-message": "3.0.1"
+    "validate-commit-message": "3.0.1",
+    "zuul": "^3.9.0"
   }
 }
