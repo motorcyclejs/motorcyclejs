@@ -1,3 +1,4 @@
+import {throwError} from 'most'
 import hold from '@most/hold'
 import {init} from 'snabbdom'
 import h from 'snabbdom/h'
@@ -43,17 +44,34 @@ function DOMDriverInputGuard(view$) {
   }
 }
 
-const defaults = {
-  modules: defaultModules,
+function defaultOnErrorFn(msg) {
+  if (console && console.error) {
+    console.error(msg)
+  } else {
+    console.log(msg)
+  }
 }
 
-function makeDOMDriver(container, {modules = defaultModules} = defaults) {
+const defaults = {
+  modules: defaultModules,
+  onError: defaultOnErrorFn,
+}
+
+function makeDOMDriver(container, {
+  modules = defaultModules,
+  onError = defaultOnErrorFn,
+} = defaults) {
   const patch = init(modules)
   const rootElement = domSelectorParser(container)
 
   if (!Array.isArray(modules)) {
     throw new Error(`Optional modules option must be ` +
      `an array for snabbdom modules`)
+  }
+
+  if (typeof onError !== `function`) {
+    throw new Error(`Optional onError opition must be ` +
+      `a function to approriately handle your errors`)
   }
 
   function DOMDriver(view$) {
@@ -65,6 +83,10 @@ function makeDOMDriver(container, {modules = defaultModules} = defaults) {
         .map(makeVNodeWrapper(rootElement))
         .scan(patch, rootElement)
         .skip(1)
+        .recoverWith(err => {
+          onError(err)
+          return throwError(err)
+        })
         .map(({elm}) => elm)
     )
 
