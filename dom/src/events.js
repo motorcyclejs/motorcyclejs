@@ -1,5 +1,5 @@
 import {domEvent} from '@most/dom-event'
-import {makeIsStrictlyInRootScope} from './select'
+import {makeIsStrictlyInRootScope} from './makeIsStrictlyInRootScope'
 
 let matchesSelector
 try {
@@ -18,6 +18,24 @@ const eventTypesThatDontBubble = [
   `submit`,
   `change`,
   `reset`,
+  `timeupdate`,
+  `playing`,
+  `waiting`,
+  `seeking`,
+  `seeked`,
+  `ended`,
+  `loadedmetadata`,
+  `loadeddata`,
+  `canplay`,
+  `canplaythrough`,
+  `durationchange`,
+  `play`,
+  `pause`,
+  `ratechange`,
+  `volumechange`,
+  `suspend`,
+  `emptied`,
+  `stalled`,
 ]
 
 function maybeMutateEventPropagationAttributes(event) {
@@ -78,11 +96,11 @@ function makeEventsSelector(rootElement$, namespace) {
         `string representing the event type to listen for.`)
     }
     let useCapture = false
-    if (eventTypesThatDontBubble.indexOf(type) !== -1) {
-      useCapture = true
-    }
     if (typeof options.useCapture === `boolean`) {
       useCapture = options.useCapture
+    }
+    if (eventTypesThatDontBubble.indexOf(type) !== -1) {
+      useCapture = true
     }
 
     return rootElement$

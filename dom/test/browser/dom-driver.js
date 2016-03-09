@@ -51,6 +51,21 @@ describe('makeDOMDriver', function () {
       makeDOMDriver(123);
     }, /Given container is not a DOM element neither a selector string/);
   });
+
+  it('should accept function as error callback', function () {
+    const element = document.createDocumentFragment();
+    const onError = function() {};
+    assert.doesNotThrow(function () {
+      makeDOMDriver(element, {onError});
+    });
+  });
+
+  it('should not accept number as error callback', function () {
+    const element = document.createDocumentFragment();
+    assert.throws(function () {
+      makeDOMDriver(element, {onError: 42});
+    });
+  });
 });
 
 describe('DOM Driver', function () {
@@ -59,6 +74,24 @@ describe('DOM Driver', function () {
     assert.throws(function () {
       domDriver({});
     }, /The DOM driver function expects as input an Observable of virtual/);
+  });
+
+  it('should pass errors to error callback', function (done) {
+    const error = new Error();
+    const errorCallback = function(e) {
+      assert.strictEqual(e, error);
+      done();
+    };
+
+    function app() {
+      return {
+        DOM: most.throwError(error)
+      };
+    }
+
+    run(app, {
+      DOM: makeDOMDriver(createRenderTarget(), {onError: errorCallback})
+    });
   });
 
   it('should have isolateSource() and isolateSink() in source', function (done) {
