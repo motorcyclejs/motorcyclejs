@@ -1,5 +1,4 @@
 'use strict';
-require('creed').shim();
 require('./dom-driver.js');
 require('./render.js');
 require('./select.js');
