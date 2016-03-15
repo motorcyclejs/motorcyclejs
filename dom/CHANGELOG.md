@@ -1,3 +1,14 @@
+# v1.3.0 (2016-03-15)
+
+
+## Features
+
+- add new event types that don't bubble
+  ([e62092e3](https://github.com/motorcyclejs/dom/commits/e62092e3e9598f62ed6ff986224e5e112834b9cd))
+- **makeDOMDriver:** add option to specify your own error handling function
+  ([80717f8b](https://github.com/motorcyclejs/dom/commits/80717f8bf903cde9f170bf0a4b373abfe6e6478f))
+
+
 # v1.2.1 (2016-02-23)
 
 
