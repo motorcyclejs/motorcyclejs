@@ -52,7 +52,7 @@ function h(sel, b, c) {
   if (sel[0] === `s` && sel[1] === `v` && sel[2] === `g`) {
     addNS(data, children)
   }
-  return VNode(sel, data, children, text, undefined);
+  return VNode(sel, data || {}, children, text, undefined);
 }
 /* eslint-enable */
 
