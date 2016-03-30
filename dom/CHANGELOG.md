@@ -1,3 +1,22 @@
+# v1.4.0 (2016-03-30)
+
+
+## Bug Fixes
+
+- dataset module has not yet been publised to npm
+  ([07e4b47c](https://github.com/motorcyclejs/dom/commits/07e4b47cc999013c7a6f5cb0a2448e5a396ded6f))
+- **issue-89:** hopefully help fix fiddly test
+  ([2eb6afbf](https://github.com/motorcyclejs/dom/commits/2eb6afbf1c149339c720499502d3b343d3371ee9))
+
+
+## Features
+
+- **mockDOMSource:** update to allow for multiple .select()s
+  ([9a47a30f](https://github.com/motorcyclejs/dom/commits/9a47a30ffb01eeb49af912a23b94780bb6ed876e))
+- **modules:** remove local version of modules in favor of fixed snabbdom versions
+  ([c1864b22](https://github.com/motorcyclejs/dom/commits/c1864b22ff7737a8fd0af9373f4ff5a8a111c903))
+
+
 # v1.3.0 (2016-03-15)
 
 
