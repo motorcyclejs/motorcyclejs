@@ -12,7 +12,7 @@ function myElement(content) {
 function makeModelNumber$() {
   return most.merge(
     most.just(123).delay(50),
-    most.just(456).delay(100)
+    most.just(456).delay(200)
   );
 }
 
