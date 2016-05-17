@@ -1,5 +1,5 @@
 import {run} from '@motorcycle/core'
-import {makeDOMDriver, h, modules} from '../src'
+import {makeDOMDriver, h, modules} from '../../src'
 const {PropsModule, StyleModule} = modules
 import {zip} from 'most'
 
