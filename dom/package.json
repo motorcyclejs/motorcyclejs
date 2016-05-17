@@ -14,6 +14,8 @@
     "test-node": "mocha --compilers js:babel-core/register test/node",
     "test-browser": "testem",
     "test": "npm run eslint && npm run test-node && npm run test-browser",
+    "test-perf-basic": "testem -f perf/basic/.testem.json",
+    "test-perf-dbmon": "testem -f perf/dbmon/.testem.json",
     "test-ci": "npm run eslint && npm run test-node && testem ci",
     "start": "npm install && npm prune && validate-commit-msg",
     "lib": "rimraf lib/ && mkdirp lib && babel -d lib/ src/",
