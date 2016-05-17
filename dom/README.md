@@ -38,13 +38,15 @@ More examples can be found [here](https://github.com/motorcyclejs/examples).
 
 ## API
 
-### makeDOMDriver(container, modules)
+### makeDOMDriver(container, {modules, transposition})
 
 ###### Arguments
 
 **container** :: Element|CSS-Selector - A DOM node or a CSS-Selector which points to an existing DOM node that will be used as the initial place to patch the DOM.
 
 **modules** :: Array - An array of [Snabbdom modules](https://github.com/paldepind/snabbdom#creating-modules) which will be used by Snabbdom to add/remove behaviors that are available to you from the `h()` or `hyperscript-helpers` functions.
+
+**transposition** :: Boolean [= false] - a flag to turn on transposition or not.
 
 ```js
 import {makeDOMDriver} from '@motorcycle/dom'
