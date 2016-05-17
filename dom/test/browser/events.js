@@ -1,8 +1,8 @@
 'use strict';
 /* global describe, it, beforeEach */
 let assert = require('assert');
-let {run} = require('@motorcycle/core');
-let CycleDOM = require('../../src');
+let Cycle = require('@motorcycle/core').default;
+let CycleDOM = require('../../src/index');
 let most = require('most');
 let {svg, div, input, p, span, h2, h3, h4, form, select, option, makeDOMDriver} = CycleDOM;
 
@@ -20,11 +20,11 @@ describe('DOMSource.events()', function () {
   it('should catch a basic click interaction Observable', function (done) {
     function app() {
       return {
-        DOM: most.just(h3('.myelementclass', 'Foobar'))
+        DOM: most.of(h3('.myelementclass', 'Foobar'))
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
@@ -35,27 +35,90 @@ describe('DOMSource.events()', function () {
       done();
     });
     // Make assertions
-    sources.DOM.select(':root').observable.take(1).observe(function (root) {
+    sources.DOM.select(':root').elements.skip(1).take(1).observe(function (root) {
       const myElement = root.querySelector('.myelementclass');
       assert.notStrictEqual(myElement, null);
       assert.notStrictEqual(typeof myElement, 'undefined');
       assert.strictEqual(myElement.tagName, 'H3');
       assert.doesNotThrow(function () {
-        myElement.click();
+        setTimeout(() => myElement.click())
       });
     });
+  });
+
+  it('should setup click detection with events() after run() occurs', function (done) {
+    function app() {
+      return {
+        DOM: most.of(h3('.test2.myelementclass', 'Foobar'))
+      };
+    }
+
+    const {sinks, sources, dispose} = Cycle.run(app, {
+      DOM: makeDOMDriver(createRenderTarget())
+    });
+    sources.DOM.select('.myelementclass').events('click').observe(ev => {
+      assert.strictEqual(ev.type, 'click');
+      assert.strictEqual(ev.target.textContent, 'Foobar');
+      dispose();
+      done();
+    });
+    // Make assertions
+    setTimeout(() => {
+      const myElement = document.querySelector('.test2.myelementclass');
+      assert.notStrictEqual(myElement, null);
+      assert.notStrictEqual(typeof myElement, 'undefined');
+      assert.strictEqual(myElement.tagName, 'H3');
+      assert.doesNotThrow(function () {
+        setTimeout(() => myElement.click())
+      });
+    }, 200);
+  });
+
+  it('should setup click detection on a ready DOM element (e.g. from server)', function (done) {
+    function app() {
+      return {
+        DOM: most.never()
+      };
+    }
+
+    const containerElement = createRenderTarget();
+    let headerElement = document.createElement('H3');
+    headerElement.className = 'myelementclass';
+    headerElement.textContent = 'Foobar';
+    containerElement.appendChild(headerElement);
+
+    const {sinks, sources, dispose} = Cycle.run(app, {
+      DOM: makeDOMDriver(containerElement)
+    });
+    sources.DOM.select('.myelementclass').events('click').observe(ev => {
+      assert.strictEqual(ev.type, 'click');
+      assert.strictEqual(ev.target.textContent, 'Foobar');
+      dispose();
+      done();
+    });
+    // Make assertions
+    setTimeout(() => {
+      const myElement = containerElement.querySelector('.myelementclass');
+      assert.notStrictEqual(myElement, null);
+      assert.notStrictEqual(typeof myElement, 'undefined');
+      assert.strictEqual(myElement.tagName, 'H3');
+      assert.doesNotThrow(function () {
+        setTimeout(() => myElement.click())
+      });
+    }, 200);
   });
 
   it('should catch events using id of root element in DOM.select', function (done) {
     function app() {
       return {
-        DOM: most.just(h3('.myelementclass', 'Foobar'))
+        DOM: most.of(h3('.myelementclass', 'Foobar'))
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget('parent-001'))
     });
+
 
     // Make assertions
     sources.DOM.select('#parent-001').events('click').observe(ev => {
@@ -65,27 +128,29 @@ describe('DOMSource.events()', function () {
       done();
     });
 
-    sources.DOM.select(':root').observable.take(1).observe(function (root) {
+    sources.DOM.select(':root').elements.skip(1).take(1).observe(function (root) {
       const myElement = root.querySelector('.myelementclass');
       assert.notStrictEqual(myElement, null);
       assert.notStrictEqual(typeof myElement, 'undefined');
       assert.strictEqual(myElement.tagName, 'H3');
       assert.doesNotThrow(function () {
-        myElement.click();
+        setTimeout(() => myElement.click());
       });
     });
+    ;
   });
 
   it('should catch events using id of top element in DOM.select', function (done) {
     function app() {
       return {
-        DOM: most.just(h3('#myElementId', 'Foobar'))
+        DOM: most.of(h3('#myElementId', 'Foobar'))
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget('parent-002'))
     });
+
 
     // Make assertions
     sources.DOM.select('#myElementId').events('click').observe(ev => {
@@ -95,30 +160,32 @@ describe('DOMSource.events()', function () {
       done();
     });
 
-    sources.DOM.select(':root').observable.take(1)
+    sources.DOM.select(':root').elements.skip(1).take(1)
       .observe(function (root) {
         const myElement = root.querySelector('#myElementId');
         assert.notStrictEqual(myElement, null);
         assert.notStrictEqual(typeof myElement, 'undefined');
         assert.strictEqual(myElement.tagName, 'H3');
         assert.doesNotThrow(function () {
-          myElement.click();
+          setTimeout(() => myElement.click());
         });
       });
+    ;
   });
 
   it('should catch interaction events without prior select()', function (done) {
     function app() {
       return {
-        DOM: most.just(div('.parent', [
+        DOM: most.of(div('.parent', [
           h3('.myelementclass', 'Foobar')
         ]))
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
+
 
     // Make assertions
     sources.DOM.events('click').observe(ev => {
@@ -128,21 +195,22 @@ describe('DOMSource.events()', function () {
       done();
     });
 
-    sources.DOM.select(':root').observable.take(1).observe(function (root) {
+    sources.DOM.select(':root').elements.skip(1).take(1).observe(function (root) {
       const myElement = root.querySelector('.myelementclass');
       assert.notStrictEqual(myElement, null);
       assert.notStrictEqual(typeof myElement, 'undefined');
       assert.strictEqual(myElement.tagName, 'H3');
       assert.doesNotThrow(function () {
-        myElement.click();
+        setTimeout(() => myElement.click());
       });
     });
+    ;
   });
 
   it('should catch user events using DOM.select().select().events()', function (done) {
     function app() {
       return {
-        DOM: most.just(
+        DOM: most.of(
           h3('.top-most', [
             h2('.bar', 'Wrong'),
             div('.foo', [
@@ -153,9 +221,10 @@ describe('DOMSource.events()', function () {
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
+
 
     // Make assertions
     sources.DOM.select('.foo').select('.bar').events('click').observe(ev => {
@@ -165,7 +234,7 @@ describe('DOMSource.events()', function () {
       done();
     });
 
-    sources.DOM.select(':root').observable.take(1)
+    sources.DOM.select(':root').elements.skip(1).take(1)
       .observe(function (root) {
         const wrongElement = root.querySelector('.bar');
         const correctElement = root.querySelector('.foo .bar');
@@ -176,25 +245,27 @@ describe('DOMSource.events()', function () {
         assert.strictEqual(wrongElement.tagName, 'H2');
         assert.strictEqual(correctElement.tagName, 'H4');
         assert.doesNotThrow(function () {
-          wrongElement.click();
-          setTimeout(() => correctElement.click(), 5);
+          setTimeout(() => wrongElement.click());
+          setTimeout(() => correctElement.click(), 15);
         });
       });
+    ;
   });
 
   it('should catch events from many elements using DOM.select().events()', function (done) {
     function app() {
       return {
-        DOM: most.just(div('.parent', [
+        DOM: most.of(div('.parent', [
           h4('.clickable.first', 'First'),
           h4('.clickable.second', 'Second'),
         ]))
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
+
 
     // Make assertions
     sources.DOM.select('.clickable').events('click').take(1)
@@ -211,7 +282,7 @@ describe('DOMSource.events()', function () {
         done();
       });
 
-    sources.DOM.select(':root').observable.take(1)
+    sources.DOM.select(':root').elements.skip(1).take(1)
       .observe(function (root) {
         const firstElem = root.querySelector('.first');
         const secondElem = root.querySelector('.second');
@@ -220,24 +291,28 @@ describe('DOMSource.events()', function () {
         assert.notStrictEqual(secondElem, null);
         assert.notStrictEqual(typeof secondElem, 'undefined');
         assert.doesNotThrow(function () {
-          firstElem.click();
-          setTimeout(() => secondElem.click(), 1);
+          setTimeout(() => firstElem.click());
+          setTimeout(() => secondElem.click(), 5);
         });
       });
+    ;
   });
 
   it('should catch interaction events from future elements', function (done) {
     function app() {
       return {
-        DOM: most.just(h2('.blesh', 'Blesh'))
-            .concat(most.just(h3('.blish', 'Blish')).delay(100))
-            .concat(most.just(h4('.blosh', 'Blosh')).delay(100))
+        DOM: most.merge(
+          most.of(h2('.blesh', 'Blesh')),
+          most.of(h3('.blish', 'Blish')).delay(100),
+          most.of(h4('.blosh', 'Blosh')).delay(150)
+        )
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget('parent-002'))
     });
+
 
     // Make assertions
     sources.DOM.select('.blosh').events('click').observe(ev => {
@@ -247,7 +322,7 @@ describe('DOMSource.events()', function () {
       done();
     });
 
-    sources.DOM.select(':root').observable.skip(2).take(1)
+    sources.DOM.select(':root').elements.skip(3).take(1)
       .observe(function (root) {
         const myElement = root.querySelector('.blosh');
         assert.notStrictEqual(myElement, null);
@@ -255,15 +330,16 @@ describe('DOMSource.events()', function () {
         assert.strictEqual(myElement.tagName, 'H4');
         assert.strictEqual(myElement.textContent, 'Blosh');
         assert.doesNotThrow(function () {
-          myElement.click();
+          setTimeout(() => myElement.click());
         });
       });
+    ;
   });
 
   it('should have currentTarget or ownerTarget pointed to the selected parent', function (done) {
     function app() {
       return {
-        DOM: most.just(div('.top', [
+        DOM: most.of(div('.top', [
           h2('.parent', [
             span('.child', 'Hello world')
           ])
@@ -271,9 +347,10 @@ describe('DOMSource.events()', function () {
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
+
 
     sources.DOM.select('.parent').events('click').observe(ev => {
       assert.strictEqual(ev.type, 'click');
@@ -289,22 +366,23 @@ describe('DOMSource.events()', function () {
       done();
     });
     // Make assertions
-    sources.DOM.select(':root').observable.take(1).observe(function (root) {
+    sources.DOM.select(':root').elements.skip(1).take(1).observe(function (root) {
       const child = root.querySelector('.child');
       assert.notStrictEqual(child, null);
       assert.notStrictEqual(typeof child, 'undefined');
       assert.strictEqual(child.tagName, 'SPAN');
       assert.strictEqual(child.className, 'child');
       assert.doesNotThrow(function () {
-        child.click();
+        setTimeout(() => child.click());
       });
     });
+    ;
   });
 
   it('should catch a non-bubbling Form `reset` event', function (done) {
     function app() {
       return {
-        DOM: most.just(div('.parent', [
+        DOM: most.of(div('.parent', [
           form('.form', [
             input('.field', {type: 'text'})
           ])
@@ -312,27 +390,27 @@ describe('DOMSource.events()', function () {
       }
     }
 
-    const {sinks, sources} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
-    sources.DOM.select('.parent').events('reset').observe(ev => {
+    sources.DOM.select('.form').events('reset').observe(ev => {
       assert.strictEqual(ev.type, 'reset');
       assert.strictEqual(ev.target.tagName, 'FORM');
       assert.strictEqual(ev.target.className, 'form');
       done();
     });
 
-    sources.DOM.select(':root').observable.take(1).observe(root => {
+    sources.DOM.select(':root').elements.skip(1).take(1).observe(root => {
       const form = root.querySelector('.form');
-      form.reset();
+      setTimeout(() => form.reset());
     });
   });
 
   it('should catch a non-bubbling click event with useCapture', function (done) {
     function app() {
       return {
-        DOM: most.just(div('.parent', [
+        DOM: most.of(div('.parent', [
           div('.clickable', 'Hello')
         ]))
       }
@@ -351,7 +429,7 @@ describe('DOMSource.events()', function () {
       el.dispatchEvent(ev)
     }
 
-    const {sinks, sources} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
@@ -367,9 +445,9 @@ describe('DOMSource.events()', function () {
     sources.DOM.select('.clickable').events('click', {useCapture: false})
       .observe(assert.fail);
 
-    sources.DOM.select(':root').observable.take(1).observe(root => {
+    sources.DOM.select(':root').elements.skip(1).take(1).observe(root => {
       const clickable = root.querySelector('.clickable');
-      click(clickable);
+      setTimeout(() => click(clickable));
     });
   });
 
@@ -380,7 +458,7 @@ describe('DOMSource.events()', function () {
   it.skip('should catch a blur event with useCapture', function (done) {
     function app() {
       return {
-        DOM: most.just(div('.parent', [
+        DOM: most.of(div('.parent', [
           input('.correct', {type: 'text'}, []),
           input('.wrong', {type: 'text'}, []),
           input('.dummy', {type: 'text'})
@@ -388,7 +466,7 @@ describe('DOMSource.events()', function () {
       }
     }
 
-    const {sinks, sources} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
@@ -399,10 +477,7 @@ describe('DOMSource.events()', function () {
         done();
       });
 
-    sources.DOM.select('.wrong').events('blur', {useCapture: false})
-      .observe(assert.fail);
-
-    sources.DOM.select(':root').observable.take(1).observe(root => {
+    sources.DOM.select(':root').elements.skip(1).take(1).observe(root => {
       const correct = root.querySelector('.correct');
       const wrong = root.querySelector('.wrong');
       const dummy = root.querySelector('.dummy');
@@ -420,7 +495,7 @@ describe('DOMSource.events()', function () {
   it.skip('should catch a blur event by default (no options)', function (done) {
     function app() {
       return {
-        DOM: most.just(div('.parent', [
+        DOM: most.of(div('.parent', [
           input('.correct', {type: 'text'}, []),
           input('.wrong', {type: 'text'}, []),
           input('.dummy', {type: 'text'})
@@ -428,7 +503,7 @@ describe('DOMSource.events()', function () {
       }
     }
 
-    const {sinks, sources} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
@@ -439,10 +514,7 @@ describe('DOMSource.events()', function () {
         done();
       });
 
-    sources.DOM.select('.wrong').events('blur', {useCapture: false})
-      .observe(assert.fail);
-
-    sources.DOM.select(':root').observable.take(1).observe(root => {
+    sources.DOM.select(':root').elements.skip(1).take(1).observe(root => {
       const correct = root.querySelector('.correct');
       const wrong = root.querySelector('.wrong');
       const dummy = root.querySelector('.dummy');
@@ -450,6 +522,38 @@ describe('DOMSource.events()', function () {
       setTimeout(() => dummy.focus(), 100);
       setTimeout(() => correct.focus(), 150);
       setTimeout(() => dummy.focus(), 200);
+    });
+  });
+
+  it('should not simulate bubbling for non-bubbling events', done => {
+    function app() {
+      return {
+        DOM: most.of(div('.parent', [
+          form('.form', [
+            input('.field', {type: 'text'})
+          ])
+        ]))
+      }
+    }
+
+    const {sinks, sources, dispose} = Cycle.run(app, {
+      DOM: makeDOMDriver(createRenderTarget())
+    });
+
+    sources.DOM.select('.parent').events('reset').observe(ev => {
+      done(new Error('Reset event should not bubble to parent'));
+    });
+
+    sources.DOM.select('.form').events('reset').delay(200).observe(ev => {
+      assert.strictEqual(ev.type, 'reset');
+      assert.strictEqual(ev.target.tagName, 'FORM');
+      assert.strictEqual(ev.target.className, 'form');
+      done();
+    });
+
+    sources.DOM.select(':root').elements.skip(1).take(1).observe(root => {
+      const form = root.querySelector('.form');
+      setTimeout(() => form.reset());
     });
   });
 });

@@ -1,11 +1,11 @@
 'use strict';
 /* global describe, it */
 let assert = require('assert');
-let {run} = require('@motorcycle/core');
-let CycleDOM = require('../../src');
+let Cycle = require('@motorcycle/core').default;
+let CycleDOM = require('../../src/index');
 let Fixture89 = require('./fixtures/issue-89');
 let most = require('most');
-let {h, div, input, p, span, h2, h3, h4, select, option, makeDOMDriver} = CycleDOM;
+let {h, svg, div, input, p, span, h2, h3, h4, select, option, makeDOMDriver} = CycleDOM;
 
 function createRenderTarget(id = null) {
   let element = document.createElement('div');
@@ -21,7 +21,7 @@ describe('DOMSource.select()', function () {
   it('should have Observable `:root` in DOM source', function (done) {
     function app() {
       return {
-        DOM: most.just(
+        DOM: most.of(
           div('.top-most', [
             p('Foo'),
             span('Bar')
@@ -30,37 +30,41 @@ describe('DOMSource.select()', function () {
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
-    sources.DOM.select(':root').observable.take(1).observe(root => {
+
+    sources.DOM.select(':root').elements.skip(1).take(1).observe(root => {
       const classNameRegex = /top\-most/;
       assert.strictEqual(root.tagName, 'DIV');
       const child = root.children[0];
       assert.notStrictEqual(classNameRegex.exec(child.className), null);
       assert.strictEqual(classNameRegex.exec(child.className)[0], 'top-most');
-      dispose();
-      done();
+      setTimeout(() => {
+        dispose();
+        done();
+      })
     });
+    ;
   });
 
   it('should return an object with observable and events()', function (done) {
     function app() {
       return {
-        DOM: most.just(h3('.myelementclass', 'Foobar'))
+        DOM: most.of(h3('.myelementclass', 'Foobar'))
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
     // Make assertions
     const selection = sources.DOM.select('.myelementclass');
     assert.strictEqual(typeof selection, 'object');
-    assert.strictEqual(typeof selection.observable, 'object');
-    assert.strictEqual(typeof selection.observable.observe, 'function');
+    assert.strictEqual(typeof selection.elements, 'object');
+    assert.strictEqual(typeof selection.elements.observe, 'function');
     assert.strictEqual(typeof selection.events, 'function');
     dispose();
     done();
@@ -69,16 +73,17 @@ describe('DOMSource.select()', function () {
   it('should have an observable of DOM elements', function (done) {
     function app() {
       return {
-        DOM: most.just(h3('.myelementclass', 'Foobar'))
+        DOM: most.of(h3('.myelementclass', 'Foobar'))
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
+
     // Make assertions
-    sources.DOM.select('.myelementclass').observable.take(1)
+    sources.DOM.select('.myelementclass').elements.skip(1).take(1)
       .observe(elements => {
         assert.notStrictEqual(elements, null);
         assert.notStrictEqual(typeof elements, 'undefined');
@@ -88,15 +93,18 @@ describe('DOMSource.select()', function () {
         // Array with the H3 element
         assert.strictEqual(elements[0].tagName, 'H3');
         assert.strictEqual(elements[0].textContent, 'Foobar');
-        dispose();
-        done();
+        setTimeout(() => {
+          dispose();
+          done();
+        });
       });
+    ;
   });
 
   it('should not select element outside the given scope', function (done) {
     function app() {
       return {
-        DOM: most.just(
+        DOM: most.of(
           h3('.top-most', [
             h2('.bar', 'Wrong'),
             div('.foo', [
@@ -107,12 +115,13 @@ describe('DOMSource.select()', function () {
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
+
     // Make assertions
-    sources.DOM.select('.foo').select('.bar').observable.take(1)
+    sources.DOM.select('.foo').select('.bar').elements.skip(1).take(1)
       .observe(elements => {
         assert.strictEqual(elements.length, 1);
         const element = elements[0];
@@ -120,19 +129,22 @@ describe('DOMSource.select()', function () {
         assert.notStrictEqual(typeof element, 'undefined');
         assert.strictEqual(element.tagName, 'H4');
         assert.strictEqual(element.textContent, 'Correct');
-        dispose();
-        done();
+        setTimeout(() => {
+          dispose();
+          done();
+        });
       })
+    ;
   });
 
   it('should select svg element', function (done) {
     function app() {
       return {
-        DOM: most.just(
-          h('svg', {attrs: {width: 150, height: 150}}, [
-            h('polygon', {
-              class: {'triangle': true},
+        DOM: most.of(
+          svg({width: 150, height: 150}, [
+            svg.polygon({
               attrs: {
+                class: 'triangle',
                 points: '20 0 20 150 150 20'
               }
             }),
@@ -141,12 +153,12 @@ describe('DOMSource.select()', function () {
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
     // Make assertions
-    const selection = sources.DOM.select('.triangle').observable.take(1)
+    const selection = sources.DOM.select('.triangle').elements.skip(1).take(1)
       .observe(elements => {
         assert.strictEqual(elements.length, 1);
         const triangleElement = elements[0];
@@ -156,90 +168,4 @@ describe('DOMSource.select()', function () {
         done();
       });
   });
-
-  it('should allow DOM.select()ing its own root without classname or id', function(done) {
-    function app(sources) {
-      return {
-        DOM: most.just(
-          h3([
-            span([
-              h4('.bar', 'hello')
-            ])
-          ])
-        )
-      };
-    }
-
-    const {sinks, sources, dispose} = run(app, {
-      DOM: makeDOMDriver(createRenderTarget())
-    });
-
-    sources.DOM.select('h3').observable.take(1).observe(function (elements) {
-      assert.strictEqual(Array.isArray(elements), true);
-      assert.strictEqual(elements.length, 1);
-      const correctElement = elements[0];
-      assert.notStrictEqual(correctElement, null);
-      assert.notStrictEqual(typeof correctElement, 'undefined');
-      assert.strictEqual(correctElement.tagName, 'H3');
-      dispose();
-      done();
-    });
-  });
-
-  it('should allow DOM.select()ing all elements with `*`', function(done) {
-    function app(sources) {
-      return {
-        DOM: most.just(
-          h3('.top-most', [
-            span([
-              h4('.bar', 'hello')
-            ])
-          ])
-        )
-      };
-    }
-
-    const {sinks, sources, dispose} = run(app, {
-      DOM: makeDOMDriver(createRenderTarget())
-    });
-
-
-     sources.DOM.select('*').observable.take(1).observe(function (elements) {
-      assert.strictEqual(Array.isArray(elements), true);
-      assert.strictEqual(elements.length, 3);
-      dispose();
-      done();
-    });
-  });
-
- it('should select() isolated element with tag + class', function (done) {
-   function app() {
-     return {
-       DOM: most.just(
-         h3('.top-most', [
-           h2('.bar', 'Wrong'),
-           div([
-             h4('.bar', 'Correct')
-           ])
-         ])
-       )
-     };
-   };
-
-   const {sinks, sources, dispose} = run(app, {
-     DOM: makeDOMDriver(createRenderTarget())
-   });
-
-   // Make assertions
-   sources.DOM.select('h4.bar').observable.take(1).observe(elements => {
-     assert.strictEqual(elements.length, 1);
-     const correctElement = elements[0];
-     assert.notStrictEqual(correctElement, null);
-     assert.notStrictEqual(typeof correctElement, 'undefined');
-     assert.strictEqual(correctElement.tagName, 'H4');
-     assert.strictEqual(correctElement.textContent, 'Correct');
-     dispose();
-     done();
-   });
- });
 });

@@ -1,10 +1,11 @@
 'use strict';
 /* global describe, it */
 let assert = require('assert');
-let {run} = require('@motorcycle/core');
+let Cycle = require('@motorcycle/core').default;
+let CycleDOM = require('../../src/index');
 let Fixture89 = require('./fixtures/issue-89');
 let most = require('most');
-let {h, svg, div, input, p, span, h2, h3, h4, select, option, makeDOMDriver} = require('../../src');
+let {h, svg, div, input, p, span, h2, h3, h4, select, option, makeDOMDriver} = CycleDOM;
 
 function createRenderTarget(id = null) {
   let element = document.createElement('div');
@@ -43,28 +44,13 @@ describe('makeDOMDriver', function () {
   it('should not accept a selector to an unknown element as input', function () {
     assert.throws(function () {
       makeDOMDriver('#nonsenseIdToNothing');
-    }, /Given container is not a DOM element neither a selector string/);
+    }, /Cannot render into unknown element/);
   });
 
   it('should not accept a number as input', function () {
     assert.throws(function () {
       makeDOMDriver(123);
     }, /Given container is not a DOM element neither a selector string/);
-  });
-
-  it('should accept function as error callback', function () {
-    const element = document.createDocumentFragment();
-    const onError = function() {};
-    assert.doesNotThrow(function () {
-      makeDOMDriver(element, {onError});
-    });
-  });
-
-  it('should not accept number as error callback', function () {
-    const element = document.createDocumentFragment();
-    assert.throws(function () {
-      makeDOMDriver(element, {onError: 42});
-    });
   });
 });
 
@@ -73,41 +59,53 @@ describe('DOM Driver', function () {
     const domDriver = makeDOMDriver(createRenderTarget());
     assert.throws(function () {
       domDriver({});
-    }, /The DOM driver function expects as input an Observable of virtual/);
-  });
-
-  it('should pass errors to error callback', function (done) {
-    const error = new Error();
-    const errorCallback = function(e) {
-      assert.strictEqual(e, error);
-      done();
-    };
-
-    function app() {
-      return {
-        DOM: most.throwError(error)
-      };
-    }
-
-    run(app, {
-      DOM: makeDOMDriver(createRenderTarget(), {onError: errorCallback})
-    });
+    }, /The DOM driver function expects as input a Stream of virtual/);
   });
 
   it('should have isolateSource() and isolateSink() in source', function (done) {
     function app() {
       return {
-        DOM: most.just(div())
+        DOM: most.of(div())
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
-
     assert.strictEqual(typeof sources.DOM.isolateSource, 'function');
     assert.strictEqual(typeof sources.DOM.isolateSink, 'function');
     dispose();
     done();
+  });
+
+  it('should not work after has been disposed', function (done) {
+    const number$ = most.from([1, 2, 3])
+      .concatMap(x => most.of(x).delay(50));
+
+    function app() {
+      return {
+        DOM: number$.map(number =>
+            h3('.target', String(number))
+        )
+      };
+    }
+
+    const {sinks, sources, dispose} = Cycle.run(app, {
+      DOM: makeDOMDriver(createRenderTarget())
+    });
+
+    sources.DOM.select(':root').elements.skip(1).observe(function (root) {
+      const selectEl = root.querySelector('.target');
+      assert.notStrictEqual(selectEl, null);
+      assert.notStrictEqual(typeof selectEl, 'undefined');
+      assert.strictEqual(selectEl.tagName, 'H3');
+      assert.notStrictEqual(selectEl.textContent, '3');
+      if (selectEl.textContent === '2') {
+        dispose();
+        setTimeout(() => {
+          done();
+        }, 100);
+      }
+    });
   });
 });

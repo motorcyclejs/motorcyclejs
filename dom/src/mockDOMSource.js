@@ -1,47 +1,42 @@
-import most from 'most'
+import {empty} from 'most'
 
-const emptyStream = most.empty()
+export class MockedDOMSource {
+  constructor (_mockConfig) {
+    this._mockConfig = _mockConfig
+    if (_mockConfig['elements']) {
+      this.elements = _mockConfig['elements']
+    } else {
+      this.elements = empty()
+    }
+  }
 
-function getEventsStreamForSelector(mockedEventTypes) {
-  return function getEventsStream(eventType) {
-    for (const key in mockedEventTypes) {
-      if (mockedEventTypes.hasOwnProperty(key) && key === eventType) {
-        return mockedEventTypes[key]
+  events (eventType) {
+    const mockConfig = this._mockConfig
+    const keys = Object.keys(mockConfig)
+    const keysLen = keys.length
+    for (let i = 0; i < keysLen; i++) {
+      const key = keys[i]
+      if (key === eventType) {
+        return mockConfig[key]
       }
     }
-    return emptyStream
+    return empty()
   }
-}
 
-function makeMockSelector(mockedSelectors) {
-  return function select(selector) {
-    for (const key in mockedSelectors) {
-      if (mockedSelectors.hasOwnProperty(key) && key === selector) {
-        let observable = emptyStream
-        if (mockedSelectors[key].hasOwnProperty(`observable`)) {
-          observable = mockedSelectors[key].observable
-        }
-        return {
-          observable,
-          select: makeMockSelector(mockedSelectors[key]),
-          events: getEventsStreamForSelector(mockedSelectors[key]),
-        }
+  select (selector) {
+    const mockConfig = this._mockConfig
+    const keys = Object.keys(mockConfig)
+    const keysLen = keys.length
+    for (let i = 0; i < keysLen; i++) {
+      const key = keys[i]
+      if (key === selector) {
+        return new MockedDOMSource(mockConfig[key])
       }
     }
-    return {
-      observable: emptyStream,
-      select: makeMockSelector(mockedSelectors),
-      events: () => emptyStream,
-    }
+    return new MockedDOMSource({})
   }
 }
 
-function mockDOMSource(mockedSelectors = {}) {
-  return {
-    observable: emptyStream,
-    select: makeMockSelector(mockedSelectors),
-    events: () => emptyStream,
-  }
+export function mockDOMSource (mockConfig) {
+  return new MockedDOMSource(mockConfig)
 }
-
-export {mockDOMSource}
