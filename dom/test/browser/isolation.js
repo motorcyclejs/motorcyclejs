@@ -1,8 +1,9 @@
 'use strict';
 /* global describe, it, beforeEach */
 let assert = require('assert');
-let {run} = require('@motorcycle/core');
-let CycleDOM = require('../../src');
+let Cycle = require('@motorcycle/core').default;
+let CycleDOM = require('../../src/index');
+let isolate = require('@cycle/isolate');
 let most = require('most');
 let {h, svg, div, p, span, h2, h3, h4, hJSX, select, option, makeDOMDriver} = CycleDOM;
 
@@ -20,10 +21,10 @@ describe('isolateSource', function () {
   it('should have the same effect as DOM.select()', function (done) {
     function app() {
       return {
-        DOM: most.just(
+        DOM: most.of(
           h3('.top-most', [
             h2('.bar', 'Wrong'),
-            div('.cycle-scope-foo', [
+            div({isolate: '$$CYCLEDOM$$-foo'}, [
               h4('.bar', 'Correct')
             ])
           ])
@@ -31,35 +32,39 @@ describe('isolateSource', function () {
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
+
+    debugger
     const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'foo');
 
     // Make assertions
-    isolatedDOMSource.select('.bar').observable.take(1).observe(elements => {
+    isolatedDOMSource.select('.bar').elements.skip(1).take(1).observe(elements => {
       assert.strictEqual(elements.length, 1);
       const correctElement = elements[0];
       assert.notStrictEqual(correctElement, null);
       assert.notStrictEqual(typeof correctElement, 'undefined');
       assert.strictEqual(correctElement.tagName, 'H4');
       assert.strictEqual(correctElement.textContent, 'Correct');
-      dispose();
-      done();
+      setTimeout(() => {
+        dispose();
+        done();
+      })
     });
+    ;
   });
 
   it('should return source also with isolateSource and isolateSink', function (done) {
     function app() {
       return {
-        DOM: most.just(h('h3.top-most'))
+        DOM: most.of(h('h3.top-most'))
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
-
     const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'top-most');
     // Make assertions
     assert.strictEqual(typeof isolatedDOMSource.isolateSource, 'function');
@@ -70,90 +75,63 @@ describe('isolateSource', function () {
 });
 
 describe('isolateSink', function () {
-  it('should add a className to the vtree sink', function (done) {
+  it('should add an isolate field to the vtree sink', function (done) {
     function app(sources) {
-      const vtree$ = most.just(h3('.top-most'));
+      const vtree$ = most.of(h3('.top-most'));
       return {
         DOM: sources.DOM.isolateSink(vtree$, 'foo'),
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
+
     // Make assertions
-    sources.DOM.select(':root').observable.take(1)
-      .observe(function (root) {
-        const element = root.querySelector('.top-most');
-        assert.notStrictEqual(element, null);
-        assert.notStrictEqual(typeof element, 'undefined');
-        assert.strictEqual(element.tagName, 'H3');
-        assert.strictEqual(element.className, 'top-most cycle-scope-foo');
+    sinks.DOM.take(1).observe(function (vtree) {
+      assert.strictEqual(vtree.sel, 'h3.top-most');
+      assert.strictEqual(vtree.data.isolate, '$$CYCLEDOM$$-foo');
+      setTimeout(() => {
         dispose();
         done();
-      });
-  });
-
-  it('should add a className to a vtree sink that had no className', function (done) {
-    function app(sources) {
-      const vtree$ = most.just(h3({}, []));
-      return {
-        DOM: sources.DOM.isolateSink(vtree$, 'foo'),
-      };
-    }
-
-    const {sinks, sources, dispose} = run(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      })
     });
 
-    // Make assertions
-    sources.DOM.select(':root').observable.take(1)
-      .observe(function (root) {
-        const element = root.querySelector('h3');
-        assert.notStrictEqual(element, null);
-        assert.notStrictEqual(typeof element, 'undefined');
-        assert.strictEqual(element.tagName, 'H3');
-        assert.strictEqual(element.className, 'cycle-scope-foo');
-        dispose();
-        done();
-      });
   });
+
 
   it('should not redundantly repeat the scope className', function (done) {
     function app(sources) {
-      const vtree1$ = most.just(span('.tab1', 'Hi'));
-      const vtree2$ = most.just(span('.tab2', 'Hello'));
+      const vtree1$ = most.of(span('.tab1', 'Hi'));
+      const vtree2$ = most.of(span('.tab2', 'Hello'));
       const first$ = sources.DOM.isolateSink(vtree1$, '1');
       const second$ = sources.DOM.isolateSink(vtree2$, '2');
-      const switched$ = most.just(1).delay(50)
-          .concat(most.just(2).delay(50))
-          .concat(most.just(1).delay(50))
-          .concat(most.just(2).delay(50))
-          .concat(most.just(1).delay(50))
-          .concat(most.just(1).delay(50))
-          .concat(most.just(2).delay(50))
-          .map(i => i === 1 ? first$ : second$).join();
+      const switched$ = most.merge(
+        most.of(1).delay(50),
+        most.of(2).delay(60),
+        most.of(1).delay(70),
+        most.of(2).delay(80),
+        most.of(1).delay(90),
+        most.of(2).delay(100)
+      ).map(i => i === 1 ? first$ : second$).switch();
       return {
         DOM: switched$
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
 
+
     // Make assertions
-    sources.DOM.select(':root').observable.skip(4).take(1)
-      .observe(function (root) {
-        const element = root.querySelector('span');
-        assert.notStrictEqual(element, null);
-        assert.notStrictEqual(typeof element, 'undefined');
-        assert.strictEqual(element.tagName, 'SPAN');
-        assert.strictEqual(element.className, 'tab1 cycle-scope-1');
-        dispose();
-        done();
-      });
+    sinks.DOM.skip(2).take(1).observe(function (vtree) {
+      assert.strictEqual(vtree.sel, 'span.tab1');
+      assert.strictEqual(vtree.data.isolate, '$$CYCLEDOM$$-1');
+      dispose();
+      done();
+    });
   });
 });
 
@@ -161,9 +139,9 @@ describe('isolation', function () {
   it('should prevent parent from DOM.selecting() inside the isolation', function (done) {
     function app(sources) {
       return {
-        DOM: most.just(
+        DOM: most.of(
           h3('.top-most', [
-            sources.DOM.isolateSink(most.just(
+            sources.DOM.isolateSink(most.of(
               div('.foo', [
                 h4('.bar', 'Wrong')
               ])
@@ -174,11 +152,11 @@ describe('isolation', function () {
       };
     }
 
-    const {sinks, sources} = run(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+    const {sinks, sources, dispose} = Cycle.run(app, {
+      DOM: makeDOMDriver(createRenderTarget(), {transposition: true})
     });
 
-    sources.DOM.select('.bar').observable.take(1).observe(function (elements) {
+    sources.DOM.select('.bar').elements.skip(1).take(1).observe(function (elements) {
       assert.strictEqual(Array.isArray(elements), true);
       assert.strictEqual(elements.length, 1);
       const correctElement = elements[0];
@@ -194,14 +172,14 @@ describe('isolation', function () {
     function app(sources) {
       const {isolateSource, isolateSink} = sources.DOM;
       const islandElement$ = isolateSource(sources.DOM, 'island')
-        .select('.bar').observable;
+        .select('.bar').elements;
       const islandVTree$ = isolateSink(
-        most.just(div([h3('.bar', 'Correct')])), 'island'
+        most.of(div([h3('.bar', 'Correct')])), 'island'
       );
       return {
-        DOM: most.just(
+        DOM: most.of(
           h3('.top-most', [
-            sources.DOM.isolateSink(most.just(
+            sources.DOM.isolateSink(most.of(
               div('.foo', [
                 islandVTree$,
                 h4('.bar', 'Wrong')
@@ -213,11 +191,11 @@ describe('isolation', function () {
       };
     }
 
-    const {sinks, sources} = run(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+    const {sinks, sources, dispose} = Cycle.run(app, {
+      DOM: makeDOMDriver(createRenderTarget(), {transposition: true})
     });
 
-    sinks.island.take(1).observe(function (elements) {
+    sinks.island.skip(1).take(1).observe(function (elements) {
       assert.strictEqual(Array.isArray(elements), true);
       assert.strictEqual(elements.length, 1);
       const correctElement = elements[0];
@@ -227,12 +205,13 @@ describe('isolation', function () {
       assert.strictEqual(correctElement.textContent, 'Correct');
       done();
     });
+
   });
 
   it('should isolate DOM.select between parent and (wrapper) child', function (done) {
     function Frame(sources) {
       const click$ = sources.DOM.select('.foo').events('click');
-      const vtree$ = most.just(
+      const vtree$ = most.of(
         h4('.foo.frame', {style: {backgroundColor: 'lightblue'}}, [
           sources.content$
         ])
@@ -249,7 +228,7 @@ describe('isolation', function () {
       const islandDOMSource = isolateSource(sources.DOM, 'island');
       const click$ = islandDOMSource.select('.foo').events('click');
       const islandDOMSink$ = isolateSink(
-        most.just(span('.foo.monalisa', 'Monalisa')),
+        most.of(span('.foo.monalisa', 'Monalisa')),
         'island'
       );
 
@@ -264,9 +243,10 @@ describe('isolation', function () {
       };
     }
 
-    const {sources, sinks, dispose} = run(Monalisa, {
-      DOM: makeDOMDriver(createRenderTarget())
+    const {sources, sinks, dispose} = Cycle.run(Monalisa, {
+      DOM: makeDOMDriver(createRenderTarget(), {transposition: true})
     });
+
 
     const frameClick$ = sinks.frameClick.map(ev => ({
       type: ev.type,
@@ -279,38 +259,37 @@ describe('isolation', function () {
     }));
 
     // Stop the propagtion of the first click
-    sinks.monalisaClick.take(1).observe(ev => ev.stopPropagation());
+    sinks.monalisaClick.skip(1).take(1).observe(ev => ev.stopPropagation());
 
-    const actual = [];
-    const expected = [
-      {type: 'click', tagName: 'SPAN'},
-      {type: 'click', tagName: 'H4'},
-    ];
     // The frame should be notified about 2 clicks:
     //  1. the second click on monalisa (whose propagation has not stopped)
     //  2. the only click on the frame itself
-    frameClick$.take(2).observe(value => {
-      actual.push(value)
-    }).then(() => {
-      assert.deepEqual(actual, expected)
-      dispose();
-      done();
-    }).catch(done.fail);
-
-    const monalisaActual = [];
-    const monalisaExpected = [
+    const expected = [
       {type: 'click', tagName: 'SPAN'},
-      {type: 'click', tagName: 'SPAN'},
-    ];
+      {type: 'click', tagName: 'H4'},
+    ]
+    frameClick$.take(2).observe(event => {
+      let e = expected.shift()
+      assert.strictEqual(event.type, e.type)
+      assert.strictEqual(event.tagName, e.tagName);
+      if (expected.length === 0) {
+        dispose();
+        done();
+      }
+    });
 
     // Monalisa should receive two clicks
-    monalisaClick$.take(2).observe(value => {
-      monalisaActual.push(value);
-    }).then(() => {
-      assert.deepEqual(monalisaActual, monalisaExpected);
-    }).catch(done.fail);
+    const otherExpected = [
+      {type: 'click', tagName: 'SPAN'},
+      {type: 'click', tagName: 'SPAN'},
+    ]
+    monalisaClick$.take(2).observe(event => {
+      let e = otherExpected.shift();
+      assert.strictEqual(event.type, e.type);
+      assert.strictEqual(event.tagName, e.tagName);
+    });
 
-    sources.DOM.select(':root').observable.take(1).observe(root => {
+    sources.DOM.select(':root').elements.skip(1).take(1).observe(root => {
       const frameFoo = root.querySelector('.foo.frame');
       const monalisaFoo = root.querySelector('.foo.monalisa');
       assert.notStrictEqual(frameFoo, null);
@@ -320,19 +299,20 @@ describe('isolation', function () {
       assert.strictEqual(frameFoo.tagName, 'H4');
       assert.strictEqual(monalisaFoo.tagName, 'SPAN');
       assert.doesNotThrow(() => {
-        monalisaFoo.click();
-        monalisaFoo.click();
+        setTimeout(() => monalisaFoo.click());
+        setTimeout(() => monalisaFoo.click());
         setTimeout(() => frameFoo.click(), 0);
       });
     });
+    ;
   });
 
   it('should allow a child component to DOM.select() its own root', function (done) {
     function app(sources) {
       return {
-        DOM: most.just(
+        DOM: most.of(
           h3('.top-most', [
-            sources.DOM.isolateSink(most.just(
+            sources.DOM.isolateSink(most.of(
               span('.foo', [
                 h4('.bar', 'Wrong')
               ])
@@ -342,15 +322,15 @@ describe('isolation', function () {
       };
     }
 
-    const {sinks, sources} = run(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+    const {sinks, sources, dispose} = Cycle.run(app, {
+      DOM: makeDOMDriver(createRenderTarget(), {transposition: true})
     });
 
     const {isolateSource} = sources.DOM;
 
     isolateSource(sources.DOM, 'ISOLATION')
-      .select('.foo').observable
-      .take(1)
+      .select('.foo').elements
+      .skip(1).take(1)
       .observe(function (elements) {
         assert.strictEqual(Array.isArray(elements), true);
         assert.strictEqual(elements.length, 1);
@@ -358,61 +338,66 @@ describe('isolation', function () {
         assert.notStrictEqual(correctElement, null);
         assert.notStrictEqual(typeof correctElement, 'undefined');
         assert.strictEqual(correctElement.tagName, 'SPAN');
-        done();
+        setTimeout(() => {
+          dispose();
+          done();
+        })
       });
+    ;
   });
 
   it('should allow DOM.selecting svg elements', function (done) {
-   function App(sources) {
-     const triangleElement$ = sources.DOM.select('.triangle').observable;
+    function App(sources) {
+      const triangleElement$ = sources.DOM.select('.triangle').elements;
 
-     const svgTriangle = h('svg', {attrs: {width: 150, height: 150}}, [
-       h('polygon', {
-         attrs: {
-           class: 'triangle',
-           points: '20 0 20 150 150 20'
-         }
-       }),
-     ]);
+      const svgTriangle = svg({width: 150, height: 150}, [
+        svg.polygon({
+          attrs: {
+            class: 'triangle',
+            points: '20 0 20 150 150 20'
+          }
+        }),
+      ]);
 
-     return {
-       DOM: most.just(svgTriangle),
-       triangleElement: triangleElement$
-     };
-   }
+      return {
+        DOM: most.of(svgTriangle),
+        triangleElement: triangleElement$
+      };
+    }
 
-   function IsolatedApp(sources) {
-     const {isolateSource, isolateSink} = sources.DOM
-     const isolatedDOMSource = isolateSource(sources.DOM, 'ISOLATION');
-     const app = App({DOM: isolatedDOMSource});
-     const isolateDOMSink = isolateSink(app.DOM, 'ISOLATION');
-     return {
-       DOM: isolateDOMSink,
-       triangleElement: app.triangleElement
-     };
-   }
+    function IsolatedApp(sources) {
+      const {isolateSource, isolateSink} = sources.DOM
+      const isolatedDOMSource = isolateSource(sources.DOM, 'ISOLATION');
+      const app = App({DOM: isolatedDOMSource});
+      const isolateDOMSink = isolateSink(app.DOM, 'ISOLATION');
+      return {
+        DOM: isolateDOMSink,
+        triangleElement: app.triangleElement
+      };
+    }
 
-   const {sinks, sources} = run(IsolatedApp, {
-     DOM: makeDOMDriver(createRenderTarget())
-   });
+    const {sinks, sources, dispose} = Cycle.run(IsolatedApp, {
+      DOM: makeDOMDriver(createRenderTarget())
+    });
 
-   // Make assertions
-   const selection = sinks.triangleElement.observe(elements => {
-     assert.strictEqual(elements.length, 1);
-     const triangleElement = elements[0];
-     assert.notStrictEqual(triangleElement, null);
-     assert.notStrictEqual(typeof triangleElement, 'undefined');
-     assert.strictEqual(triangleElement.tagName, 'polygon');
-     done();
-   });
- });
+    // Make assertions
+    const selection = sinks.triangleElement.skip(1).take(1).observe(elements => {
+      assert.strictEqual(elements.length, 1);
+      const triangleElement = elements[0];
+      assert.notStrictEqual(triangleElement, null);
+      assert.notStrictEqual(typeof triangleElement, 'undefined');
+      assert.strictEqual(triangleElement.tagName, 'polygon');
+      done();
+    });
+    ;
+  });
 
   it('should allow DOM.select()ing its own root without classname or id', function(done) {
     function app(sources) {
       return {
-        DOM: most.just(
+        DOM: most.of(
           h3('.top-most', [
-            sources.DOM.isolateSink(most.just(
+            sources.DOM.isolateSink(most.of(
               span([
                 h4('.bar', 'Wrong')
               ])
@@ -422,15 +407,15 @@ describe('isolation', function () {
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+    const {sinks, sources, dispose} = Cycle.run(app, {
+      DOM: makeDOMDriver(createRenderTarget(), {transposition: true})
     });
 
     const {isolateSource} = sources.DOM;
 
     isolateSource(sources.DOM, 'ISOLATION')
-      .select('span').observable
-      .take(1)
+      .select('span').elements
+      .skip(1).take(1)
       .observe(function (elements) {
         assert.strictEqual(Array.isArray(elements), true);
         assert.strictEqual(elements.length, 1);
@@ -438,17 +423,18 @@ describe('isolation', function () {
         assert.notStrictEqual(correctElement, null);
         assert.notStrictEqual(typeof correctElement, 'undefined');
         assert.strictEqual(correctElement.tagName, 'SPAN');
-        dispose();
         done();
       });
+
+    ;
   });
 
   it('should allow DOM.select()ing all elements with `*`', function(done) {
     function app(sources) {
       return {
-        DOM: most.just(
+        DOM: most.of(
           h3('.top-most', [
-            sources.DOM.isolateSink(most.just(
+            sources.DOM.isolateSink(most.of(
               span([
                 div([
                   h4('.foo', 'hello'),
@@ -461,30 +447,31 @@ describe('isolation', function () {
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+    const {sinks, sources, dispose} = Cycle.run(app, {
+      DOM: makeDOMDriver(createRenderTarget(), {transposition: true})
     });
 
     const {isolateSource} = sources.DOM;
 
     isolateSource(sources.DOM, 'ISOLATION')
-    .select('*').observable
-    .take(1)
-    .observe(function (elements) {
-      assert.strictEqual(Array.isArray(elements), true);
-      assert.strictEqual(elements.length, 4);
-      dispose();
-      done();
-    });
+      .select('*').elements
+      .skip(1).take(1)
+      .observe(function (elements) {
+        assert.strictEqual(Array.isArray(elements), true);
+        assert.strictEqual(elements.length, 4);
+        done();
+      });
+
+    ;
   });
 
   it('should select() isolated element with tag + class', function (done) {
     function app() {
       return {
-        DOM: most.just(
+        DOM: most.of(
           h3('.top-most', [
             h2('.bar', 'Wrong'),
-            div('.cycle-scope-foo', [
+            div({isolate: '$$CYCLEDOM$$-foo'}, [
               h4('.bar', 'Correct')
             ])
           ])
@@ -492,21 +479,233 @@ describe('isolation', function () {
       };
     }
 
-    const {sinks, sources, dispose} = run(app, {
+    const {sinks, sources, dispose} = Cycle.run(app, {
       DOM: makeDOMDriver(createRenderTarget())
     });
     const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'foo');
 
     // Make assertions
-    isolatedDOMSource.select('h4.bar').observable.take(1).observe(elements => {
+    isolatedDOMSource.select('h4.bar').elements.skip(1).take(1).observe(elements => {
       assert.strictEqual(elements.length, 1);
       const correctElement = elements[0];
       assert.notStrictEqual(correctElement, null);
       assert.notStrictEqual(typeof correctElement, 'undefined');
       assert.strictEqual(correctElement.tagName, 'H4');
       assert.strictEqual(correctElement.textContent, 'Correct');
-      dispose();
       done();
     });
+    ;
   });
+
+  it('should process bubbling events from inner to outer component', function (done) {
+    function app() {
+      return {
+        DOM: most.of(
+          h3('.top-most', [
+            h2('.bar', 'Wrong'),
+            div({isolate: '$$CYCLEDOM$$-foo'}, [
+              h4('.bar', 'Correct')
+            ])
+          ])
+        )
+      };
+    }
+
+    const {sinks, sources, dispose} = Cycle.run(app, {
+      DOM: makeDOMDriver(createRenderTarget())
+    });
+
+    const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'foo');
+
+    let called = false
+
+    sources.DOM.select('.top-most').events('click').observe(ev => {
+      assert.strictEqual(called, true)
+      dispose();
+      done();
+    })
+
+    isolatedDOMSource.select('h4.bar').events('click').observe(ev => {
+      assert.strictEqual(called, false)
+      called = true
+    })
+
+    // Make assertions
+    isolatedDOMSource.select('h4.bar').elements.skip(1).take(1).observe(elements => {
+      assert.strictEqual(elements.length, 1);
+      const correctElement = elements[0];
+      assert.notStrictEqual(correctElement, null);
+      assert.notStrictEqual(typeof correctElement, 'undefined');
+      assert.strictEqual(correctElement.tagName, 'H4');
+      assert.strictEqual(correctElement.textContent, 'Correct');
+      setTimeout(() => {
+        correctElement.click();
+      });
+    });
+    ;
+  });
+
+  it('should stop bubbling the event if the currentTarget was removed', function (done) {
+    function main(sources) {
+      const childExistence$ = sources.DOM.isolateSource(sources.DOM, 'foo')
+        .select('h4.bar').events('click')
+        .map(() => false)
+        .startWith(true);
+
+      return {
+        DOM: childExistence$.map(exists =>
+          div([
+            div('.top-most', {isolate: '$$CYCLEDOM$$-top'}, [
+              h2('.bar', 'Wrong'),
+              exists ? div({isolate: '$$CYCLEDOM$$-foo'}, [
+                h4('.bar', 'Correct')
+              ]) : null
+            ])
+          ])
+        )
+      };
+    }
+
+    const {sinks, sources, dispose} = Cycle.run(main, {
+      DOM: makeDOMDriver(createRenderTarget())
+    });
+
+    const topDOMSource = sources.DOM.isolateSource(sources.DOM, 'top');
+    const fooDOMSource = sources.DOM.isolateSource(sources.DOM, 'foo');
+
+    let parentEventHandlerCalled = false;
+
+    topDOMSource.select('.bar').events('click').observe(ev => {
+      parentEventHandlerCalled = true;
+      done('this should not be called');
+    })
+
+    // Make assertions
+    fooDOMSource.select('.bar').elements.skip(1).take(1).observe(elements => {
+      assert.strictEqual(elements.length, 1);
+      const correctElement = elements[0];
+      assert.notStrictEqual(correctElement, null);
+      assert.notStrictEqual(typeof correctElement, 'undefined');
+      assert.strictEqual(correctElement.tagName, 'H4');
+      assert.strictEqual(correctElement.textContent, 'Correct');
+      setTimeout(() => {
+        correctElement.click();
+        setTimeout(() => {
+          assert.strictEqual(parentEventHandlerCalled, false);
+          dispose();
+          done();
+        }, 150);
+      });
+    });
+    ;
+  });
+
+  it('should handle a higher-order graph when events() are observed', done => {
+    let errorHappened = false;
+    let clickDetected = false;
+
+    function Child(sources) {
+      return {
+        DOM: sources.DOM.select('.foo').events('click')
+          .tap(() => {
+            clickDetected = true;
+          })
+          .recoverWith((e) => {
+            errorHappened = true;
+            most.throwError(e)
+          })
+          .map(() => 1)
+          .startWith(0)
+          .map(num =>
+            div('.container', [
+              h3('.foo', 'Child foo')
+            ])
+          )
+      };
+    }
+
+    function main(sources) {
+      const first = isolate(Child, 'first')(sources);
+      first.DOM = first.DOM.multicast()
+      const second = isolate(Child, 'second')(sources);
+      second.DOM = second.DOM.multicast()
+      const oneChild = [first];
+      const twoChildren = [first, second];
+      const vnode$ = most.periodic(50, 1).skip(1).take(1).startWith(-1)
+        .map(i => i === -1 ? oneChild : twoChildren)
+        .map(children =>
+          most.combine(
+            (...childVNodes) => div('.parent', childVNodes),
+            ...children.map(child => child.DOM)
+          )
+        ).switch();
+      return {
+        DOM: vnode$
+      };
+    }
+
+    const {sinks, sources, dispose} = Cycle.run(main, {
+      DOM: makeDOMDriver(createRenderTarget())
+    });
+
+
+    sources.DOM.select(':root').elements.skip(2).take(1).observe(function (root) {
+      const parentEl = root.querySelector('.parent');
+      const foo = parentEl.querySelectorAll('.foo')[1];
+      assert.notStrictEqual(parentEl, null);
+      assert.notStrictEqual(typeof parentEl, 'undefined');
+      assert.notStrictEqual(foo, null);
+      assert.notStrictEqual(typeof foo, 'undefined');
+      assert.strictEqual(parentEl.tagName, 'DIV');
+      setTimeout(() => {
+        assert.strictEqual(errorHappened, false);
+        foo.click();
+        setTimeout(() => {
+          assert.strictEqual(clickDetected, true);
+          dispose();
+          done();
+        }, 50);
+      }, 100);
+    });
+    ;
+  });
+
+  it('should handle events when child is removed and re-added', done => {
+    let clicksCount = 0;
+
+    function Child(sources) {
+      sources.DOM.select('.foo').events('click')
+        .observe(() => clicksCount++)
+      return {
+        DOM: most.of(div('.foo', ['This is foo']))
+      };
+    }
+
+    function main(sources) {
+      const child = isolate(Child)(sources);
+      // make child.DOM be inserted, removed, and inserted again
+      const innerDOM$ = most.periodic(50, 1).scan((x, y) => x + y, 0).take(4)
+        .map(x => x === 1 ? most.of(div()) : child.DOM).switch()
+      return {
+        DOM: innerDOM$
+      };
+    }
+
+    const {sinks, sources, dispose} = Cycle.run(main, {
+      DOM: makeDOMDriver(createRenderTarget(), {transposition: true})
+    });
+
+
+    sources.DOM.select(':root').elements.observe(function (root) {
+      const foo = root.querySelector('.foo');
+      if (!foo) return
+      foo.click();
+    });
+    setTimeout(function(){
+      assert.strictEqual(clicksCount, 2)
+      dispose()
+      done()
+    }, 300)
+    ;
+  })
 });
