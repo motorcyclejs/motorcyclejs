@@ -1,3 +1,14 @@
+# v2.0.1 (2016-06-14)
+
+
+## Bug Fixes
+
+- **DOMSource:** fix typo in dispose
+  ([c39dad99](https://github.com/motorcyclejs/dom/commits/c39dad99bc06c147e63cb2398d870f473aa4b899))
+- **isolate:** fix isolate import in tests
+  ([90505a71](https://github.com/motorcyclejs/dom/commits/90505a71e7ea06a6cefcd7310c546b0dc7db4588))
+
+
 # v2.0.0 (2016-05-17)
 
 
