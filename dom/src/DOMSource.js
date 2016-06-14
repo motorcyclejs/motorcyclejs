@@ -123,7 +123,7 @@ export class DOMSource {
   }
 
   dispose () {
-    this.isolateModule.reset()
+    this._isolateModule.reset()
   }
 
   isolateSource (source, scope) {

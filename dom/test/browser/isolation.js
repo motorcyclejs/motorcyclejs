@@ -3,7 +3,7 @@
 let assert = require('assert');
 let Cycle = require('@motorcycle/core').default;
 let CycleDOM = require('../../src/index');
-let isolate = require('@cycle/isolate');
+let isolate = require('@cycle/isolate').default;
 let most = require('most');
 let {h, svg, div, p, span, h2, h3, h4, hJSX, select, option, makeDOMDriver} = CycleDOM;
 
