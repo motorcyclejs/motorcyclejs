@@ -57,7 +57,7 @@
     "snabbdom-to-html": "^2.1.3"
   },
   "devDependencies": {
-    "@cycle/isolate": "^1.2.1",
+    "@cycle/isolate": "^1.3.3",
     "@most/eslint-config-most": "^1.0.2",
     "@motorcycle/core": "^1.3.0",
     "assert": "^1.3.0",
