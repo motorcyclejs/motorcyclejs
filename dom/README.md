@@ -57,12 +57,13 @@ makeDOMDriver(document.querySelector('#app'))
 
 /* with modules */
 /* these are the default modules used */
-makeDOMDriver('#app', [
-  require(`snabbdom/modules/class`),
-  require(`snabbdom/modules/props`),
-  require(`snabbdom/modules/attributes`),
-  require(`snabbdom/modules/style`),
-])
+makeDOMDriver('#app', {
+  modules: [
+    require(`snabbdom/modules/class`),
+    require(`snabbdom/modules/props`),
+    require(`snabbdom/modules/attributes`),
+    require(`snabbdom/modules/style`)
+})
 ```
 
 ### snabbdom - h() / thunk()
