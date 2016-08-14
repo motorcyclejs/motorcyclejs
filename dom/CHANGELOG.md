@@ -1,172 +1,178 @@
-# v2.0.1 (2016-06-14)
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/motorcyclejs/dom/compare/v2.0.1...v3.0.0) (2016-08-14)
 
 
-## Bug Fixes
+### Features
 
-- **DOMSource:** fix typo in dispose
-  ([c39dad99](https://github.com/motorcyclejs/dom/commits/c39dad99bc06c147e63cb2398d870f473aa4b899))
-- **isolate:** fix isolate import in tests
-  ([90505a71](https://github.com/motorcyclejs/dom/commits/90505a71e7ea06a6cefcd7310c546b0dc7db4588))
+* **dom:** rewrite in TypeScript ([baa2588](https://github.com/motorcyclejs/dom/commit/baa2588))
 
 
-# v2.0.0 (2016-05-17)
+### BREAKING CHANGES
+
+* dom:   before: DOMSource.elements -> Stream<HTMLElement | HTMLElement[]>
+
+  after: DOMSource.elements() -> Stream<HTMLElement | HTMLElement[]>
 
 
-# v1.4.0 (2016-03-30)
+
+<a name="2.0.1"></a>
+## [2.0.1](https://github.com/motorcyclejs/dom/compare/v2.0.0...v2.0.1) (2016-06-14)
 
 
-## Bug Fixes
+### Bug Fixes
 
-- dataset module has not yet been publised to npm
-  ([07e4b47c](https://github.com/motorcyclejs/dom/commits/07e4b47cc999013c7a6f5cb0a2448e5a396ded6f))
-- **issue-89:** hopefully help fix fiddly test
-  ([2eb6afbf](https://github.com/motorcyclejs/dom/commits/2eb6afbf1c149339c720499502d3b343d3371ee9))
+* **DOMSource:** fix typo in dispose ([c39dad9](https://github.com/motorcyclejs/dom/commit/c39dad9))
+* **isolate:** fix isolate import in tests ([90505a7](https://github.com/motorcyclejs/dom/commit/90505a7))
 
 
-## Features
 
-- **mockDOMSource:** update to allow for multiple .select()s
-  ([9a47a30f](https://github.com/motorcyclejs/dom/commits/9a47a30ffb01eeb49af912a23b94780bb6ed876e))
-- **modules:** remove local version of modules in favor of fixed snabbdom versions
-  ([c1864b22](https://github.com/motorcyclejs/dom/commits/c1864b22ff7737a8fd0af9373f4ff5a8a111c903))
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/motorcyclejs/dom/compare/v1.4.0...v2.0.0) (2016-05-17)
 
 
-# v1.3.0 (2016-03-15)
+### Reverts
+
+* **release:** undo poorly done release ([29a8e9c](https://github.com/motorcyclejs/dom/commit/29a8e9c))
+* **release:** undo poorly done release v2 ([e857fb0](https://github.com/motorcyclejs/dom/commit/e857fb0))
 
 
-## Features
 
-- add new event types that don't bubble
-  ([e62092e3](https://github.com/motorcyclejs/dom/commits/e62092e3e9598f62ed6ff986224e5e112834b9cd))
-- **makeDOMDriver:** add option to specify your own error handling function
-  ([80717f8b](https://github.com/motorcyclejs/dom/commits/80717f8bf903cde9f170bf0a4b373abfe6e6478f))
+<a name="1.4.0"></a>
+# [1.4.0](https://github.com/motorcyclejs/dom/compare/v1.3.0...v1.4.0) (2016-03-30)
 
 
-# v1.2.1 (2016-02-23)
+### Bug Fixes
+
+* dataset module has not yet been publised to npm ([07e4b47](https://github.com/motorcyclejs/dom/commit/07e4b47))
+* **issue-89:** hopefully help fix fiddly test ([2eb6afb](https://github.com/motorcyclejs/dom/commit/2eb6afb))
 
 
-## Bug Fixes
+### Features
 
-- **select:** adjust select() semantics to match more css selectors properly
-  ([362cab6c](https://github.com/motorcyclejs/dom/commits/362cab6ca6f255e6ae693fabbd12fcf9becc7a0d))
-
-
-# v1.2.0 (2016-02-19)
+* **mockDOMSource:** update to allow for multiple .select()s ([9a47a30](https://github.com/motorcyclejs/dom/commit/9a47a30))
+* **modules:** remove local version of modules in favor of fixed snabbdom versions ([c1864b2](https://github.com/motorcyclejs/dom/commit/c1864b2))
 
 
-## Bug Fixes
 
-- fix all failing tests of new test suite
-  ([7107cb8f](https://github.com/motorcyclejs/dom/commits/7107cb8f19109f000ff428a5a1acbe3ddfd59a01))
-
-
-# v1.1.0 (2016-02-07)
+<a name="1.3.0"></a>
+# [1.3.0](https://github.com/motorcyclejs/dom/compare/v1.2.1...v1.3.0) (2016-03-15)
 
 
-## Features
+### Features
 
-- update event-delegation model
-  ([2543bea4](https://github.com/motorcyclejs/dom/commits/2543bea4dff32165b3211064c6cf53e5b340eb5d),
-   [#68]([object Object]/68))
-- **events:** use @most/dom-event instead of local fromEvent
-  ([daec57db](https://github.com/motorcyclejs/dom/commits/daec57db5f3561eccc5cf569117fa59f855939b5),
-   [#69]([object Object]/69))
+* add new event types that don't bubble ([e62092e](https://github.com/motorcyclejs/dom/commit/e62092e))
+* **makeDOMDriver:** add option to specify your own error handling function ([80717f8](https://github.com/motorcyclejs/dom/commit/80717f8))
 
 
-# v1.0.3 (2015-12-30)
+
+<a name="1.2.1"></a>
+## [1.2.1](https://github.com/motorcyclejs/dom/compare/v1.2.0...v1.2.1) (2016-02-23)
 
 
-# v1.0.2 (2015-12-30)
+### Bug Fixes
+
+* **select:** adjust select() semantics to match more css selectors properly ([362cab6](https://github.com/motorcyclejs/dom/commit/362cab6)), closes [#80](https://github.com/motorcyclejs/dom/issues/80)
 
 
-## Bug Fixes
 
-- polyfill raf for snabbom
-  ([eb17a5db](https://github.com/motorcyclejs/dom/commits/eb17a5dbd07573f5c0ad849518c6c0588396a4dd))
-
-
-# v1.0.1 (2015-12-30)
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/motorcyclejs/dom/compare/v1.1.0...v1.2.0) (2016-02-19)
 
 
-# v1.0.0 (2015-12-30)
+### Bug Fixes
+
+* fix all failing tests of new test suite ([7107cb8](https://github.com/motorcyclejs/dom/commit/7107cb8))
 
 
-## Bug Fixes
 
-- fix makeDomDriver import
-    ([1f6347c4](https://github.com/motorcyclejs/dom/commits/1f6347c4e0a98fb2f9c11bbd3a1a167b0c4ffae6))
-- remove unneeded test
-    ([aef055dd](https://github.com/motorcyclejs/dom/commits/aef055ddc7217db30f1ab8675fa3110e39975689))
-- rename `sink.type` to `sink.event`
-    ([34d9705e](https://github.com/motorcyclejs/dom/commits/34d9705e7a85684c830223d5f0fe4d5e82b425ea))
-- **events:** use standard event.target
-  ([5c8b2313](https://github.com/motorcyclejs/dom/commits/5c8b231356389a11f002bef08f17e2026d60cf78))
-- **isolate:** update isolation semantics
-  ([08b69f0f](https://github.com/motorcyclejs/dom/commits/08b69f0f7ff174709fbe71f7acc6adc24cc7031d))
-- **select:** fix isolateSource and isolateSink
-  ([06bb35d2](https://github.com/motorcyclejs/dom/commits/06bb35d21a6808af0dbceb433057844282891ca7))
-- **test:**
-    - fix usage errors
-    ([45372050](https://github.com/motorcyclejs/dom/commits/453720500f0de1854364a3b70bac209be9efe7b6))
-    - remove unused sinon import
-    ([7a349332](https://github.com/motorcyclejs/dom/commits/7a3493327fc9d3a5f88036207b165f9188bf3b7f))
-- **thunks:** check for data.vnode
-  ([21e5f572](https://github.com/motorcyclejs/dom/commits/21e5f5726182994f7bfb403dad423779f6ee6d93))
-- **vTreeParser:** ignore previous child observable's value
-  ([b788e889](https://github.com/motorcyclejs/dom/commits/b788e88913b76d4dff810cbcfbd2115f5d816dfd),
-   [#46]([object Object]/46))
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/motorcyclejs/dom/compare/v1.0.3...v1.1.0) (2016-02-07)
 
 
-## Features
+### Features
 
-- **dom-driver:** reuse event listeners
-  ([1a939735](https://github.com/motorcyclejs/dom/commits/1a9397357672d81fa7b295b3e2cf072ea9a534f8))
-- **events:**
-    - avoid recreating the same eventListener
-    ([56cad782](https://github.com/motorcyclejs/dom/commits/56cad782233ca839f7a07bb6418efef73afcc6e9))
-    - Switch to event delegation
-    ([4c9ff0ff](https://github.com/motorcyclejs/dom/commits/4c9ff0ffdb32f688a1f74eab11c8267826d3b153))
-- **fromEvent:** handle single DOM Nodes
-  ([a8bd6fa4](https://github.com/motorcyclejs/dom/commits/a8bd6fa4faa79b5345f9a47882574f05d07d9bc9))
-- **isolate:** add multicast
-  ([db6c6f49](https://github.com/motorcyclejs/dom/commits/db6c6f49db39f27fc2fc041afed90fc76f82f830))
-- **makeDOMDriver:**
-    - throw error if modules is not an array
-    ([11f2e35b](https://github.com/motorcyclejs/dom/commits/11f2e35bcbcdb0102fef28faeea4cae18d0004ae))
-    - switch to options object
-    ([33fc153f](https://github.com/motorcyclejs/dom/commits/33fc153faac90552b7e56ea3407d7278cd9000dd),
-     [#57]([object Object]/57))
-    - pass a stream of the rootElem to makeElementSelector
-    ([17cb9d94](https://github.com/motorcyclejs/dom/commits/17cb9d943e1762ec56281af9c5127986c75a7519))
-- **select:**
-    - use event delegation
-    ([770541ed](https://github.com/motorcyclejs/dom/commits/770541ed9a2c8085c003727bae62692cd635fad3))
-    - rewrite DOM.select with snabbdom-selector
-    ([8b231e41](https://github.com/motorcyclejs/dom/commits/8b231e4136a5a426d4741288c0a49bdd8d64a4bb))
-- **thunk:** export thunk by default
-  ([2e43834c](https://github.com/motorcyclejs/dom/commits/2e43834cfb0f20608de27d200a6f485872d5eb56))
-- **vTreeParser:** Add support for a static vTree option
-  ([89e2ba1c](https://github.com/motorcyclejs/dom/commits/89e2ba1cf059a48e6c3984b5de71f48a9e5bbfb9),
-   [#59]([object Object]/59))
-- **wrapVnode:** wrap top-evel vnode
-  ([dbbca443](https://github.com/motorcyclejs/dom/commits/dbbca4435f0fd2867b5d5ea01e76b6d4e9894cbf),
-   [#8]([object Object]/8))
+* update event-delegation model ([2543bea](https://github.com/motorcyclejs/dom/commit/2543bea)), closes [#68](https://github.com/motorcyclejs/dom/issues/68)
+* **events:** use [@most](https://github.com/most)/dom-event instead of local fromEvent ([daec57d](https://github.com/motorcyclejs/dom/commit/daec57d)), closes [#69](https://github.com/motorcyclejs/dom/issues/69)
 
 
-## Breaking Changes
 
-- due to [b30c209a](https://github.com/motorcyclejs/dom/commits/b30c209aef43e8fcc01e267990663034d571f69d),
- 
+<a name="1.0.3"></a>
+## [1.0.3](https://github.com/motorcyclejs/dom/compare/v1.0.2...v1.0.3) (2015-12-30)
 
-  before:
+
+
+<a name="1.0.2"></a>
+## [1.0.2](https://github.com/motorcyclejs/dom/compare/v1.0.1...v1.0.2) (2015-12-30)
+
+
+### Bug Fixes
+
+* polyfill raf for snabbom ([eb17a5d](https://github.com/motorcyclejs/dom/commit/eb17a5d))
+
+
+
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/motorcyclejs/dom/compare/v1.0.0...v1.0.1) (2015-12-30)
+
+
+
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/motorcyclejs/dom/compare/v0.7.0...v1.0.0) (2015-12-30)
+
+
+### Bug Fixes
+
+* fix makeDomDriver import ([1f6347c](https://github.com/motorcyclejs/dom/commit/1f6347c))
+* remove unneeded test ([aef055d](https://github.com/motorcyclejs/dom/commit/aef055d))
+* rename `sink.type` to `sink.event` ([34d9705](https://github.com/motorcyclejs/dom/commit/34d9705))
+* **events:** use standard event.target ([5c8b231](https://github.com/motorcyclejs/dom/commit/5c8b231))
+* **isolate:** update isolation semantics ([08b69f0](https://github.com/motorcyclejs/dom/commit/08b69f0))
+* **select:** fix isolateSource and isolateSink ([06bb35d](https://github.com/motorcyclejs/dom/commit/06bb35d))
+* **test:** fix usage errors ([4537205](https://github.com/motorcyclejs/dom/commit/4537205))
+* **test:** remove unused sinon import ([7a34933](https://github.com/motorcyclejs/dom/commit/7a34933))
+* **thunks:** check for data.vnode ([21e5f57](https://github.com/motorcyclejs/dom/commit/21e5f57))
+* **vTreeParser:** ignore previous child observable's value ([b788e88](https://github.com/motorcyclejs/dom/commit/b788e88)), closes [#46](https://github.com/motorcyclejs/dom/issues/46)
+
+
+### Code Refactoring
+
+* change `makeDomDriver` to `makeDOMDriver` ([b30c209](https://github.com/motorcyclejs/dom/commit/b30c209)), closes [#51](https://github.com/motorcyclejs/dom/issues/51)
+
+
+### Features
+
+* **dom-driver:** reuse event listeners ([1a93973](https://github.com/motorcyclejs/dom/commit/1a93973))
+* **events:** avoid recreating the same eventListener ([56cad78](https://github.com/motorcyclejs/dom/commit/56cad78))
+* **events:** Switch to event delegation ([4c9ff0f](https://github.com/motorcyclejs/dom/commit/4c9ff0f))
+* **fromEvent:** handle single DOM Nodes ([a8bd6fa](https://github.com/motorcyclejs/dom/commit/a8bd6fa))
+* **isolate:** add multicast ([db6c6f4](https://github.com/motorcyclejs/dom/commit/db6c6f4))
+* **makeDOMDriver:** pass a stream of the rootElem to makeElementSelector ([17cb9d9](https://github.com/motorcyclejs/dom/commit/17cb9d9))
+* **makeDOMDriver:** switch to options object ([33fc153](https://github.com/motorcyclejs/dom/commit/33fc153)), closes [#57](https://github.com/motorcyclejs/dom/issues/57)
+* **makeDOMDriver:** throw error if modules is not an array ([11f2e35](https://github.com/motorcyclejs/dom/commit/11f2e35))
+* **select:** rewrite DOM.select with snabbdom-selector ([8b231e4](https://github.com/motorcyclejs/dom/commit/8b231e4))
+* **select:** use event delegation ([770541e](https://github.com/motorcyclejs/dom/commit/770541e))
+* **thunk:** export thunk by default ([2e43834](https://github.com/motorcyclejs/dom/commit/2e43834))
+* **vTreeParser:** Add support for a static vTree option ([89e2ba1](https://github.com/motorcyclejs/dom/commit/89e2ba1)), closes [#59](https://github.com/motorcyclejs/dom/issues/59)
+* **wrapVnode:** wrap top-evel vnode ([dbbca44](https://github.com/motorcyclejs/dom/commit/dbbca44)), closes [#8](https://github.com/motorcyclejs/dom/issues/8)
+
+
+### BREAKING CHANGES
+
+*   before:
     import {makeDomDriver} from '@motorcycle/dom'
 
   after:
     import {makeDOMDriver} from '@motorcyce/core'
+* wrapVnode:   Before:
+    Patching: h('h1', {}, 'Hello')
+    to: <div id='example'></div>
+    rendered: <h1>Hello</h1>
 
-- **select:** due to [8b231e41](https://github.com/motorcyclejs/dom/commits/8b231e4136a5a426d4741288c0a49bdd8d64a4bb),
- 
-  Before:
+  After:
+   Patching: h('h1', {}, 'Hello')
+   to: <div id='example'></div>
+   renders: <div id='example><h1>Hello</h1></div>
+* select:   Before:
     DOM.select(selector) used document.querySelector() under the hood
     for ease of use and for it's substanstially more robust css selector
     engine.
@@ -177,53 +183,120 @@
 
 References #4
 
-- **wrapVnode:** due to [dbbca443](https://github.com/motorcyclejs/dom/commits/dbbca4435f0fd2867b5d5ea01e76b6d4e9894cbf),
- 
-
-  Before:
-    Patching: h('h1', {}, 'Hello')
-    to: <div id='example'></div>
-    rendered: <h1>Hello</h1>
-
-  After:
-   Patching: h('h1', {}, 'Hello')
-   to: <div id='example'></div>
-   renders: <div id='example><h1>Hello</h1></div>
-
-Closes #8
 
 
-
-# v0.7.0 (2015-12-11)
-
-
-## Bug Fixes
-
-- **isolate:** fix adding of rendundant className
-  ([e78e90f4](https://github.com/motorcyclejs/dom/commits/e78e90f482b13d4e038f0b4f38946a79d7faa837))
-- **node:** Fix importing on node
-  ([a843791b](https://github.com/motorcyclejs/dom/commits/a843791b6dcde4474ddb556b7944428e5706c5ec),
-   [#21](https://github.com/motorcyclejs/dom/issues/21))
-- **rootElem$:** revert rootElem$ to previous behavior
-  ([09704ce3](https://github.com/motorcyclejs/dom/commits/09704ce31ee2fd6c38ebedfc61aa5a0fbd37f151))
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/motorcyclejs/dom/compare/v0.6.1...v0.7.0) (2015-12-11)
 
 
-## Features
+### Bug Fixes
 
-- use new fromEvent() semantics
-    ([99be9d2c](https://github.com/motorcyclejs/dom/commits/99be9d2cb628fd10baa67f9836ca7df0bbaecbc1),
-     [#17](https://github.com/motorcyclejs/dom/issues/17))
-- assume NodeList
-    ([503652d7](https://github.com/motorcyclejs/dom/commits/503652d71d75d813da4be48e4a45cd64cd84cc9e),
-     [#17](https://github.com/motorcyclejs/dom/issues/17))
-- **fromEvent:** add check for NodeList
-  ([08012333](https://github.com/motorcyclejs/dom/commits/08012333697f0479d2e8ad56d0ff94198ca011e7))
+* **isolate:** fix adding of rendundant className ([e78e90f](https://github.com/motorcyclejs/dom/commit/e78e90f))
+* **node:** Fix importing on node ([a843791](https://github.com/motorcyclejs/dom/commit/a843791)), closes [#21](https://github.com/motorcyclejs/dom/issues/21)
+* **rootElem$:** revert rootElem$ to previous behavior ([09704ce](https://github.com/motorcyclejs/dom/commit/09704ce))
 
 
-## Performance Improvements
+### Features
 
-- Remove Array.prototype.slice.call
-  ([31ad84fc](https://github.com/motorcyclejs/dom/commits/31ad84fccb88ddb0c49b058360b3c3572f25935a))
-- **isolate:** remove unneeded .trim()
-  ([2f31c857](https://github.com/motorcyclejs/dom/commits/2f31c857c36d856fa94cdbb2b20e9756f7a1c585))
+* assume NodeList ([503652d](https://github.com/motorcyclejs/dom/commit/503652d)), closes [#17](https://github.com/motorcyclejs/dom/issues/17)
+* use new fromEvent() semantics ([99be9d2](https://github.com/motorcyclejs/dom/commit/99be9d2)), closes [#17](https://github.com/motorcyclejs/dom/issues/17)
+* **fromEvent:** add check for NodeList ([0801233](https://github.com/motorcyclejs/dom/commit/0801233))
+
+
+### Performance Improvements
+
+* Remove Array.prototype.slice.call ([31ad84f](https://github.com/motorcyclejs/dom/commit/31ad84f))
+* **isolate:** remove unneeded .trim() ([2f31c85](https://github.com/motorcyclejs/dom/commit/2f31c85))
+
+
+
+<a name="0.6.1"></a>
+## [0.6.1](https://github.com/motorcyclejs/dom/compare/v0.6.0...v0.6.1) (2015-11-22)
+
+
+
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/motorcyclejs/dom/compare/v0.5.2...v0.6.0) (2015-11-22)
+
+
+
+<a name="0.5.2"></a>
+## [0.5.2](https://github.com/motorcyclejs/dom/compare/v0.5.1...v0.5.2) (2015-11-20)
+
+
+
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/motorcyclejs/dom/compare/v0.5.0...v0.5.1) (2015-11-20)
+
+
+### Features
+
+* **auto-scope:** Implement auto-scoping ([6d5d9cd](https://github.com/motorcyclejs/dom/commit/6d5d9cd))
+
+
+
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/motorcyclejs/dom/compare/v0.4.1...v0.5.0) (2015-11-16)
+
+
+
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/motorcyclejs/dom/compare/v0.4.0...v0.4.1) (2015-11-14)
+
+
+
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/motorcyclejs/dom/compare/v0.3.2...v0.4.0) (2015-11-13)
+
+
+
+<a name="0.3.2"></a>
+## [0.3.2](https://github.com/motorcyclejs/dom/compare/v0.3.1...v0.3.2) (2015-11-11)
+
+
+
+<a name="0.3.1"></a>
+## [0.3.1](https://github.com/motorcyclejs/dom/compare/v0.3.0...v0.3.1) (2015-11-11)
+
+
+
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/motorcyclejs/dom/compare/v0.2.0...v0.3.0) (2015-11-11)
+
+
+
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/motorcyclejs/dom/compare/v0.1.5...v0.2.0) (2015-11-11)
+
+
+
+<a name="0.1.5"></a>
+## [0.1.5](https://github.com/motorcyclejs/dom/compare/v0.1.4...v0.1.5) (2015-11-10)
+
+
+
+<a name="0.1.4"></a>
+## [0.1.4](https://github.com/motorcyclejs/dom/compare/v0.1.3...v0.1.4) (2015-11-10)
+
+
+
+<a name="0.1.3"></a>
+## [0.1.3](https://github.com/motorcyclejs/dom/compare/v0.1.2...v0.1.3) (2015-11-09)
+
+
+
+<a name="0.1.2"></a>
+## [0.1.2](https://github.com/motorcyclejs/dom/compare/v0.1.1...v0.1.2) (2015-11-09)
+
+
+
+<a name="0.1.1"></a>
+## [0.1.1](https://github.com/motorcyclejs/dom/compare/v0.1.0...v0.1.1) (2015-11-09)
+
+
+
+<a name="0.1.0"></a>
+# 0.1.0 (2015-11-01)
+
+
 
