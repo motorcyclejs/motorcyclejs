@@ -77,7 +77,6 @@
     "@types/node": "^6.0.33",
     "assert": "^1.4.1",
     "browserify": "^13.1.0",
-    "buba": "^2.0.1",
     "commitizen": "^2.8.5",
     "conventional-changelog-cli": "^1.2.0",
     "cz-conventional-changelog": "^1.1.7",
@@ -89,7 +88,7 @@
     "ts-node": "^1.2.2",
     "tsify": "^1.0.3",
     "tslint": "^3.14.0-dev.1",
-    "typescript": "^2.1.0-dev.20160813",
+    "typescript": "^2.1.0-dev.20160814",
     "uglify-js": "^2.7.0",
     "validate-commit-msg": "^2.6.1"
   }
