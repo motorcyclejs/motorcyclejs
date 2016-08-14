@@ -16,7 +16,7 @@
     "test-node": "mocha test/node/*.ts --require ts-node/register",
     "test-browser": "browserify test/browser/index.ts -p tsify > test/browser/tests-bundle.js && testem && rm test/browser/tests-bundle.js",
     "test-browser-ci": "browserify test/browser/index.ts -p tsify > test/browser/tests-bundle.js && testem ci && rm test/browser/tests-bundle.js",
-    "test": "npm run lint && npm run test-node && npm run test-browser",
+    "test": "npm run lint && npm run test-node && npm run test-browser-ci",
     "test-ci": "npm run lint && npm run test-node && npm run test-browser-ci",
     "test-perf-dbmon": "browserify perf/dbmon/main.ts -p tsify > perf/dbmon/tests-bundle.js && testem -f perf/dbmon/.testem.json && rm perf/dbmon/tests-bundle.js",
     "preversion": "npm run build",
