@@ -19,9 +19,11 @@
     "test": "npm run lint && npm run test-node && npm run test-browser",
     "test-ci": "npm run lint && npm run test-node && npm run test-browser-ci",
     "test-perf-dbmon": "browserify perf/dbmon/main.ts -p tsify > perf/dbmon/tests-bundle.js && testem -f perf/dbmon/.testem.json && rm perf/dbmon/tests-bundle.js",
-    "release-patch": "npm run build && np patch && npm run changelog",
-    "release-minor": "npm run build && np minor && npm run changelog",
-    "release-major": "npm run build && np major && npm run changelog"
+    "preversion": "npm run build",
+    "postpublish": "npm run changelog",
+    "release-patch": "np patch",
+    "release-minor": "np minor",
+    "release-major": "np major"
   },
   "repository": {
     "type": "git",
