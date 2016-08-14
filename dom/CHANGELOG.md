@@ -227,4 +227,3 @@ Closes #8
 - **isolate:** remove unneeded .trim()
   ([2f31c857](https://github.com/motorcyclejs/dom/commits/2f31c857c36d856fa94cdbb2b20e9756f7a1c585))
 
-

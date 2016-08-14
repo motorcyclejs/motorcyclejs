@@ -1,13 +1,11 @@
 {
   "framework": "mocha",
   "src_files": [
-    "test/index.js"
+    "src/**/*"
   ],
-  "before_tests": "browserify test/browser/index.js -t babelify -o test/bundle.js",
   "serve_files": [
-    "test/bundle.js"
+    "test/browser/tests-bundle.js"
   ],
-  "after_tests": "rm test/bundle.js",
   "launch_in_ci": [
     "firefox"
   ],

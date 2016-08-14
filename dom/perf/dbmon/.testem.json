@@ -1,6 +1,4 @@
 {
-  "before_tests": "browserify perf/dbmon/main.js -t babelify -o perf/dbmon/tests-bundle.js",
   "test_page": "perf/dbmon/index.html",
-  "after_tests": "rm perf/dbmon/tests-bundle.js",
   "launch_in_dev": ["chrome"]
 }

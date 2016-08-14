@@ -19,7 +19,7 @@ Basic usage
 ```js
 
 import most from 'most'
-import {run} from '@motorcycle/core'
+import {run} from '@cycle/most-run'
 import {makeDOMDriver, h} from '@motorcycle/dom'
 
 function main(sources) {
