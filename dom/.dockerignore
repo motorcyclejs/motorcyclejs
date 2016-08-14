@@ -1,4 +1,3 @@
 lib/
 *.log
 tests-bundle.js
-node_modules

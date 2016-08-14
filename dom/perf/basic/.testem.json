@@ -1,6 +1,0 @@
-{
-  "before_tests": "browserify perf/basic/main.js -t babelify -o perf/basic/tests-bundle.js",
-  "test_page": "perf/basic/index.html",
-  "after_tests": "rm perf/basic/tests-bundle.js",
-  "launch_in_dev": ["chrome"]
-}

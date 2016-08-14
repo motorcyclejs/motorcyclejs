@@ -1,0 +1,6 @@
+{ 
+  "jsxPragma": "h",
+  "plugins": [
+    "jsx-factory"
+  ]
+}
