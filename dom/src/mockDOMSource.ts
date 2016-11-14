@@ -1,4 +1,5 @@
 import { VNode } from './interfaces'
+import { DOMSource } from './DOMSource';
 import { Stream, empty } from 'most'
 import { EventsFnOptions } from './DOMSource';
 
@@ -8,7 +9,7 @@ export interface MockConfig {
 
 const SCOPE_PREFIX = '___'
 
-export class MockedDOMSource {
+export class MockedDOMSource implements DOMSource {
   private _elements: any
 
   constructor(private _mockConfig: MockConfig) {

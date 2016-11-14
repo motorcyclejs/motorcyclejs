@@ -3,7 +3,7 @@ import { VNode, Module } from './interfaces'
 const init: (modules: Module[]) => (oldVNode: VNode, vNode: VNode) => VNode = require('snabbdom').init
 import { Stream } from 'most'
 import hold from '@most/hold'
-import { DOMSource } from './DOMSource'
+import { MainDOMSource } from './MainDOMSource'
 import { VNodeWrapper } from './VNodeWrapper'
 import { getElement } from './util'
 import defaultModules from './modules';
@@ -45,6 +45,6 @@ export function makeDOMDriver(container: string | HTMLElement, options?: DOMDriv
       .catch((err: Error) => console.error(err))
       .then(() => 'DOM Driver vnode$ has terminated')
 
-    return new DOMSource(rootElement$, [], isolateModule, delegators);
+    return new MainDOMSource(rootElement$, [], isolateModule, delegators);
   }
 }
