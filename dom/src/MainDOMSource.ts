@@ -116,7 +116,7 @@ export class MainDOMSource implements DOMSource {
     const childNamespace = trimmedSelector === `:root`
       ? this._namespace
       : this._namespace.concat(trimmedSelector)
-    return new DOMSource(
+    return new MainDOMSource(
       this._rootElement$,
       childNamespace,
       this._isolateModule,

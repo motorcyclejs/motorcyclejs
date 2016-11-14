@@ -292,7 +292,7 @@ describe('isolation', function () {
         assert.strictEqual((event as any).type, e.type);
         assert.strictEqual((event as any).tagName, e.tagName);
       } else {
-        assert.fail()
+        done(new Error());
       }
       if (expected.length === 0) {
         dispose();
@@ -312,7 +312,7 @@ describe('isolation', function () {
         assert.strictEqual((event as any).type, e.type);
         assert.strictEqual((event as any).tagName, e.tagName);
       } else {
-        assert.fail()
+        done(new Error());
       }
     });
 

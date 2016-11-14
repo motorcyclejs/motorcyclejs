@@ -3,6 +3,7 @@ import { VNode, Module } from './interfaces'
 const init: (modules: Module[]) => (oldVNode: VNode, vNode: VNode) => VNode = require('snabbdom').init
 import { Stream } from 'most'
 import hold from '@most/hold'
+import { DOMSource } from './DOMSource';
 import { MainDOMSource } from './MainDOMSource'
 import { VNodeWrapper } from './VNodeWrapper'
 import { getElement } from './util'
