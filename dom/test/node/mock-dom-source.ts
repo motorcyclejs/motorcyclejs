@@ -76,7 +76,7 @@ describe('mockDOMSource', function () {
       }
     });
     userEvents.select('.impossible').events('scroll')
-      .subscribe({next: assert.fail, error: assert.fail, complete: done});
+      .subscribe({next: done, error: done, complete: done});
   });
 
   it('should return empty Observable for select().elements and none is defined', function (done) {

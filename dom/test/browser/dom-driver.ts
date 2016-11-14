@@ -39,13 +39,6 @@ describe('makeDOMDriver', function () {
 });
 
 describe('DOM Driver', function () {
-  it('should throw if input is not an Observable<VTree>', function () {
-    const domDriver = makeDOMDriver(createRenderTarget());
-    assert.throws(function () {
-      domDriver({});
-    }, /The DOM driver function expects as input a Stream of virtual/);
-  });
-
   it('should have isolateSource() and isolateSink() in source', function (done) {
     function app() {
       return {
