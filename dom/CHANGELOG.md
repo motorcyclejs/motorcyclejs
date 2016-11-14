@@ -1,3 +1,19 @@
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/motorcyclejs/dom/compare/v3.0.0...v3.1.0) (2016-11-14)
+
+
+### Bug Fixes
+
+* **dom:** fix errors around most.js Stream instances ([1a2ae9d](https://github.com/motorcyclejs/dom/commit/1a2ae9d))
+* **DOM:** fix for failing tests ([b32fe5e](https://github.com/motorcyclejs/dom/commit/b32fe5e))
+
+
+### Features
+
+* **DOMSource:** have interface for DOMSource for other sources to implement ([8a428f2](https://github.com/motorcyclejs/dom/commit/8a428f2))
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/motorcyclejs/dom/compare/v2.0.1...v3.0.0) (2016-08-14)
 
