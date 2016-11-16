@@ -1,18 +1,7 @@
 import { Subject } from 'most-subject'
 import { ScopeChecker } from './ScopeChecker'
 import { IsolateModule } from './modules/isolate'
-import { getScope, getSelectors } from './util'
-
-interface MatchesSelector {
-  (element: Element, selector: string): boolean
-}
-let matchesSelector: MatchesSelector
-declare var require: any
-try {
-  matchesSelector = require(`matches-selector`)
-} catch (e) {
-  matchesSelector = <MatchesSelector> Function.prototype
-}
+import { getScope, getSelectors, matchesSelector } from './util'
 
 let gDestinationId: number = 0
 
