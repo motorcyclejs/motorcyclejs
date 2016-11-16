@@ -73,7 +73,7 @@ describe('DOM Driver', function () {
     });
 
     let dispose: Function;
-    sources.DOM.select(':root').elements().skip(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(1).observe(function ([root]: HTMLElement[]) {
       const selectEl = root.querySelector('.target');
       assert.notStrictEqual(selectEl, null);
       assert.notStrictEqual(typeof selectEl, 'undefined');

@@ -51,7 +51,7 @@ describe('DOM Rendering', function () {
     });
 
     let dispose: any;
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       const selectEl = root.querySelector('.my-class');
       assert.notStrictEqual(selectEl, null);
       assert.notStrictEqual(typeof selectEl, 'undefined');
@@ -84,7 +84,7 @@ describe('DOM Rendering', function () {
 
     const element$ = sources.DOM.select(':root').elements();
 
-    element$.skip(1).observe(function (root: HTMLElement) {
+    element$.skip(1).observe(function ([root]: HTMLElement[]) {
       assert.strictEqual(firstSubscriberRan, false);
       firstSubscriberRan = true;
       const header = root.querySelector('.value-over-time');
@@ -94,7 +94,7 @@ describe('DOM Rendering', function () {
     });
 
     setTimeout(() => {
-      element$.observe(function (root: HTMLElement) {
+      element$.observe(function ([root]: HTMLElement[]) {
         assert.strictEqual(secondSubscriberRan, false);
         secondSubscriberRan = true;
         const header = root.querySelector('.value-over-time');
@@ -133,7 +133,7 @@ describe('DOM Rendering', function () {
 
     let dispose: any;
     // Assert it
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       const selectEl = root.querySelector('h4');
       assert.notStrictEqual(selectEl, null);
       assert.notStrictEqual(typeof selectEl, 'undefined');
@@ -172,7 +172,7 @@ describe('DOM Rendering', function () {
     let dispose: any;
 
     // Make assertions
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       const embeddedHTML = root.querySelector('p.embedded-text');
 
       assert.strictEqual(embeddedHTML.namespaceURI, 'http://www.w3.org/1999/xhtml');
@@ -217,7 +217,7 @@ describe('DOM Rendering', function () {
 
     let dispose: any;
     // Assert it
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       assert.strictEqual(root.querySelector('div.parent').childNodes.length, 2);
       assert.strictEqual(root.querySelector('h4.child3').childNodes.length, 2);
       assert.strictEqual(root.querySelector('div.grandchild32').childNodes.length, 1);
@@ -239,7 +239,7 @@ describe('DOM Rendering', function () {
     });
 
     let dispose: any;
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       const divEl = root.querySelector('.my-class');
       assert.strictEqual(divEl.textContent, '0');
       setTimeout(() => {

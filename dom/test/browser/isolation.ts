@@ -5,7 +5,7 @@ import Cycle from '@cycle/most-run'
 import { h, svg, div, span, h2, h3, h4, button, makeDOMDriver, VNode, DOMSource } from '../../src/index'
 import isolate from '@cycle/isolate'
 import * as most from 'most'
-import { subject } from 'most-subject'
+import { sync } from 'most-subject'
 import hold from '@most/hold'
 import { createRenderTarget, interval } from '../helpers'
 
@@ -316,7 +316,7 @@ describe('isolation', function () {
       }
     });
 
-    sources.DOM.select(':root').elements().skip(1).take(1).observe((root: HTMLElement) => {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
       const frameFoo: any = root.querySelector('.foo.frame');
       const monalisaFoo: any = root.querySelector('.foo.monalisa');
       assert.notStrictEqual(frameFoo, null);
@@ -693,7 +693,7 @@ describe('isolation', function () {
     });
 
     let dispose: any;
-    sources.DOM.select(':root').elements().skip(2).take(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(2).take(1).observe(function ([root]: HTMLElement[]) {
       const parentEl = root.querySelector('.parent');
       const foo: any = parentEl.querySelectorAll('.foo')[1];
       assert.notStrictEqual(parentEl, null);
@@ -741,7 +741,7 @@ describe('isolation', function () {
     });
 
     let dispose: any;
-    sources.DOM.select(':root').elements().skip(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(1).observe(function ([root]: HTMLElement[]) {
       setTimeout(() => {
         const foo: any = root.querySelector('.foo');
         if (!foo) return;
@@ -792,7 +792,7 @@ describe('isolation', function () {
       DOM: makeDOMDriver(createRenderTarget())
     })
 
-    sources.DOM.elements().skip(1).take(1).observe((root: HTMLElement) =>  {
+    sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) =>  {
       const element: any = root.querySelector('.btn')
       assert.notStrictEqual(element, null)
       setTimeout(() => element.click())
@@ -837,7 +837,7 @@ describe('isolation', function () {
       DOM: makeDOMDriver(createRenderTarget())
     })
 
-    sources.DOM.elements().skip(1).take(1).observe((root: HTMLElement) =>  {
+    sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) =>  {
       const element: any = root.querySelector('.btn')
       assert.notStrictEqual(element, null)
       setTimeout(() => element.click())
@@ -883,7 +883,7 @@ describe('isolation', function () {
       DOM: makeDOMDriver(createRenderTarget())
     })
 
-    sources.DOM.elements().skip(1).take(1).observe((root: HTMLElement) =>  {
+    sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) =>  {
       const element: any = root.querySelector('.btn')
       assert.notStrictEqual(element, null)
       setTimeout(() => element.click())
@@ -929,7 +929,7 @@ describe('isolation', function () {
       DOM: makeDOMDriver(createRenderTarget())
     })
 
-    sources.DOM.elements().skip(1).take(1).observe((root: HTMLElement) =>  {
+    sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) =>  {
       const element: any = root.querySelector('.btn')
       assert.notStrictEqual(element, null)
       setTimeout(() => element.click())
@@ -940,7 +940,7 @@ describe('isolation', function () {
 
   it('should maintain virtual DOM list sanity using keys, in a list of ' +
     'isolated components', (done) => {
-      const componentRemove$ = subject<null | number>();
+      const componentRemove$ = sync<null | number>();
 
       type AppSources = {
         DOM: DOMSource
@@ -984,7 +984,7 @@ describe('isolation', function () {
       })
 
       let dispose: any;
-      sources.DOM.elements().skip(1).take(1).observe((root: HTMLElement) =>  {
+      sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) =>  {
         const components = root.querySelectorAll('.btn')
         assert.strictEqual(components.length, 2);
         const firstElement: any = components[0];

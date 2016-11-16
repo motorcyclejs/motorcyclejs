@@ -7,7 +7,7 @@ export interface EventsFnOptions {
 
 export interface DOMSource {
   select(selector: string): DOMSource;
-  elements<T extends Element>(): Stream<T | Array<T>>;
+  elements<T extends Element>(): Stream<Array<T>>;
   events<T extends Event>(eventType: string, options?: EventsFnOptions): Stream<T>;
 
   isolateSource(source: DOMSource, scope: string): DOMSource;

@@ -94,7 +94,7 @@ describe('DOM rendering with transposition', function () {
     });
 
     let dispose: any;
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       const selectEl = root.querySelector('.child');
       assert.notStrictEqual(selectEl, null);
       assert.notStrictEqual(typeof selectEl, 'undefined');
@@ -134,7 +134,7 @@ describe('DOM rendering with transposition', function () {
     });
 
     let dispose: any;
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       const selectEl = root.querySelector('.grandchild');
       assert.notStrictEqual(selectEl, null);
       assert.notStrictEqual(typeof selectEl, 'undefined');
@@ -168,7 +168,7 @@ describe('DOM rendering with transposition', function () {
     });
 
     let dispose: any
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       const selectEl = root.querySelector('.child');
       assert.notStrictEqual(selectEl, null);
       assert.notStrictEqual(typeof selectEl, 'undefined');

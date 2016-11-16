@@ -24,7 +24,7 @@ describe('DOMSource.select()', function () {
     });
 
     let dispose: any;
-    sources.DOM.select(':root').elements().skip(1).take(1).observe((root: HTMLElement) => {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
       assert.strictEqual(root.tagName, 'DIV');
       const child = root.children[0];
       assert(child.className.indexOf('top-most') > -1)
