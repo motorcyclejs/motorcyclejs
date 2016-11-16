@@ -97,3 +97,40 @@ export function selectorParser (selector: string = ``) {
     className: classes.join(` `),
   }
 }
+
+function getPropotype(): any {
+  try {
+    return Element && Element.prototype;
+  } catch (e) {
+    return {}
+  }
+}
+
+const proto = getPropotype();
+const vendor = proto.matches
+  || (proto as any).matchesSelector
+  || proto.webkitMatchesSelector
+  || (proto as any).mozMatchesSelector
+  || proto.msMatchesSelector
+  || (proto as any).oMatchesSelector;
+
+/**
+ * Match `el` to `selector`.
+ *
+ * @param {Element} el
+ * @param {String} selector
+ * @return {Boolean}
+ * @api public
+ */
+
+export function matchesSelector(element: Element, selector: string): boolean {
+  if (vendor)
+    return vendor.call(element, selector);
+
+  let nodes = (element.parentNode as any).querySelectorAll(selector);
+
+  for (let i = 0; i < nodes.length; i++)
+    if (nodes[i] == element) return true;
+
+  return false;
+}

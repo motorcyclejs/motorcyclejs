@@ -1,28 +1,17 @@
-declare const require: (package: string) => any
-declare const requestIdleCallback: any;
-
 import { VNode } from './interfaces'
 import { DOMSource } from './DOMSource';
-import { Stream } from 'most'
-import { Subject } from 'most-subject'
-import { BasicSubjectSource } from 'most-subject/lib/SubjectSource'
+import { Stream, empty } from 'most'
+import { Subject, sync } from 'most-subject'
 import hold from '@most/hold'
-const domEvent: (event: string, node: EventTarget, capture?: boolean) => Stream<Event> = require('@most/dom-event').domEvent
+import { domEvent } from '@most/dom-event';
 import { ElementFinder } from './ElementFinder'
 import { isolateSink, isolateSource } from './isolate'
 import { IsolateModule } from './modules/isolate'
 import { EventDelegator } from './EventDelegator'
 import { getScope } from './util'
-
-interface MatchesSelector {
-  (element: HTMLElement, selector: string): boolean;
-}
-let matchesSelector: MatchesSelector;
-try {
-  matchesSelector = require(`matches-selector`);
-} catch (e) {
-  matchesSelector = () => true
-}
+import { BodyDOMSource } from './BodyDOMSource';
+import { DocumentDOMSource } from './DocumentDOMSource';
+import { WindowDOMSource } from './WindowDOMSource';
 
 const eventTypesThatDontBubble = [
   `blur`,
@@ -55,21 +44,6 @@ const eventTypesThatDontBubble = [
   `waiting`,
 ]
 
-class EventSubjectSource extends BasicSubjectSource<Event> {
-  constructor(private _disposeFn: () => any) {
-    super()
-  }
-
-  _dispose() {
-    super._dispose()
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(this._disposeFn);
-    } else {
-      this._disposeFn()
-    }
-  }
-}
-
 export interface EventsFnOptions {
   useCapture?: boolean
 }
@@ -89,14 +63,14 @@ function determineUseCapture (eventType: string, options: EventsFnOptions | unde
 }
 
 export class MainDOMSource implements DOMSource {
-  constructor(private _rootElement$: Stream<HTMLElement>,
-              private _namespace: string[] = [],
+  constructor(protected _rootElement$: Stream<HTMLElement>,
+              protected _namespace: string[] = [],
               public _isolateModule: IsolateModule,
               public _delegators: Map<string, EventDelegator>) { }
 
-  elements(): Stream<HTMLElement | HTMLElement[]> {
+  elements(): Stream<HTMLElement[]> {
     if (this._namespace.length === 0) {
-      return hold(this._rootElement$.map<HTMLElement>((element: HTMLElement) => element))
+      return hold(this._rootElement$.map<HTMLElement[]>((element: HTMLElement) => [element]))
     }
 
     const elementFinder = new ElementFinder(this._namespace, this._isolateModule)
@@ -113,9 +87,35 @@ export class MainDOMSource implements DOMSource {
         `string as a CSS selector`);
     }
     const trimmedSelector = selector.trim();
+
+    if (trimmedSelector === 'window')
+      return new WindowDOMSource(
+        this._rootElement$,
+        this._namespace,
+        this._isolateModule,
+        this._delegators
+      );
+
+    if (trimmedSelector === 'document')
+      return new DocumentDOMSource(
+        this._rootElement$,
+        this._namespace,
+        this._isolateModule,
+        this._delegators
+      );
+
+    if (trimmedSelector === 'body')
+      return new BodyDOMSource(
+        this._rootElement$,
+        this._namespace,
+        this._isolateModule,
+        this._delegators
+      );
+
     const childNamespace = trimmedSelector === `:root`
       ? this._namespace
       : this._namespace.concat(trimmedSelector)
+
     return new MainDOMSource(
       this._rootElement$,
       childNamespace,
@@ -180,12 +180,20 @@ export class MainDOMSource implements DOMSource {
         }
 
         const destinationId = delegator.createDestinationId();
-        const eventSubject = new Subject<Event>(new EventSubjectSource(() => {
-          delegator.removeDestinationId(destinationId)
-        }))
+
+        const eventSubject: Subject<Event> =
+          sync<Event>();
+
+        const stream: Stream<Event> =
+          eventSubject
+            .continueWith(() => {
+              delegator.removeDestinationId(destinationId);
+              return empty();
+            })
 
         delegator.addDestination(eventSubject, namespace, destinationId)
-        return eventSubject
+
+        return stream;
       })
       .switch()
       .multicast()

@@ -25,7 +25,7 @@ describe('DOMSource.events()', function () {
       done();
     });
     // Make assertions
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       const myElement: any = root.querySelector('.myelementclass');
       assert.notStrictEqual(myElement, null);
       assert.notStrictEqual(typeof myElement, 'undefined');
@@ -121,7 +121,7 @@ describe('DOMSource.events()', function () {
       done();
     });
 
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       const myElement: any = root.querySelector('.myelementclass');
       assert.notStrictEqual(myElement, null);
       assert.notStrictEqual(typeof myElement, 'undefined');
@@ -154,7 +154,7 @@ describe('DOMSource.events()', function () {
     });
 
     sources.DOM.select(':root').elements().skip(1).take(1)
-      .observe(function (root: HTMLElement) {
+      .observe(function ([root]: HTMLElement[]) {
         const myElement: any = root.querySelector('#myElementId');
         assert.notStrictEqual(myElement, null);
         assert.notStrictEqual(typeof myElement, 'undefined');
@@ -188,7 +188,7 @@ describe('DOMSource.events()', function () {
       done();
     });
 
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       const myElement: any = root.querySelector('.myelementclass');
       assert.notStrictEqual(myElement, null);
       assert.notStrictEqual(typeof myElement, 'undefined');
@@ -228,7 +228,7 @@ describe('DOMSource.events()', function () {
     });
 
     sources.DOM.select(':root').elements().skip(1).take(1)
-      .observe(function (root: HTMLElement) {
+      .observe(function ([root]: HTMLElement[]) {
         const wrongElement: any = root.querySelector('.bar');
         const correctElement: any = root.querySelector('.foo .bar');
         assert.notStrictEqual(wrongElement, null);
@@ -276,7 +276,7 @@ describe('DOMSource.events()', function () {
       });
 
     sources.DOM.select(':root').elements().skip(1).take(1)
-      .observe(function (root: HTMLElement) {
+      .observe(function ([root]: HTMLElement[]) {
         const firstElem: any = root.querySelector('.first');
         const secondElem: any = root.querySelector('.second');
         assert.notStrictEqual(firstElem, null);
@@ -315,7 +315,7 @@ describe('DOMSource.events()', function () {
     });
 
     sources.DOM.select(':root').elements().skip(3).take(1)
-      .observe(function (root: HTMLElement) {
+      .observe(function ([root]: HTMLElement[]) {
         const myElement: any = root.querySelector('.blosh');
         assert.notStrictEqual(myElement, null);
         assert.notStrictEqual(typeof myElement, 'undefined');
@@ -358,7 +358,7 @@ describe('DOMSource.events()', function () {
       done();
     });
     // Make assertions
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function (root: HTMLElement) {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       const child: any = root.querySelector('.child');
       assert.notStrictEqual(child, null);
       assert.notStrictEqual(typeof child, 'undefined');
@@ -393,7 +393,7 @@ describe('DOMSource.events()', function () {
       done();
     });
 
-    sources.DOM.select(':root').elements().skip(1).take(1).observe((root: HTMLElement) => {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
       const form: any = root.querySelector('.form');
       setTimeout(() => form.reset());
     });
@@ -438,7 +438,7 @@ describe('DOMSource.events()', function () {
     sources.DOM.select('.clickable').events('click', {useCapture: false})
       .observe(assert.fail);
 
-    sources.DOM.select(':root').elements().skip(1).take(1).observe((root: HTMLElement) => {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
       const clickable: any = root.querySelector('.clickable');
       setTimeout(() => click(clickable));
     });
@@ -471,7 +471,7 @@ describe('DOMSource.events()', function () {
         done();
       });
 
-    sources.DOM.select(':root').elements().skip(1).take(1).observe((root: HTMLElement) => {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
       const correct: any = root.querySelector('.correct');
       const wrong: any = root.querySelector('.wrong');
       const dummy: any = root.querySelector('.dummy');
@@ -509,7 +509,7 @@ describe('DOMSource.events()', function () {
         done();
       });
 
-    sources.DOM.select(':root').elements().skip(1).take(1).observe((root: HTMLElement) => {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
       const correct: any = root.querySelector('.correct');
       const wrong: any = root.querySelector('.wrong');
       const dummy: any = root.querySelector('.dummy');
@@ -547,7 +547,7 @@ describe('DOMSource.events()', function () {
       done();
     });
 
-    sources.DOM.select(':root').elements().skip(1).take(1).observe((root: HTMLElement) => {
+    sources.DOM.select(':root').elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
       const form: any = root.querySelector('.form');
       setTimeout(() => form.reset());
     });
