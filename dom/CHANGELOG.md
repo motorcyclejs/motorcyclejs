@@ -1,3 +1,19 @@
+<a name="3.2.0"></a>
+# [3.2.0](https://github.com/motorcyclejs/dom/compare/v3.1.0...v3.2.0) (2016-11-16)
+
+
+### Bug Fixes
+
+* **ElementFinder:** use local matchesSelector function ([8d4085a](https://github.com/motorcyclejs/dom/commit/8d4085a))
+* **EventDelegator:** update to use local matchesSelector ([b381c35](https://github.com/motorcyclejs/dom/commit/b381c35))
+
+
+### Features
+
+* **DOMSource:** add document window and body dom sources ([c989dfa](https://github.com/motorcyclejs/dom/commit/c989dfa))
+
+
+
 <a name="3.1.0"></a>
 # [3.1.0](https://github.com/motorcyclejs/dom/compare/v3.0.0...v3.1.0) (2016-11-14)
 
