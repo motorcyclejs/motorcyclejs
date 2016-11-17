@@ -1,3 +1,8 @@
+<a name="3.3.0"></a>
+# [3.3.0](https://github.com/motorcyclejs/dom/compare/v3.2.0...v3.3.0) (2016-11-17)
+
+
+
 <a name="3.2.0"></a>
 # [3.2.0](https://github.com/motorcyclejs/dom/compare/v3.1.0...v3.2.0) (2016-11-16)
 
