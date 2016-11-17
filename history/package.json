@@ -1,6 +1,6 @@
 {
   "name": "@motorcycle/history",
-  "version": "2.1.2",
+  "version": "3.0.0",
   "description": "Standard History driver for Motorcycle.js",
   "main": "lib/commonjs/index.js",
   "jsnext:main": "lib/es2015/index.js",
