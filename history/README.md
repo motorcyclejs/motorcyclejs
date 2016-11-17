@@ -18,7 +18,7 @@ npm install --save @motorcycle/history
 
 #### `makeHistoryDriver(options?: BrowserHistoryOptions): HistoryDriver<LocationAndKey>`
 
-This is the make function you'll want to use for browsers that suppoer HTML5 History.
+This is the make function you'll want to use for browsers that support HTML5 History.
 
 FYI: All browsers that are officially supported by `@motorcycle/dom` also support the HTML5 History API.
 
@@ -36,7 +36,7 @@ function main (sources) {
     click$.map(event => event.target.href);
 
   const view$: Stream<VNode> =
-    sources.history$.map(view)
+    sources.history.map(view)
 
   return {
     DOM: view$
@@ -44,7 +44,7 @@ function main (sources) {
   }
 }
 
-function view (location: LocationAndKey) {
+function view (location: LocationAndKey): VNode {
   return div({}, [
     h2({}, [ `You are currently at route: ${location.pathname}` ])
   ])
@@ -58,9 +58,9 @@ run(main, {
 
 #### `makeMemoryHistoryDriver(options?: MemoryHistoryOptions): HistoryDriver<LocationAndKey>`
 
-This create a History Driver that works using the history libraries MemoryHistory.
+This creates a History Driver that works using the history library's MemoryHistory.
 This can be useful when you need to run something via node.js (perhaps server-side rendering)
-or in an environment such as React Native (no, there is not an official driver yet)
+or in an environment such as React Native (no, there is not an official driver yet).
 
 ```typescript
 import { createServer } from 'http';
@@ -78,7 +78,7 @@ function main (sources) {
     click$.map(event => event.target.href);
 
   const view$: Stream<VNode> =
-    sources.history$.map(view)
+    sources.history.map(view)
 
   return {
     DOM: view$,
@@ -86,7 +86,7 @@ function main (sources) {
   }
 }
 
-function view (location: LocationAndKey) {
+function view (location: LocationAndKey): VNode {
   return div({}, [
     h2({}, [ `You are currently at route: ${location.pathname}` ])
   ])
@@ -121,7 +121,7 @@ function main (sources) {
     click$.map(event => event.target.href);
 
   const view$: Stream<VNode> =
-    sources.history$.map(view)
+    sources.history.map(view)
 
   return {
     DOM: view$,
@@ -129,7 +129,7 @@ function main (sources) {
   }
 }
 
-function view (location: LocationAndKey) {
+function view (location: LocationAndKey): VNode {
   return div({}, [
     h2({}, [ `You are currently at route: ${location.pathname}` ])
   ])
@@ -147,9 +147,9 @@ run(main, {
 
 WARNING: Magic ensues - Proceed with caution :smiley:
 
-This is a High Order Driver (HOD), that means it receives a Driver as it's input, and
-returns another Driver. This HOD allows you to automagically capture any clicks on
-anchor tags so your application doesn't have to be explicit about listening to link
+This is a High Order Driver (HOD), that means it receives a driver as its input and
+returns another driver. This HOD allows you to automagically capture any clicks on
+anchor elements so your application doesn't have to be explicit about listening to link
 clicks.
 
 ```typescript
