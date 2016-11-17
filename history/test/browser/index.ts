@@ -1,0 +1,2 @@
+import './createBrowserHistory';
+import './createHashHistory';

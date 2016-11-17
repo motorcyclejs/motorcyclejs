@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "moduleResolution": "node",
+    "module": "es2015",
+    "target": "es2015",
+    "lib": [
+      "dom",
+      "es5",
+      "es2015"
+    ],
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "outDir": "lib/es2015"
+  },
+  "files": [
+    "custom-typings/history.d.ts",
+    "src/index.ts"
+  ]
+}
