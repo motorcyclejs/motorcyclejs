@@ -16,6 +16,7 @@
     "test": "npm run test:lint && npm run test:unit && npm run test:browser",
     "commit": "git-cz",
     "changelog": "conventional-changelog --infile CHANGELOG.md --same-file --release-count 0 --preset angular",
+    "postchangelog": "git add CHANGELOG.md && git commit -m 'chore(CHANGELOG): append to changelog' && git push origin master",
     "build": "rimraf lib && tsc && tsc -P tsconfig.commonjs.json",
     "preversion": "npm run build",
     "postversion": "git push origin master && git push origin --tags && npm publish && npm run changelog",
