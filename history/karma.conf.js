@@ -1,5 +1,5 @@
 module.exports = function (config) {
-  const config =
+  const configuration =
     {
       files: [
         'test/browser/bundle.js'
@@ -22,7 +22,7 @@ module.exports = function (config) {
     }
 
   if (process.env.TRAVIS)
-    config.browsers = ['Chrome_travis_ci'];
+    configuration.browsers = ['Chrome_travis_ci'];
 
-  config.get(config);
+  config.set(configuration);
 }
