@@ -6,7 +6,7 @@ import { createRenderTarget } from '../helpers';
 import * as assert from 'assert';
 
 // TESTS
-describe.only('issue 105', () => {
+describe('issue 105', () => {
   it('should only emit a single event with useCapture false', (done) => {
     const { sources, sinks }: any = run<any, any>(withUseCaptureFalse, {
       dom: makeDomDriver(createRenderTarget())
@@ -21,7 +21,7 @@ describe.only('issue 105', () => {
     });
 
     let called = 0;
-    sinks.toggle$.skip(1).tap(() => ++called).debounce(100).observe(() => {
+    sinks.toggle$.skip(1).tap(() => ++called).observe(() => {
       assert.strictEqual(called, 1);
       setTimeout(done, 100);
     })
@@ -37,12 +37,13 @@ describe.only('issue 105', () => {
       if (!button)
         done(new Error('Can not find button'));
 
-      button.dispatchEvent(new Event('click'));
+      setTimeout(() => (button as any).click());
     });
 
     let called = 0;
-    sinks.toggle$.skip(1).tap(() => ++called).debounce(100).observe(() => {
+    sinks.toggle$.skip(1).tap(() => ++called).observe(() => {
       assert.strictEqual(called, 1)
+      done();
     })
   })
 });
