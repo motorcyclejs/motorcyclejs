@@ -88,7 +88,7 @@ export class EventDelegator {
       if (dest.selector && matchesSelector(el, dest.selector)) {
         this.mutateEventCurrentTarget(ev, el)
         dest.subject.next(ev)
-      } else if (!dest.selector && this.isolateModule.isIsolatedElement(dest.topElement)) {
+      } else if (!dest.selector && dest.topElement === this.topElement) {
         dest.subject.next(ev);
       }
     }
@@ -97,7 +97,9 @@ export class EventDelegator {
   capture (ev: Event) {
     for (let i = 0, n = this.destinations.length; i < n; i++) {
       const dest = this.destinations[i]
-      if (matchesSelector((<HTMLElement> ev.target), dest.selector)) {
+      if (dest.selector && matchesSelector((<HTMLElement> ev.target), dest.selector)) {
+        dest.subject.next(ev)
+      } else if (!dest.selector && dest.topElement === this.topElement) {
         dest.subject.next(ev)
       }
     }

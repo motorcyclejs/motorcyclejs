@@ -1,4 +1,5 @@
 declare const require: (package: string) => any
+import { DriverFn } from '@motorcycle/core';
 import { VNode, Module } from './interfaces'
 const init: (modules: Module[]) => (oldVNode: VNode, vNode: VNode) => VNode = require('snabbdom').init
 import { Stream } from 'most'
@@ -21,7 +22,7 @@ export interface DOMDriverOptions {
   transposition?: boolean
 }
 
-export function makeDOMDriver(container: string | HTMLElement, options?: DOMDriverOptions): Function {
+export function makeDOMDriver(container: string | HTMLElement, options?: DOMDriverOptions): DriverFn {
   if (!options) { options = {} }
   const transposition = options.transposition || false;
   const modules = options.modules || defaultModules;
