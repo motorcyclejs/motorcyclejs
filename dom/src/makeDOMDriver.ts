@@ -7,7 +7,7 @@ import { DOMSource } from './DOMSource';
 import { MainDOMSource } from './MainDOMSource'
 import { VNodeWrapper } from './VNodeWrapper'
 import { getElement } from './util'
-import defaultModules from './modules';
+import defaultModules, { ClassModule } from './modules';
 import { IsolateModule } from './modules/isolate'
 import { transposeVNode } from './transposition'
 import { EventDelegator } from './EventDelegator'
@@ -26,7 +26,7 @@ export function makeDOMDriver(container: string | HTMLElement, options?: DOMDriv
   const transposition = options.transposition || false;
   const modules = options.modules || defaultModules;
   const isolateModule = new IsolateModule((new Map<string, HTMLElement>()));
-  const patch = init([isolateModule.createModule()].concat(modules));
+  const patch = init([isolateModule.createModule(), ClassModule].concat(modules));
   const rootElement = getElement(container);
   const vnodeWrapper = new VNodeWrapper(rootElement);
   const delegators = new Map<string, EventDelegator>();

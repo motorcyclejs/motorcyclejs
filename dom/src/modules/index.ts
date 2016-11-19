@@ -9,7 +9,7 @@ const StyleModule = require('snabbdom/modules/style')
 const HeroModule = require('snabbdom/modules/hero')
 const DataSetModule = require('snabbdom/modules/dataset')
 
-export default [StyleModule, ClassModule, PropsModule, AttrsModule]
+export default [StyleModule, PropsModule, AttrsModule]
 
 export {
   StyleModule, ClassModule,

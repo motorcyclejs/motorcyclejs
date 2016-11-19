@@ -27,8 +27,8 @@ describe('hyperscript', () => {
       const data = {}
       const vnode = div('.hi', data, 0)
 
-      assert(vnode.sel === 'div.hi')
       assert(vnode.data === data)
+      assert((vnode.data as any).class.hi)
       assert(vnode.text === '0')
     })
   })
