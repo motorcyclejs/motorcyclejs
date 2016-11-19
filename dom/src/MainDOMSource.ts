@@ -190,6 +190,7 @@ export class MainDOMSource implements DOMSource {
               delegator.removeDestinationId(destinationId);
               return empty();
             })
+            .skipRepeats()
 
         delegator.addDestination(eventSubject, namespace, destinationId, top as HTMLElement);
 
