@@ -99,7 +99,7 @@ export class EventDelegator {
       const dest = this.destinations[i]
       if (dest.selector && matchesSelector((<HTMLElement> ev.target), dest.selector)) {
         dest.subject.next(ev)
-      } else if (!dest.selector) {
+      } else if (!dest.selector && dest.topElement === this.topElement) {
         dest.subject.next(ev)
       }
     }
