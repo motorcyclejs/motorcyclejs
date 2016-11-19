@@ -8,6 +8,7 @@ let gDestinationId: number = 0
 interface Destination {
   subject: Subject<Event>
   scopeChecker: ScopeChecker
+  topElement: HTMLElement
   selector: string
   destinationId: number
 }
@@ -84,9 +85,11 @@ export class EventDelegator {
       if (!dest.scopeChecker.isStrictlyInRootScope(el)) {
         continue
       }
-      if (matchesSelector(el, dest.selector)) {
+      if (dest.selector && matchesSelector(el, dest.selector)) {
         this.mutateEventCurrentTarget(ev, el)
         dest.subject.next(ev)
+      } else if (!dest.selector && this.isolateModule.isIsolatedElement(dest.topElement)) {
+        dest.subject.next(ev);
       }
     }
   }
@@ -100,11 +103,11 @@ export class EventDelegator {
     }
   }
 
-  addDestination(subject: Subject<Event>, namespace: Array<string>, destinationId: number) {
+  addDestination(subject: Subject<Event>, namespace: Array<string>, destinationId: number, topElement: HTMLElement) {
     const scope = getScope(namespace)
     const selector = getSelectors(namespace)
     const scopeChecker = new ScopeChecker(scope, this.isolateModule)
-    this.destinations.push({subject, scopeChecker, selector, destinationId})
+    this.destinations.push({subject, scopeChecker, selector, topElement, destinationId})
   }
 
   createDestinationId(): number {
