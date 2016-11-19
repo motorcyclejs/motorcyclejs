@@ -191,7 +191,7 @@ export class MainDOMSource implements DOMSource {
               return empty();
             })
 
-        delegator.addDestination(eventSubject, namespace, destinationId)
+        delegator.addDestination(eventSubject, namespace, destinationId, top as HTMLElement);
 
         return stream;
       })
