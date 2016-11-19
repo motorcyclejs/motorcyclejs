@@ -5,6 +5,7 @@
     "module": "commonjs",
     "target": "es5",
     "lib": [
+      "dom",
       "es5",
       "es2015"
     ],
@@ -16,7 +17,8 @@
     "types": [
     ]
   },
-  "files": [
+  "include": [
+    "custom-typings/*.d.ts",
     "src/index.ts"
   ]
 }

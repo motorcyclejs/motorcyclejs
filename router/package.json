@@ -1,51 +1,21 @@
 {
   "name": "@motorcycle/router",
-  "version": "1.2.2",
   "description": "Standard Router Driver for Motorcycle.js",
-  "main": "lib/commonjs",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test:lint": "tslint src/**/*.ts src/*.ts",
-    "test:unit": "TS_NODE_PROJECT=test/tsconfig.json mocha -r ts-node/register test/*.ts",
-    "test": "npm run test:lint && npm run test:unit",
-    "commit": "git-cz",
-    "changelog": "conventional-changelog --infile CHANGELOG.md --same-file --release-count 0 --preset angular",
-    "postchangelog": "git add CHANGELOG.md && git commit -m 'docs(CHANGELOG): append to changled'",
-    "build:es2015": "tsc -P tsconfig.json",
-    "build:commonjs": "tsc -P tsconfig-commonjs.json",
-    "build": "npm run build:es2015 && npm run build:commonjs",
-    "preversion": "npm run build",
-    "postversion": "npm run changelog && git push origin master && git push origin --tags && npm publish",
-    "release:minor": "npm version minor -m 'chore(package): v%s'",
-    "release:major": "npm version major -m 'chore(package): v%s'"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/motorcyclejs/router.git"
-  },
-  "keywords": [
-    "motorcycle",
-    "cycle",
-    "router",
-    "history",
-    "driver"
-  ],
+  "version": "1.2.2",
   "author": "Tylor Steinberger <tlsteinberger167@gmail.com>",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/motorcyclejs/router/issues"
   },
-  "homepage": "https://github.com/motorcyclejs/router#readme",
   "config": {
     "ghooks": {
       "commit-msg": "node ./node_modules/.bin/validate-commit-msg"
     }
   },
-  "jsnext:main": "lib/es2015/index.js",
-  "module": "lib/es2015/index.js",
-  "typings": "lib/es2015/index.d.ts",
+  "dependencies": {
+    "@motorcycle/history": "^3.0.0",
+    "most-subject": "^5.2.0",
+    "switch-path": "^1.1.8"
+  },
   "devDependencies": {
     "@motorcycle/tslint": "^1.0.0",
     "@types/mocha": "^2.2.33",
@@ -59,5 +29,38 @@
     "tslint": "^4.0.0-dev.1",
     "typescript": "^2.2.0-dev.20161118",
     "validate-commit-msg": "^2.8.2"
-  }
+  },
+  "homepage": "https://github.com/motorcyclejs/router#readme",
+  "jsnext:main": "lib/es2015/index.js",
+  "keywords": [
+    "cycle",
+    "driver",
+    "history",
+    "motorcycle",
+    "router"
+  ],
+  "license": "MIT",
+  "main": "lib/commonjs",
+  "module": "lib/es2015/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/motorcyclejs/router.git"
+  },
+  "scripts": {
+    "build": "npm run build:es2015 && npm run build:commonjs",
+    "build:commonjs": "tsc -P tsconfig.commonjs.json",
+    "build:es2015": "tsc -P tsconfig.json",
+    "changelog": "conventional-changelog --infile CHANGELOG.md --same-file --release-count 0 --preset angular",
+    "commit": "git-cz",
+    "postchangelog": "git add CHANGELOG.md && git commit -m 'docs(CHANGELOG): append to changled'",
+    "postversion": "npm run changelog && git push origin master && git push origin --tags && npm publish",
+    "preversion": "npm run build",
+    "release:major": "npm version major -m 'chore(package): v%s'",
+    "release:minor": "npm version minor -m 'chore(package): v%s'",
+    "test": "npm run test:lint && npm run test:unit",
+    "test:debug": "TS_NODE_PROJECT=./test/tsconfig.json node --debug-brk --inspect ./node_modules/.bin/_mocha -r ts-node/register test/*.ts | xclip",
+    "test:lint": "tslint src/**/*.ts src/*.ts",
+    "test:unit": "TS_NODE_PROJECT=./test/tsconfig.json mocha -r ts-node/register test/*.ts"
+  },
+  "typings": "lib/es2015/index.d.ts"
 }
