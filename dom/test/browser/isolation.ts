@@ -86,7 +86,7 @@ describe('isolateSink', function () {
     let dispose: any;
     // Make assertions
     sinks.DOM.take(1).observe(function (vtree: VNode) {
-      assert.strictEqual(vtree.sel, 'h3.top-most');
+      assert.strictEqual(vtree.sel, 'h3');
       assert.strictEqual((vtree.data as any).isolate, '$$MOTORCYCLEDOM$$-foo');
       setTimeout(() => {
         dispose();
@@ -133,7 +133,7 @@ describe('isolateSink', function () {
     let dispose: any;
     // Make assertions
     sinks.DOM.skip(2).take(1).observe(function (vtree: VNode) {
-      assert.strictEqual(vtree.sel, 'span.tab1');
+      assert.strictEqual(vtree.sel, 'span');
       assert.strictEqual((vtree.data as any).isolate, '$$MOTORCYCLEDOM$$-1');
       dispose();
       done();

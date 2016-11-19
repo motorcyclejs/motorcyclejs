@@ -54,6 +54,19 @@ export const h: HyperscriptFn = <HyperscriptFn>function (selector: string, b?: a
     }
   }
 
+  const classNames = findClassNames(selector);
+
+  if (classNames) {
+    selector = selector.replace('.' + classNames, '');
+
+    const classes: any = data.class || {};
+    classNames.split('.').forEach((className: string) => {
+      classes[className] = true;
+    })
+
+    data.class = classes;
+  }
+
   if (Array.isArray(children)) {
     children = children.filter(Boolean)
     for (i = 0; i < children.length; ++i) {
@@ -90,4 +103,14 @@ export class MotorcycleVNode implements VNode {
   static createTextVNode(text: string): MotorcycleVNode {
     return new MotorcycleVNode(undefined, undefined, undefined, text, undefined, undefined)
   }
+}
+
+function findClassNames(selector: string) {
+  const hashIndex = selector.indexOf('#');
+  const dotIndex = selector.indexOf('.', hashIndex);
+  const firstClassNamePosition = dotIndex > 0 ? dotIndex : selector.length;
+
+  if (!dotIndex) return null
+
+  return selector.slice(firstClassNamePosition + 1);
 }
