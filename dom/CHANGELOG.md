@@ -1,3 +1,13 @@
+<a name="4.1.0"></a>
+# [4.1.0](https://github.com/motorcyclejs/dom/compare/v4.0.0...v4.1.0) (2016-11-19)
+
+
+### Bug Fixes
+
+* **events:** fix subtle bug ([c909727](https://github.com/motorcyclejs/dom/commit/c909727))
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/motorcyclejs/dom/compare/v3.3.0...v4.0.0) (2016-11-19)
 
