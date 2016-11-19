@@ -1,3 +1,15 @@
+<a name="4.2.0"></a>
+# [4.2.0](https://github.com/motorcyclejs/dom/compare/v4.1.0...v4.2.0) (2016-11-19)
+
+
+### Bug Fixes
+
+* **EventDelegator:** fix obscure cases where events are passed multiple times ([f2171e6](https://github.com/motorcyclejs/dom/commit/f2171e6))
+* **EventDelegator:** make destination to mimic bubbling ([75ae10e](https://github.com/motorcyclejs/dom/commit/75ae10e))
+* **EventDelegator:** make sure destinations match ([f64a63b](https://github.com/motorcyclejs/dom/commit/f64a63b))
+
+
+
 <a name="4.1.0"></a>
 # [4.1.0](https://github.com/motorcyclejs/dom/compare/v4.0.0...v4.1.0) (2016-11-19)
 
