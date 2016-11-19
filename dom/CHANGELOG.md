@@ -1,3 +1,13 @@
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/motorcyclejs/dom/compare/v3.3.0...v4.0.0) (2016-11-19)
+
+
+### Features
+
+* **classes:** use classes module to avoid extra rerendering ([15bc632](https://github.com/motorcyclejs/dom/commit/15bc632))
+
+
+
 <a name="3.3.0"></a>
 # [3.3.0](https://github.com/motorcyclejs/dom/compare/v3.2.0...v3.3.0) (2016-11-17)
 
