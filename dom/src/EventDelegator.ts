@@ -88,7 +88,7 @@ export class EventDelegator {
       if (dest.selector && matchesSelector(el, dest.selector)) {
         this.mutateEventCurrentTarget(ev, el)
         dest.subject.next(ev)
-      } else if (!dest.selector && el === this.topElement) {
+      } else if (!dest.selector && dest.topElement === this.topElement) {
         dest.subject.next(ev);
       }
     }
