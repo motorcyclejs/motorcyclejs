@@ -1,6 +1,6 @@
 {
   "name": "@motorcycle/dom",
-  "version": "3.3.0",
+  "version": "4.0.0",
   "description": "DOM Driver written only for most.js",
   "jsnext:main": "lib/es2015/index.js",
   "main": "lib/commonjs/index.js",
