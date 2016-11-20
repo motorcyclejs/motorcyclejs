@@ -61,6 +61,31 @@ passed in.
 makeRouterDriver(options)
 ```
 
+#### `Router: RouterHOC`
+
+A convenience function, to more declaratively define your routes to
+*Components*. It returns a stream of your currently matched Component.
+When using the router driver directly there is more flexibility. With
+the Router function, you must use routes to match to Components.
+
+```typescript
+function main(sources: Sources): Sinks {
+  const sinks$: Stream<Sinks> =
+    Router({
+      '/': HomeComponent, // HomeComponent :: (sources: Sources) => Sinks;
+      '/profile: {
+        '/': ProfileComponent,
+        '/:id': (id: number) => (sources: Sources) => ProfileId({...sources, id}),
+      }
+    }, sources);
+
+  return {
+    DOM: sinks$.map(sinks => sinks.DOM).switch(),
+    router: sinks$.map(sinks => sinks.router.switch())
+  };
+}
+```
+
 ## Types
 
 #### `RouterDriver`
@@ -120,5 +145,16 @@ export interface DefineReturn {
 ```typescript
 export interface RouteDefinitions {
   [key: Pathname]: any;
+}
+```
+
+#### `RouterHOC`
+```typescript
+export interface RouterHOC {
+  <Sources, Sinks>(definitions: RouterDefinitions<Sources, Sinks>,
+    sources: RouterSources<Sources>): Stream<Sinks>;
+
+  <Sources, Sinks>(definitions: RouterDefinitions<Sources, Sinks>):
+    (sources: RouterSources<Sources>) => Stream<Sinks>;
 }
 ```
