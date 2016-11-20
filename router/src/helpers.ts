@@ -11,6 +11,10 @@ export function getFilteredPath(namespace: Pathname[], path: Pathname): Pathname
   return '/' + filterPath(splitPath(path), namespace);
 }
 
+export function getUnfilteredPath(namespace: Pathname[], path: Pathname): Pathname {
+  return path.replace(getFilteredPath(namespace, path), '');
+};
+
 export function newLocation(location: Location, pathname: Pathname): Location {
   const l: any = {};
 

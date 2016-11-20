@@ -3,12 +3,13 @@ import { hold } from 'most-subject';
 import switchPath from 'switch-path';
 
 import { Location, Pathname, RouteDefinitions } from './types';
-import { splitPath, pathJoin, isStrictlyInScope, getFilteredPath } from './helpers';
+import { splitPath, pathJoin, isStrictlyInScope,
+    getFilteredPath, getUnfilteredPath } from './helpers';
 
 export class RouterSource {
   constructor(
     private _history$: Stream<Location>,
-    private _namespace: Pathname[]) { }
+    private _previousRoutes: Pathname[]) { }
 
   public history(): Stream<Location> {
     return this._history$;
@@ -16,7 +17,7 @@ export class RouterSource {
 
   public path(pathname: Pathname): RouterSource {
     const scopedNamespace: Pathname[] =
-      this._namespace.concat(splitPath(pathname));
+      this._previousRoutes.concat(splitPath(pathname));
 
     const scopedHistory$: Stream<Location> =
       this._history$.filter(isStrictlyInScope(scopedNamespace)).thru(hold(1));
@@ -25,20 +26,24 @@ export class RouterSource {
   }
 
   public define(routes: RouteDefinitions): Stream<DefineReturn> {
-    const namespace = this._namespace;
+    const previousRoutes = this._previousRoutes;
     const createHref = this.createHref.bind(this);
 
     return this._history$
       .map(function matchRoute(location: Location) {
-        const filteredPath = getFilteredPath(namespace, location.pathname);
-        const { path, value } = switchPath(filteredPath, routes);
-        return { path, value, location, createHref };
+        const filteredPath = getFilteredPath(previousRoutes, location.pathname);
+        return { ...switchPath(filteredPath, routes), location, createHref };
       })
       .thru(hold(1));
   }
 
   public createHref(path: Pathname): Pathname {
-    return '/' + pathJoin(this._namespace.concat(path));
+    const previousRoutes = this._previousRoutes;
+
+    if (previousRoutes.length === 0)
+      return pathJoin(['/', path]);
+
+    return pathJoin(['/', ...previousRoutes, path]);
   }
 }
 

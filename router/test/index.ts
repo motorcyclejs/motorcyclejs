@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import { Stream, periodic, of, never } from 'most';
-import { makeRouterDriver, RouterSource, HistoryInput, Location } from '../src';
+import { makeRouterDriver, Router, RouterSource, HistoryInput, Location } from '../src';
 
 describe('@motorcycle/router', function () {
   it('changes the route', (done) => {
@@ -169,6 +169,59 @@ describe('@motorcycle/router', function () {
   });
 });
 
+describe('Router', () => {
+  it('should match Components', () => {
+    const definitions = {
+      '/home': () => ({ router: of('/') }),
+      '/other': () => ({ router: of('/home') }),
+      '/some': {
+        '/:id': (id: number) => () => ({ router: of('/other/' + id) }),
+      },
+    };
+
+    const routes = [
+      '/wrong/path',
+      '/some/32',
+    ];
+
+    const router = makeRouterDriver()(from(routes));
+
+    const sinks$ = Router(definitions)({ router });
+
+    const router$ = sinks$.map(sinks => sinks.router).switch();
+
+    return router$.observe((route: HistoryInput | string) => {
+      assert.strictEqual(route, '/some/32/other/32');
+    });
+  });
+
+  it('should match nested Routers', () => {
+    const definitions = {
+      '/home': Router({
+        '/': () => ({ router: of('/hello') }),
+      }),
+      '/other': () => ({ router: of('/home') }),
+      '/some': {
+        '/:id': (id: number) => () => ({ router: of('/other/' + id) }),
+      },
+    };
+
+    const routes = [
+      '/wrong/path',
+      '/home/',
+    ];
+
+    const router = makeRouterDriver()(from(routes));
+
+    const sinks$ = Router(definitions)({ router });
+
+    const router$ = sinks$.map(sinks => sinks.router).switch();
+
+    return router$.observe((route: HistoryInput | string) => {
+      assert.strictEqual(route, '/home/hello');
+    });
+  });
+});
 
 function from(routes: Array<string>): Stream<string> {
   return periodic(10, 1)
