@@ -15,8 +15,9 @@ npm install --save @motorcycle/router
 
 ```typescript
 import { run } from '@motorcycle/core';
-import { makeDOMDriver } from '@motorcycle/dom';
+import { makeDOMDriver, div, h1 } from '@motorcycle/dom';
 import { makeRouterDriver } from '@motorcycle/router';
+import { of } from 'most';
 
 function main(sources) {
   const match$ = sources.router.define({
@@ -25,12 +26,12 @@ function main(sources) {
   });
 
   const page$ = match$.map(({path, value}) => {
-    return value({...sources, router: router.path(path)});
+    return value({...sources, router: sources.router.path(path)});
   });
 
   return {
-    DOM: page$.map(c => c.DOM).flatten(),
-    router: xs.of('/other'),
+    DOM: page$.map(c => c.DOM).switch(),
+    router: of('/other')
   };
 }
 
@@ -38,6 +39,18 @@ run(main, {
   DOM: makeDOMDriver('#app'),
   router: makeRouterDriver()
 })
+
+function HomeComponent() {
+  return {
+    DOM: of(div([h1('home')]))
+  }
+}
+
+function OtherComponent() {
+  return {
+    DOM: of(div([h1('other')]))
+  }
+}
 ```
 
 ## API
@@ -47,7 +60,7 @@ documentation [here](https://github.com/motorcyclejs/history#types)
 
 #### `makeRouterDriver(options?: BrowserHistoryOptions | HashHistoryOptions | MemoryHistoryOptions): RouterDriver`
 
-This creates our router driver. The router driver internally makes calls to 
+This creates our router driver. The router driver internally makes calls to
 `makeHistoryDriver`, `makeHashHistoryDriver`, or `makeMemoryHistoryDriver` from 
 `@motorcycle/history`. If you are in a browser, and the browser supports the 
 history API `makeHistoryDriver` will be used, and `BrowserHistoryOptions` should 
