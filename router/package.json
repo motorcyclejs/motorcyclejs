@@ -41,7 +41,7 @@
     "router"
   ],
   "license": "MIT",
-  "main": "lib/commonjs",
+  "main": "lib/commonjs/index.js",
   "module": "lib/es2015/index.js",
   "repository": {
     "type": "git",
