@@ -1,3 +1,8 @@
+<a name="2.2.0"></a>
+# [2.2.0](https://github.com/motorcyclejs/router/compare/v2.1.0...v2.2.0) (2016-11-20)
+
+
+
 <a name="2.1.0"></a>
 # [2.1.0](https://github.com/motorcyclejs/router/compare/v2.0.0...v2.1.0) (2016-11-20)
 
