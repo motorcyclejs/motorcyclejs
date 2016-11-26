@@ -1,3 +1,13 @@
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/motorcyclejs/router/compare/v3.0.0...v3.1.0) (2016-11-26)
+
+
+### Bug Fixes
+
+* **RouterHOC:** fix errors when child component doesn't have a router ([674876c](https://github.com/motorcyclejs/router/commit/674876c))
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/motorcyclejs/router/compare/v2.2.0...v3.0.0) (2016-11-26)
 
