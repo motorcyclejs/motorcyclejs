@@ -3,7 +3,7 @@ import { curry2 } from '@most/prelude';
 import { Component } from '@motorcycle/core';
 import { hold } from 'most-subject';
 import { RouterSource, DefineReturn } from './RouterSource';
-import { Location, Pathname, HistoryInput } from './types';
+import { RouterInput } from './types';
 
 export interface RouterDefinitions<Sources, Sinks> {
   [key: string]:
@@ -12,7 +12,6 @@ export interface RouterDefinitions<Sources, Sinks> {
 }
 
 export type RouterSources<Sources> = Sources & { router: RouterSource };
-export type RouterInput = Stream<HistoryInput | Pathname>;
 
 export interface RouterHOC {
   (definitions: RouterDefinitions<any, any>, sources: RouterSources<any>): Stream<any>;
@@ -39,48 +38,20 @@ export const Router: RouterHOC = curry2<any, any, any>(function Router<Sources, 
 
     const sinks$: Stream<Sinks & { router: RouterInput }> =
       typeof (sinks as any).observe === 'function'
-        ? sinks.map(augmentSinks(router))
-        : of(sinks).map(augmentSinks(router));
+        ? sinks.map(augmentSinks)
+        : of(sinks).map(augmentSinks);
 
     return sinks$ as Stream<Sinks & { router: RouterInput }>;
   })
     .switch();
 });
 
-function augmentSinks(router: RouterSource): any {
-  return function (nestedSinks: any) {
-    return {
-      ...nestedSinks,
-      router: nestedSinks.router
-        .map(nestPath(router))
-        .skipRepeatsWith(equalPaths),
-    };
+function augmentSinks (nestedSinks: any) {
+  return {
+    ...nestedSinks,
+    router: nestedSinks.router.skipRepeatsWith(equalPaths),
   };
-}
-
-function nestPath(router: RouterSource) {
-  return function (route: HistoryInput | Pathname) {
-    const previousRoute: string =
-      (router as any)._previousRoutes.join('/');
-
-    if (typeof route === 'string')
-      return router.createHref(route.replace(previousRoute, ''));
-
-    if (route.type === 'push')
-      return {
-        ...route,
-        pathname: router.createHref(route.pathname.replace(previousRoute, '')),
-      };
-
-    if (route.type === 'replace')
-      return {
-        ...route,
-        pathname: router.createHref(route.pathname.replace(previousRoute, '')),
-      };
-
-    return route;
-  };
-}
+};
 
 function isNotNull({path}: any) {
   return path !== null;

@@ -1,6 +1,4 @@
 import { Stream } from 'most';
-import { hold } from 'most-subject';
-import { DriverFn } from '@motorcycle/core';
 import { makeHistoryDriver, makeHashHistoryDriver, makeMemoryHistoryDriver }
   from '@motorcycle/history';
 import { RouterSource } from './RouterSource';
@@ -8,8 +6,7 @@ import {
   BrowserHistoryOptions,
   MemoryHistoryOptions,
   HashHistoryOptions,
-  Pathname,
-  HistoryInput,
+  RouterInput,
   GoHistoryInput,
   GoBackHistoryInput,
   GoForwardHistoryInput,
@@ -33,10 +30,10 @@ export type RouterOptions =
   HashHistoryOptions;
 
 export function makeRouterDriver(options?: RouterOptions) {
-  const historyDriver: (sink$: Stream<HistoryInput | Pathname>) => Stream<Location> =
+  const historyDriver: (sink$: RouterInput) => Stream<Location> =
     getDriverFunction(options);
 
-  return function routerDriver(sink$: Stream<HistoryInput | Pathname>) {
+  return function routerDriver(sink$: RouterInput) {
     return new RouterSource(historyDriver(sink$), []);
   };
 }

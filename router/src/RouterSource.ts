@@ -3,8 +3,7 @@ import { hold } from 'most-subject';
 import switchPath from 'switch-path';
 
 import { Location, Pathname, RouteDefinitions } from './types';
-import { splitPath, pathJoin, isStrictlyInScope,
-    getFilteredPath, getUnfilteredPath } from './helpers';
+import { splitPath, pathJoin, isStrictlyInScope, getFilteredPath } from './helpers';
 
 export class RouterSource {
   constructor(
