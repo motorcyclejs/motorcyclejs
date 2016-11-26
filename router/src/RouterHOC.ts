@@ -1,4 +1,4 @@
-import { Stream, of } from 'most';
+import { Stream, of, never } from 'most';
 import { curry2 } from '@most/prelude';
 import { Component } from '@motorcycle/core';
 import { hold } from 'most-subject';
@@ -49,7 +49,7 @@ export const Router: RouterHOC = curry2<any, any, any>(function Router<Sources, 
 function augmentSinks (nestedSinks: any) {
   return {
     ...nestedSinks,
-    router: nestedSinks.router.skipRepeatsWith(equalPaths),
+    router: (nestedSinks.router || never()).skipRepeatsWith(equalPaths),
   };
 };
 
