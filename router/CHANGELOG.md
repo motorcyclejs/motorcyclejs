@@ -1,3 +1,13 @@
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/motorcyclejs/router/compare/v2.2.0...v3.0.0) (2016-11-26)
+
+
+### Bug Fixes
+
+* **RouterHOC:** remove automatically calling createHref ([75d23d5](https://github.com/motorcyclejs/router/commit/75d23d5))
+
+
+
 <a name="2.2.0"></a>
 # [2.2.0](https://github.com/motorcyclejs/router/compare/v2.1.0...v2.2.0) (2016-11-20)
 
