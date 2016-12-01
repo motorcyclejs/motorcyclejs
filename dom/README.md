@@ -20,17 +20,17 @@ Basic usage
 
 import most from 'most'
 import {run} from '@cycle/most-run'
-import {makeDOMDriver, h} from '@motorcycle/dom'
+import {makeDomDriver, h} from '@motorcycle/dom'
 
 function main(sources) {
   ...
   return {
-    DOM: view$,
+    dom: view$,
   }
 }
 
 run(main, {
-  DOM: makeDOMDriver('#app')
+  dom: makeDOMDriver('#app')
 })
 ```
 
@@ -38,7 +38,7 @@ More examples can be found [here](https://github.com/motorcyclejs/examples).
 
 ## API
 
-### makeDOMDriver(container, {modules, transposition})
+### makeDomDriver(container, {modules})
 
 ###### Arguments
 
@@ -46,18 +46,17 @@ More examples can be found [here](https://github.com/motorcyclejs/examples).
 
 **modules** :: Array - An array of [Snabbdom modules](https://github.com/paldepind/snabbdom#creating-modules) which will be used by Snabbdom to add/remove behaviors that are available to you from the `h()` or `hyperscript-helpers` functions.
 
-**transposition** :: Boolean [= false] - a flag to turn on transposition or not.
 
 ```js
-import {makeDOMDriver} from '@motorcycle/dom'
+import {makeDomDriver} from '@motorcycle/dom'
 
-makeDOMDriver('#app')
+makeDomDriver('#app')
 // or
-makeDOMDriver(document.querySelector('#app'))
+makeDomDriver(document.querySelector('#app'))
 
 /* with modules */
 /* these are the default modules used */
-makeDOMDriver('#app', {
+makeDomDriver('#app', {
   modules: [
     require(`snabbdom/modules/class`),
     require(`snabbdom/modules/props`),
@@ -86,12 +85,12 @@ import {div, h1, p} from '@motorcycle/dom'
 
 For more information on [how to use hyperscript-helpers](https://github.com/ohanhi/hyperscript-helpers#how-to-use).
 
-###### mockDOMSource()
-A testing utility which aids in creating a queryable collection of Observables. Call mockDOMSource giving it an object specifying selectors, eventTypes and their Observables, and get as output an object following the same format as the DOM Driver's source.
+###### mockDomSource()
+A testing utility which aids in creating a queryable collection of Observables. Call mockDomSource giving it an object specifying selectors, eventTypes and their Observables, and get as output an object following the same format as the DOM Driver's source.
 
 Example:
 ```js
-const userEvents = mockDOMSource({
+const userEvents = mockDomSource({
  '.foo': {
    'click': most.just({target: {}}),
    'mouseover': most.just({target: {}})
@@ -109,4 +108,4 @@ Arguments:
 mockedSelectors :: Object an object where keys are selector strings and values are objects. Those nested objects have eventType strings as keys and values are Observables you created.
 Return:
 
-(Object) fake DOM source object, containing a function select() which can be used just like the DOM Driver's source. Call select(selector).events(eventType) on the source object to get the Observable you defined in the input of mockDOMSource.
+(Object) fake DOM source object, containing a function select() which can be used just like the DOM Driver's source. Call select(selector).events(eventType) on the source object to get the Observable you defined in the input of mockDomSource.
