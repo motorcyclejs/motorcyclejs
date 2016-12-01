@@ -55,7 +55,7 @@ export class MainDomSource implements DomSource {
     const key = keyParts.join('~')
 
     const rootElement$: Stream<HTMLElement> =
-      getRootElement$(scope, isolateModule, this._rootElement$);
+      ensureElementExists(scope, isolateModule, this._rootElement$);
 
     return rootElement$
       .map(setupEventDelegator(eventType, useCapture, namespace, scope, key, isolateModule, delegators))
@@ -75,7 +75,11 @@ export class MainDomSource implements DomSource {
   public isolateSink: (sink: Stream<VNode>, scope: string) => Stream<VNode> = isolateSink;
 }
 
-function getRootElement$(scope: string, isolateModule: IsolateModule, rootElement$: Stream<HTMLElement>) {
+function ensureElementExists(
+  scope: string,
+  isolateModule: IsolateModule,
+  rootElement$: Stream<HTMLElement>)
+{
   if (!scope) return rootElement$.take(2).multicast();
 
   let hadIsolated_mutable = false
