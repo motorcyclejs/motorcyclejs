@@ -13,7 +13,7 @@ interface Destination {
   destinationId: number
 }
 
-export interface MotorcycleDOMEvent extends Event {
+export interface MotorcycleDomEvent extends Event {
   propagationHasBeenStopped?: boolean
   ownerTarget?: HTMLElement
 }
@@ -42,8 +42,8 @@ function findDestinationId (arr: Array<Destination>, searchId: number): number {
 }
 
 /**
- * Attaches an actual event listener to the DOM root element,
- * handles "destinations" (interested DOMSource output subjects), and bubbling.
+ * Attaches an actual event listener to the Dom root element,
+ * handles "destinations" (interested DomSource output subjects), and bubbling.
  */
 export class EventDelegator {
   private destinations: Array<Destination> = []
@@ -79,7 +79,7 @@ export class EventDelegator {
     }
   }
 
-  public matchEventAgainstDestinations(el: HTMLElement, ev: MotorcycleDOMEvent) {
+  public matchEventAgainstDestinations(el: HTMLElement, ev: MotorcycleDomEvent) {
     for (let i = 0, n = this.destinations.length; i < n; i++) {
       const dest = this.destinations[i]
       if (!dest.scopeChecker.isStrictlyInRootScope(el)) {
@@ -123,8 +123,8 @@ export class EventDelegator {
     }
   }
 
-  patchEvent(event: Event): MotorcycleDOMEvent {
-    const pEvent: MotorcycleDOMEvent = <MotorcycleDOMEvent> event
+  patchEvent(event: Event): MotorcycleDomEvent {
+    const pEvent: MotorcycleDomEvent = <MotorcycleDomEvent> event
     pEvent.propagationHasBeenStopped = false
     const oldStopPropagation = pEvent.stopPropagation
     pEvent.stopPropagation = function stopPropagation() {
@@ -134,7 +134,7 @@ export class EventDelegator {
     return pEvent
   }
 
-  mutateEventCurrentTarget(event: MotorcycleDOMEvent, currentTargetElement: HTMLElement) {
+  mutateEventCurrentTarget(event: MotorcycleDomEvent, currentTargetElement: HTMLElement) {
     try {
       Object.defineProperty(event, `currentTarget`, {
         value: currentTargetElement,

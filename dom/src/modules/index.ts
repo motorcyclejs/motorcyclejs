@@ -1,15 +1,15 @@
-import { Module } from '../interfaces'
+import { Module } from 'snabbdom-ts';
 
-declare function require(package: string): Module
-const ClassModule = require('snabbdom/modules/class')
-const PropsModule = require('snabbdom/modules/props')
-const AttrsModule = require('snabbdom/modules/attributes')
-const EventsModule = require('snabbdom/modules/eventlisteners')
-const StyleModule = require('snabbdom/modules/style')
-const HeroModule = require('snabbdom/modules/hero')
-const DataSetModule = require('snabbdom/modules/dataset')
+import ClassModule from 'snabbdom-ts/modules/class';
+import PropsModule from 'snabbdom-ts/modules/props';
+import AttrsModule from 'snabbdom-ts/modules/attributes';
+import EventsModule from 'snabbdom-ts/modules/eventlisteners';
+import StyleModule from 'snabbdom-ts/modules/style';
+import HeroModule from 'snabbdom-ts/modules/hero';
+import DataSetModule from 'snabbdom-ts/modules/dataset';
 
-export default [StyleModule, PropsModule, AttrsModule]
+export const defaultModules: Array<Module> =
+  [StyleModule, PropsModule, AttrsModule];
 
 export {
   StyleModule, ClassModule,

@@ -1,7 +1,6 @@
-import { VNode } from './interfaces'
-import { DOMSource } from './DOMSource';
+import { VNode } from 'snabbdom-ts';
+import { DomSource, EventsFnOptions } from './DomSources';
 import { Stream, empty } from 'most'
-import { EventsFnOptions } from './DOMSource';
 
 export interface MockConfig {
   [name: string]: (MockConfig | Stream<any>)
@@ -9,7 +8,7 @@ export interface MockConfig {
 
 const SCOPE_PREFIX = '___'
 
-export class MockedDOMSource implements DOMSource {
+export class MockedDomSource implements DomSource {
   private _elements: any
 
   constructor(private _mockConfig: MockConfig) {
@@ -37,20 +36,20 @@ export class MockedDOMSource implements DOMSource {
     return empty() as Stream<Event>
   }
 
-  public select(selector: string): MockedDOMSource {
+  public select(selector: string): MockedDomSource {
     const mockConfig = this._mockConfig
     const keys = Object.keys(mockConfig)
     const keysLen = keys.length
     for (let i = 0; i < keysLen; i++) {
       const key = keys[i]
       if (key === selector) {
-        return new MockedDOMSource(mockConfig[key] as MockConfig)
+        return new MockedDomSource(mockConfig[key] as MockConfig)
       }
     }
-    return new MockedDOMSource({} as MockConfig)
+    return new MockedDomSource({} as MockConfig)
   }
 
-  public isolateSource(source: MockedDOMSource, scope: string): MockedDOMSource {
+  public isolateSource(source: MockedDomSource, scope: string): MockedDomSource {
     return source.select('.' + SCOPE_PREFIX + scope);
   }
 
@@ -66,6 +65,6 @@ export class MockedDOMSource implements DOMSource {
   }
 }
 
-export function mockDOMSource(mockConfig: MockConfig): MockedDOMSource {
-  return new MockedDOMSource(mockConfig)
+export function mockDomSource(mockConfig: MockConfig): MockedDomSource {
+  return new MockedDomSource(mockConfig)
 }

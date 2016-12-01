@@ -1,4 +1,4 @@
-import { VNode } from './interfaces'
+import { VNode } from 'snabbdom-ts';
 import { h } from './hyperscript/hyperscript'
 
 import { classNameFromVNode, selectorParser } from './util'

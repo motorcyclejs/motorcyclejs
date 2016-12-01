@@ -1,4 +1,4 @@
-import { VNode, Module } from '../interfaces'
+import { VNode, Module } from 'snabbdom-ts';
 import { EventDelegator } from '../EventDelegator'
 
 export class IsolateModule {

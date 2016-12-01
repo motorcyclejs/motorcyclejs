@@ -1,4 +1,4 @@
-import { VNode, VNodeData } from './interfaces'
+import { VNode, VNodeData } from 'snabbdom-ts';
 
 function isElement (obj: any) {
   return typeof HTMLElement === `object` ?
