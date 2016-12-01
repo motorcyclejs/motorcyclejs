@@ -76,7 +76,7 @@ export class MainDomSource implements DomSource {
 }
 
 function getRootElement$(scope: string, isolateModule: IsolateModule, rootElement$: Stream<HTMLElement>) {
-  if (!scope) return this._rootElement$.take(2).multicast();
+  if (!scope) return rootElement$.take(2).multicast();
 
   let hadIsolated_mutable = false
   return rootElement$
