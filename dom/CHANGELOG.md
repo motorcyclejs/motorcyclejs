@@ -1,3 +1,25 @@
+<a name="5.0.0"></a>
+# [5.0.0](https://github.com/motorcyclejs/dom/compare/v4.2.0...v5.0.0) (2016-12-01)
+
+
+### Bug Fixes
+
+* **MainDomSource:** fix incorrect usage of `this` ([cfb6eed](https://github.com/motorcyclejs/dom/commit/cfb6eed))
+
+
+### Features
+
+* **driver:** remove transposition and refactor ([c04bf15](https://github.com/motorcyclejs/dom/commit/c04bf15))
+* **makeHTMLDriver:** remove html driver ([91aaa92](https://github.com/motorcyclejs/dom/commit/91aaa92))
+
+
+### BREAKING CHANGES
+
+* driver: removed transposition, remove makeHTMLDriver entirely. Rename
+makeDOMDriver to makeDomDriver.
+
+
+
 <a name="4.2.0"></a>
 # [4.2.0](https://github.com/motorcyclejs/dom/compare/v4.1.0...v4.2.0) (2016-11-19)
 
