@@ -2,7 +2,7 @@
 
 import * as assert from 'assert'
 import Cycle from '@cycle/most-run'
-import { div, h3, makeDOMDriver } from '../../src/index'
+import { div, h3, makeDomDriver } from '../../src/index'
 import * as most from 'most'
 import { createRenderTarget } from '../helpers'
 
@@ -10,7 +10,7 @@ describe('makeDOMDriver', function () {
   it('should accept a DOM element as input', function () {
     const element = createRenderTarget();
     assert.doesNotThrow(function () {
-      makeDOMDriver(element);
+      makeDomDriver(element);
     });
   });
 
@@ -19,20 +19,20 @@ describe('makeDOMDriver', function () {
     const element = createRenderTarget();
     element.id = id;
     assert.doesNotThrow(function () {
-      makeDOMDriver('#' + id);
+      makeDomDriver('#' + id);
     });
   });
 
   it('should not accept a selector to an unknown element as input', function () {
     assert.throws(function () {
-      makeDOMDriver('#nonsenseIdToNothing');
+      makeDomDriver('#nonsenseIdToNothing');
     }, /Cannot render into unknown element/);
   });
 
   it('should not accept a number as input', function () {
     const x: any = 123
     assert.throws(function () {
-      makeDOMDriver(x as HTMLElement);
+      makeDomDriver(x as HTMLElement);
     }, /Given container is not a DOM element neither a selector string/);
   });
 
@@ -47,7 +47,7 @@ describe('DOM Driver', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
     let dispose = run();
     assert.strictEqual(typeof sources.DOM.isolateSource, 'function');
@@ -69,7 +69,7 @@ describe('DOM Driver', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: Function;

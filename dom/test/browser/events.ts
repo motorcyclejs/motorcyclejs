@@ -2,7 +2,7 @@
 
 import * as assert from 'assert'
 import Cycle from '@cycle/most-run'
-import { div, h4, h3, h2, span, form, input, makeDOMDriver } from '../../src/index'
+import { div, h4, h3, h2, span, form, input, makeDomDriver } from '../../src/index'
 import * as most from 'most'
 import { createRenderTarget } from '../helpers'
 
@@ -15,7 +15,7 @@ describe('DOMSource.events()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
     let dispose: Function;
     sources.DOM.select('.myelementclass').events('click').observe((ev: Event) => {
@@ -26,6 +26,7 @@ describe('DOMSource.events()', function () {
     });
     // Make assertions
     sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
+      console.log(arguments);
       const myElement: any = root.querySelector('.myelementclass');
       assert.notStrictEqual(myElement, null);
       assert.notStrictEqual(typeof myElement, 'undefined');
@@ -45,7 +46,7 @@ describe('DOMSource.events()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
     let dispose = run();
     sources.DOM.select('.myelementclass').events('click').observe((ev: Event) => {
@@ -80,7 +81,7 @@ describe('DOMSource.events()', function () {
     containerElement.appendChild(headerElement);
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(containerElement)
+      DOM: makeDomDriver(containerElement)
     });
     let dispose = run();
     sources.DOM.select('.myelementclass').events('click').observe((ev: Event) => {
@@ -109,7 +110,7 @@ describe('DOMSource.events()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget('parent-001'))
+      DOM: makeDomDriver(createRenderTarget('parent-001'))
     });
 
     let dispose: Function;
@@ -141,7 +142,7 @@ describe('DOMSource.events()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget('parent-002'))
+      DOM: makeDomDriver(createRenderTarget('parent-002'))
     });
 
     let dispose: Function;
@@ -176,7 +177,7 @@ describe('DOMSource.events()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: Function;
@@ -215,7 +216,7 @@ describe('DOMSource.events()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: Function;
@@ -256,7 +257,7 @@ describe('DOMSource.events()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: Function;
@@ -302,7 +303,7 @@ describe('DOMSource.events()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget('parent-002'))
+      DOM: makeDomDriver(createRenderTarget('parent-002'))
     });
 
     let dispose: Function;
@@ -340,7 +341,7 @@ describe('DOMSource.events()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: Function;
@@ -383,7 +384,7 @@ describe('DOMSource.events()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     sources.DOM.select('.form').events('reset').observe((ev: Event) => {
@@ -423,7 +424,7 @@ describe('DOMSource.events()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     sources.DOM.select('.clickable').events('click', {useCapture: true})
@@ -461,7 +462,7 @@ describe('DOMSource.events()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     sources.DOM.select('.correct').events('blur', {useCapture: true})
@@ -499,7 +500,7 @@ describe('DOMSource.events()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     sources.DOM.select('.correct').events('blur')
@@ -533,7 +534,7 @@ describe('DOMSource.events()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     sources.DOM.select('.parent').events('reset').observe(() => {
