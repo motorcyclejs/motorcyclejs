@@ -40,73 +40,25 @@ export class MainDomSource implements DomSource {
       throw new Error(`Dom driver's events() expects argument to be a ` +
         `string representing the event type to listen for.`)
     }
-    const useCapture: boolean = determineUseCapture(eventType, options)
+    const useCapture: boolean = determineUseCapture(eventType, options);
 
-    const namespace = this._namespace
+    const namespace = this._namespace;
+    const isolateModule = this._isolateModule;
+    const delegators = this._delegators;
+
     const scope = getScope(namespace)
     const keyParts = [eventType, useCapture]
-    if (scope) {
+
+    if (scope)
       keyParts.push(scope)
-    }
+
     const key = keyParts.join('~')
-    const domSource = this
-    let rootElement$: Stream<HTMLElement>
-    if (scope) {
-      let hadIsolated_mutable = false
-      rootElement$ = this._rootElement$
-        .filter(() => {
-          const hasIsolated = !!domSource._isolateModule.getIsolatedElement(scope)
-          const shouldPass = hasIsolated && !hadIsolated_mutable
-          hadIsolated_mutable = hasIsolated
-          return shouldPass
-        })
-        .multicast()
-    } else {
-      rootElement$ = this._rootElement$.take(2).multicast();
-    }
+
+    const rootElement$: Stream<HTMLElement> =
+      getRootElement$(scope, isolateModule, this._rootElement$);
 
     return rootElement$
-      .map(function setupEventDelegatorOnTopElement(rootElement) {
-        // Event listener just for the root element
-        if (!namespace || namespace.length === 0) {
-          return domEvent(eventType, rootElement, useCapture)
-        }
-        // Event listener on the top element as an EventDelegator
-        const delegators = domSource._delegators
-        const top = scope
-          ? domSource._isolateModule.getIsolatedElement(scope)
-          : rootElement
-        let delegator: EventDelegator
-        if (delegators.has(key)) {
-          delegator = delegators.get(key) as EventDelegator
-          delegator.updateTopElement(top as HTMLElement)
-        } else {
-          delegator = new EventDelegator(
-            top as HTMLElement, eventType, useCapture, domSource._isolateModule
-          )
-          delegators.set(key, delegator)
-        }
-        if (scope) {
-          domSource._isolateModule.addEventDelegator(scope, delegator)
-        }
-
-        const destinationId = delegator.createDestinationId();
-
-        const eventSubject: Subject<Event> =
-          sync<Event>();
-
-        const stream: Stream<Event> =
-          eventSubject
-            .continueWith(() => {
-              delegator.removeDestinationId(destinationId);
-              return empty();
-            })
-            .skipRepeats()
-
-        delegator.addDestination(eventSubject, namespace, destinationId, top as HTMLElement);
-
-        return stream;
-      })
+      .map(setupEventDelegator(eventType, useCapture, namespace, scope, key, isolateModule, delegators))
       .switch()
       .multicast()
   }
@@ -121,4 +73,69 @@ export class MainDomSource implements DomSource {
 
   public isolateSource: (source: DomSource, scope: string) => DomSource = isolateSource;
   public isolateSink: (sink: Stream<VNode>, scope: string) => Stream<VNode> = isolateSink;
+}
+
+function getRootElement$(scope: string, isolateModule: IsolateModule, rootElement$: Stream<HTMLElement>) {
+  if (!scope) return this._rootElement$.take(2).multicast();
+
+  let hadIsolated_mutable = false
+  return rootElement$
+    .filter(() => {
+      const hasIsolated = !!isolateModule.getIsolatedElement(scope)
+      const shouldPass = hasIsolated && !hadIsolated_mutable
+      hadIsolated_mutable = hasIsolated
+      return shouldPass
+    })
+    .multicast()
+}
+
+function setupEventDelegator(
+  eventType: string,
+  useCapture: boolean,
+  namespace: Array<string>,
+  scope: string,
+  key: string,
+  isolateModule: IsolateModule,
+  delegators: Map<string, EventDelegator>,
+) {
+  return function (rootElement: HTMLElement) {
+    // Event listener just for the root element
+    if (!namespace || namespace.length === 0)
+      return domEvent(eventType, rootElement, useCapture)
+
+    // Event listener on the top element as an EventDelegator
+    const top: HTMLElement = scope
+      ? isolateModule.getIsolatedElement(scope) as HTMLElement
+      : rootElement
+
+    const hasDelegator: boolean = delegators.has(key);
+
+    const delegator: EventDelegator = hasDelegator
+      ? delegators.get(key) as EventDelegator
+      : new EventDelegator(top, eventType, useCapture, isolateModule);
+
+    if (hasDelegator)
+      delegator.updateTopElement(top);
+    else
+      delegators.set(key, delegator);
+
+    if (scope)
+      isolateModule.addEventDelegator(scope, delegator)
+
+    const destinationId: number = delegator.createDestinationId();
+
+    const eventSubject: Subject<Event> = sync<Event>();
+
+    const stream: Stream<Event> =
+      eventSubject
+        .continueWith(() => {
+          delegator.removeDestinationId(destinationId);
+          return empty();
+        })
+        .skipRepeats();
+
+    delegator.addDestination(eventSubject, namespace, destinationId, top);
+
+    return stream;
+  }
 }
