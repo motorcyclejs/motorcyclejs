@@ -1,16 +1,16 @@
 /// <reference path="../typings.d.ts" />
 import * as assert from 'assert'
 import Cycle from '@cycle/most-run'
-import { h4, h3, h2, div, h, mockDOMSource, DOMSource } from '../../src/index'
+import { h4, h3, h2, div, h, mockDomSource, DomSource } from '../../src/index'
 import * as most from 'most'
 
 describe('mockDOMSource', function () {
   it('should be in accessible in the API', function () {
-    assert.strictEqual(typeof mockDOMSource, 'function');
+    assert.strictEqual(typeof mockDomSource, 'function');
   });
 
   it('should make an Observable for clicks on `.foo`', function (done) {
-    const userEvents = mockDOMSource({
+    const userEvents = mockDomSource({
       '.foo': {
         'click': most.of(135)
       }
@@ -26,7 +26,7 @@ describe('mockDOMSource', function () {
   });
 
   it('should make multiple user event Observables', function (done) {
-    const userEvents = mockDOMSource({
+    const userEvents = mockDomSource({
       '.foo': {
         'click': most.of(135)
       },
@@ -49,7 +49,7 @@ describe('mockDOMSource', function () {
   });
 
   it('should make multiple user event Observables on the same selector', function (done) {
-    const userEvents = mockDOMSource({
+    const userEvents = mockDomSource({
       '.foo': {
         'click': most.of(135),
         'scroll': most.of(3)
@@ -70,7 +70,7 @@ describe('mockDOMSource', function () {
   });
 
   it('should return an empty Observable if query does not match', function (done) {
-    const userEvents = mockDOMSource({
+    const userEvents = mockDomSource({
       '.foo': {
         'click': most.of(135)
       }
@@ -80,7 +80,7 @@ describe('mockDOMSource', function () {
   });
 
   it('should return empty Observable for select().elements and none is defined', function (done) {
-    const userEvents = mockDOMSource({
+    const userEvents = mockDomSource({
       '.foo': {
         'click': most.of(135)
       }
@@ -90,7 +90,7 @@ describe('mockDOMSource', function () {
   });
 
   it('should return defined Observable for select().elements', function (done) {
-    const mockedDOMSource = mockDOMSource({
+    const mockedDOMSource = mockDomSource({
       '.foo': {
         elements: most.of(135)
       }
@@ -107,7 +107,7 @@ describe('mockDOMSource', function () {
   });
 
   it('should return defined Observable when chaining .select()', function (done) {
-    const mockedDOMSource = mockDOMSource({
+    const mockedDOMSource = mockDomSource({
       '.bar': {
         '.foo': {
           '.baz': {
@@ -129,13 +129,13 @@ describe('mockDOMSource', function () {
 
   it('multiple .select()s should not throw when given empty mockedSelectors', () => {
     assert.doesNotThrow(() => {
-      const DOM = mockDOMSource({})
+      const DOM = mockDomSource({})
       DOM.select('.something').select('.other').events('click')
     })
   })
 
   it('multiple .select()s should return some observable if not defined', () => {
-    const DOM = mockDOMSource({})
+    const DOM = mockDomSource({})
     const domSource = DOM.select('.something').select('.other')
     assert(domSource.events('click') instanceof most.Stream,'domSource.events(click) should be an Observable instance')
     assert.strictEqual(domSource.elements() instanceof most.Stream, true, 'domSource.elements() should be an Observable instance');
@@ -158,7 +158,7 @@ describe('isolation on MockedDOMSource', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: () => mockDOMSource({
+      DOM: () => mockDomSource({
         '.___foo': {
           '.bar': {
             elements: most.from(['skipped', 135])
@@ -189,7 +189,7 @@ describe('isolation on MockedDOMSource', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: () => mockDOMSource({})
+      DOM: () => mockDomSource({})
     });
     let dispose = run();
     const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'foo');
@@ -202,7 +202,7 @@ describe('isolation on MockedDOMSource', function () {
 
   it('should prevent parent from DOM.selecting() inside the isolation', function (done) {
     type AppSources = {
-      DOM: DOMSource
+      DOM: DomSource
     }
     function app(sources: AppSources) {
       return {
@@ -220,7 +220,7 @@ describe('isolation on MockedDOMSource', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: () => mockDOMSource({
+      DOM: () => mockDomSource({
         '.___ISOLATION': {
           '.bar': {
             elements: most.from(['skipped', 'Wrong']),

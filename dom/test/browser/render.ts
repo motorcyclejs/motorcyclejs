@@ -4,7 +4,7 @@ import * as assert from 'assert'
 import Cycle from '@cycle/most-run'
 import * as most from 'most'
 import { createRenderTarget, interval } from '../helpers'
-import { div, h2, select, option, h4, svg, p, thunk, makeDOMDriver } from '../../src/index'
+import { div, h2, select, option, h4, svg, p, thunk, makeDomDriver } from '../../src/index'
 
 describe('DOM Rendering', function () {
   it('should render DOM elements even when DOMSource is not utilized', function (done) {
@@ -19,7 +19,7 @@ describe('DOM Rendering', function () {
     }
 
     Cycle.run(main, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     setTimeout(() => {
@@ -47,7 +47,7 @@ describe('DOM Rendering', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: any;
@@ -64,7 +64,7 @@ describe('DOM Rendering', function () {
     dispose = run();
   });
 
-  // TODO: Figure out JSX example 
+  // TODO: Figure out JSX example
 
   it('should give elements as a value-over-time', function (done) {
     function app() {
@@ -75,7 +75,7 @@ describe('DOM Rendering', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: any;
@@ -128,7 +128,7 @@ describe('DOM Rendering', function () {
 
     // Run it
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: any;
@@ -166,7 +166,7 @@ describe('DOM Rendering', function () {
 
     // Run it
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: any;
@@ -212,7 +212,7 @@ describe('DOM Rendering', function () {
 
     // Run it
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: any;
@@ -235,7 +235,7 @@ describe('DOM Rendering', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: any;

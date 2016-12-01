@@ -2,7 +2,7 @@
 
 import * as assert from 'assert'
 import Cycle from '@cycle/most-run'
-import { h, svg, div, span, h2, h3, h4, button, makeDOMDriver, VNode, DOMSource } from '../../src/index'
+import { h, svg, div, span, h2, h3, h4, button, makeDomDriver, VNode, DomSource } from '../../src/index'
 import isolate from '@cycle/isolate'
 import * as most from 'most'
 import { sync } from 'most-subject'
@@ -25,7 +25,7 @@ describe('isolateSource', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: any;
@@ -55,7 +55,7 @@ describe('isolateSource', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
     let dispose = run();
     const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'top-most');
@@ -70,7 +70,7 @@ describe('isolateSource', function () {
 describe('isolateSink', function () {
   it('should add an isolate field to the vtree sink', function (done) {
     type AppSources = {
-      DOM: DOMSource
+      DOM: DomSource
     }
     function app(sources: AppSources) {
       const vtree$ = most.of(h3('.top-most'));
@@ -80,7 +80,7 @@ describe('isolateSink', function () {
     }
 
     const {sinks, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: any;
@@ -98,7 +98,7 @@ describe('isolateSink', function () {
 
   it('should not redundantly repeat the scope className', function (done) {
     type AppSources = {
-      DOM: DOMSource
+      DOM: DomSource
     }
     function app(sources: AppSources) {
       const vtree1$ = most.of(span('.tab1', 'Hi'));
@@ -127,7 +127,7 @@ describe('isolateSink', function () {
     }
 
     const {sinks, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: any;
@@ -145,25 +145,30 @@ describe('isolateSink', function () {
 describe('isolation', function () {
   it('should prevent parent from DOM.selecting() inside the isolation', function (done) {
     type AppSources = {
-      DOM: DOMSource
+      DOM: DomSource
     }
     function app(sources: AppSources) {
-      return {
-        DOM: most.of(
-          h3('.top-most', [
-            sources.DOM.isolateSink(most.of(
-              div('.foo', [
-                h4('.bar', 'Wrong')
-              ])
-            ), 'ISOLATION'),
-            h2('.bar', 'Correct'),
+      const isolatedView =
+        sources.DOM.isolateSink(most.of(
+          div('.foo', [
+            h4('.bar', 'Wrong')
           ])
-        )
+        ), 'ISOLATION')
+
+      const DOM = isolatedView.map(view => {
+        return h3('.top-most', [
+          view,
+          h2('.bar', 'Correct'),
+        ])
+      })
+
+      return {
+        DOM,
       };
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget(), {transposition: true})
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     sources.DOM.select('.bar').elements().skip(1).take(1).observe(function (elements: HTMLElement[]) {
@@ -181,24 +186,31 @@ describe('isolation', function () {
 
   it('should allow parent to DOM.select() in its own isolation island', function (done) {
     type AppSources = {
-      DOM: DOMSource
+      DOM: DomSource
     }
+
     function app(sources: AppSources) {
       const {isolateSource, isolateSink} = sources.DOM;
       const islandElement$ = isolateSource(sources.DOM, 'island')
         .select('.bar').elements();
+
       const islandVTree$ = isolateSink(
         most.of(div([h3('.bar', 'Correct')])), 'island'
       );
+
+      const view$ = islandVTree$.map(view =>
+        sources.DOM.isolateSink(most.of(
+          div('.foo', [
+            view,
+            h4('.bar', 'Wrong')
+          ])
+        ), 'ISOLATION')
+      ).switch()
+
       return {
-        DOM: most.of(
+        DOM: view$.map(view =>
           h3('.top-most', [
-            sources.DOM.isolateSink(most.of(
-              div('.foo', [
-                islandVTree$,
-                h4('.bar', 'Wrong')
-              ])
-            ), 'ISOLATION'),
+            view,
           ])
         ),
         island: islandElement$
@@ -206,7 +218,7 @@ describe('isolation', function () {
     }
 
     const {sinks, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget(), {transposition: true})
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     sinks.island.skip(1).take(1).observe(function (elements: HTMLElement[]) {
@@ -224,16 +236,17 @@ describe('isolation', function () {
 
   it('should isolate DOM.select between parent and (wrapper) child', function (done) {
     type Sources = {
-      DOM: DOMSource
+      DOM: DomSource
       content$: most.Stream<VNode>
     }
     function Frame(sources: Sources) {
       const click$ = sources.DOM.select('.foo').events('click');
-      const vtree$ = most.of(
+      const vtree$ = sources.content$.map(view =>
         h4('.foo.frame', {style: {backgroundColor: 'lightblue'}}, [
-          sources.content$
+          view
         ])
-      );
+      )
+
       return {
         DOM: vtree$,
         click$
@@ -262,7 +275,7 @@ describe('isolation', function () {
     }
 
     const {sources, sinks, run} = Cycle(Monalisa, {
-      DOM: makeDOMDriver(createRenderTarget(), {transposition: true})
+      DOM: makeDomDriver(createRenderTarget())
     });
     let dispose: any;
 
@@ -336,24 +349,24 @@ describe('isolation', function () {
 
   it('should allow a child component to DOM.select() its own root', function (done) {
     type AppSources = {
-      DOM: DOMSource
+      DOM: DomSource
     }
     function app(sources: AppSources) {
       return {
-        DOM: most.of(
+        DOM: sources.DOM.isolateSink(most.of(
+          span('.foo', [
+            h4('.bar', 'Wrong')
+          ])
+        ), 'ISOLATION').map(view =>
           h3('.top-most', [
-            sources.DOM.isolateSink(most.of(
-              span('.foo', [
-                h4('.bar', 'Wrong')
-              ])
-            ), 'ISOLATION')
+            view
           ])
         )
       };
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget(), {transposition: true})
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     const {isolateSource} = sources.DOM;
@@ -378,12 +391,14 @@ describe('isolation', function () {
 
   it('should allow DOM.selecting svg elements', function (done) {
     type Sources = {
-      DOM: DOMSource
+      DOM: DomSource
     }
     function App(sources: Sources) {
       const triangleElement$ = sources.DOM.select('.triangle').elements();
 
-      const svgTriangle = svg({ props: { width: 150, height: 150 } }, [
+      triangleElement$.observe(console.log);
+
+      const svgTriangle = svg({ attrs: { width: 150, height: 150 } }, [
         svg.polygon({
           attrs: {
             class: 'triangle',
@@ -399,9 +414,9 @@ describe('isolation', function () {
     }
 
     function IsolatedApp(sources: Sources) {
-      const {isolateSource, isolateSink} = sources.DOM
+      const { isolateSource, isolateSink } = sources.DOM
       const isolatedDOMSource = isolateSource(sources.DOM, 'ISOLATION');
-      const app = App({DOM: isolatedDOMSource});
+      const app = App({ DOM: isolatedDOMSource });
       const isolateDOMSink = isolateSink(app.DOM, 'ISOLATION');
       return {
         DOM: isolateDOMSink,
@@ -410,7 +425,7 @@ describe('isolation', function () {
     }
 
     const {sinks, run} = Cycle(IsolatedApp, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     // Make assertions
@@ -427,24 +442,29 @@ describe('isolation', function () {
 
   it('should allow DOM.select()ing its own root without classname or id', function (done) {
     type AppSources = {
-      DOM: DOMSource
+      DOM: DomSource
     }
+
     function app(sources: AppSources) {
+
+    const view$ =
+      sources.DOM.isolateSink(most.of(
+        span([
+          h4('.bar', 'Wrong')
+        ])
+      ), 'ISOLATION')
+
       return {
-        DOM: most.of(
+        DOM: view$.map(view =>
           h3('.top-most', [
-            sources.DOM.isolateSink(most.of(
-              span([
-                h4('.bar', 'Wrong')
-              ])
-            ), 'ISOLATION')
+            view
           ])
         )
       };
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget(), {transposition: true})
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     const {isolateSource} = sources.DOM;
@@ -467,27 +487,30 @@ describe('isolation', function () {
 
   it('should allow DOM.select()ing all elements with `*`', function (done) {
     type AppSources = {
-      DOM: DOMSource
+      DOM: DomSource
     }
     function app(sources: AppSources) {
+      const view$ =
+        sources.DOM.isolateSink(most.of(
+          span([
+            div([
+              h4('.foo', 'hello'),
+              h4('.bar', 'world')
+            ])
+          ])
+        ), 'ISOLATION');
+
       return {
-        DOM: most.of(
+        DOM: view$.map(view =>
           h3('.top-most', [
-            sources.DOM.isolateSink(most.of(
-              span([
-                div([
-                  h4('.foo', 'hello'),
-                  h4('.bar', 'world')
-                ])
-              ])
-            ), 'ISOLATION')
+            view
           ])
         )
       };
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget(), {transposition: true})
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     const {isolateSource} = sources.DOM;
@@ -519,7 +542,7 @@ describe('isolation', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
     const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'foo');
 
@@ -551,7 +574,7 @@ describe('isolation', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
     let dispose: any;
     const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'foo');
@@ -586,7 +609,7 @@ describe('isolation', function () {
 
   it('should stop bubbling the event if the currentTarget was removed', function (done) {
     type AppSources = {
-      DOM: DOMSource
+      DOM: DomSource
     }
     function main(sources: AppSources) {
       const childExistence$ = sources.DOM.isolateSource(sources.DOM, 'foo')
@@ -609,7 +632,7 @@ describe('isolation', function () {
     }
 
     const {sources, run} = Cycle(main, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
     let dispose: any;
     const topDOMSource = sources.DOM.isolateSource(sources.DOM, 'top');
@@ -647,7 +670,7 @@ describe('isolation', function () {
     let clickDetected = false;
 
     type AppSources = {
-      DOM: DOMSource
+      DOM: DomSource
     }
 
     function Child(sources: AppSources) {
@@ -689,7 +712,7 @@ describe('isolation', function () {
     }
 
     const {sources, run} = Cycle(main, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: any;
@@ -717,8 +740,8 @@ describe('isolation', function () {
   it('should handle events when child is removed and re-added', done => {
     let clicksCount = 0;
     type AppSources = {
-      DOM: DOMSource
-    } 
+      DOM: DomSource
+    }
     function Child(sources: AppSources) {
       sources.DOM.select('.foo').events('click').observe(() => clicksCount++);
       return {
@@ -737,7 +760,7 @@ describe('isolation', function () {
     }
 
     const {sources, run} = Cycle(main, {
-      DOM: makeDOMDriver(createRenderTarget(), {transposition: true}),
+      DOM: makeDomDriver(createRenderTarget()),
     });
 
     let dispose: any;
@@ -760,7 +783,7 @@ describe('isolation', function () {
     'the vTree of an isolated parent component', (done) => {
     let dispose: any;
     type AppSources = {
-      DOM: DOMSource
+      DOM: DomSource
     }
     function Component(sources: AppSources) {
       sources.DOM.select('.btn').events('click')
@@ -789,7 +812,7 @@ describe('isolation', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     })
 
     sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) =>  {
@@ -806,7 +829,7 @@ describe('isolation', function () {
     'specified on child', (done) => {
       let dispose: any;
     type AppSources = {
-      DOM: DOMSource
+      DOM: DomSource
     }
     function Component(sources: AppSources) {
       sources.DOM.select('.btn').events('click')
@@ -834,7 +857,7 @@ describe('isolation', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     })
 
     sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) =>  {
@@ -851,7 +874,7 @@ describe('isolation', function () {
     'specified on parent', (done) => {
       let dispose: any;
     type AppSources = {
-      DOM: DOMSource
+      DOM: DomSource
     }
     function Component(sources: AppSources) {
       sources.DOM.select('.btn').events('click')
@@ -880,7 +903,7 @@ describe('isolation', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     })
 
     sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) =>  {
@@ -897,7 +920,7 @@ describe('isolation', function () {
     'specified on parent and child', (done) => {
       let dispose: any;
       type AppSources = {
-        DOM: DOMSource
+        DOM: DomSource
       }
     function Component(sources: AppSources) {
       sources.DOM.select('.btn').events('click')
@@ -926,7 +949,7 @@ describe('isolation', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     })
 
     sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) =>  {
@@ -943,7 +966,7 @@ describe('isolation', function () {
       const componentRemove$ = sync<null | number>();
 
       type AppSources = {
-        DOM: DOMSource
+        DOM: DomSource
       }
       function Component(sources: AppSources) {
         sources.DOM.select('.btn').events('click').observe(() => {
@@ -980,7 +1003,7 @@ describe('isolation', function () {
       }
 
       const {sources, run} = Cycle(main, {
-        DOM: makeDOMDriver(createRenderTarget())
+        DOM: makeDomDriver(createRenderTarget())
       })
 
       let dispose: any;

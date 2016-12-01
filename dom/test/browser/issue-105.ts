@@ -1,5 +1,5 @@
 import { run } from '@motorcycle/core';
-import { makeDOMDriver as makeDomDriver, button, div } from '../../src';
+import { makeDomDriver, button, div } from '../../src';
 import { just } from 'most';
 import isolate from '@cycle/isolate';
 import { createRenderTarget } from '../helpers';
@@ -55,7 +55,7 @@ function withUseCaptureFalse (sources: any) {
   // Setting `useCapture: true` causes
   // Uncaught SyntaxError: Failed to execute 'matches' on 'Element': '' is not a valid selector.
   //
-  // Setting `useCapture: false` causes event to fire twice. 
+  // Setting `useCapture: false` causes event to fire twice.
   const events = { click: { useCapture: false } };
 
   const aButton = isolate(

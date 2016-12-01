@@ -1,5 +1,5 @@
 import { Stream } from 'most'
-import { VNode, VNodeData } from '../interfaces'
+import { VNode, VNodeData } from 'snabbdom-ts';
 
 import { h } from './hyperscript'
 

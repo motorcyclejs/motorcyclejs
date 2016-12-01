@@ -1,9 +1,9 @@
 import { Stream } from 'most'
-import { VNode } from './interfaces'
-import { SCOPE_PREFIX } from './util'
-import { DOMSource } from './DOMSource'
+import { VNode } from 'snabbdom-ts'
+import { SCOPE_PREFIX } from '../util'
+import { DomSource } from './DomSource'
 
-export function isolateSource(source: DOMSource, scope: string): DOMSource {
+export function isolateSource(source: DomSource, scope: string): DomSource {
   return source.select(SCOPE_PREFIX + scope)
 }
 

@@ -2,7 +2,7 @@
 
 import * as assert from 'assert'
 import Cycle from '@cycle/most-run'
-import { div, p, span, h3, h2, h4, svg, makeDOMDriver } from '../../src/index'
+import { div, p, span, h3, h2, h4, svg, makeDomDriver } from '../../src/index'
 import * as most from 'most'
 import { createRenderTarget } from '../helpers'
 
@@ -20,7 +20,7 @@ describe('DOMSource.select()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: any;
@@ -45,7 +45,7 @@ describe('DOMSource.select()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: any = run();
@@ -72,7 +72,7 @@ describe('DOMSource.select()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: any;
@@ -110,7 +110,7 @@ describe('DOMSource.select()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     let dispose: any;
@@ -135,7 +135,7 @@ describe('DOMSource.select()', function () {
     function app() {
       return {
         DOM: most.of(
-          svg({ props: { width: 150, height: 150 } }, [
+          svg({ attrs: { width: 150, height: 150 } }, [
             svg.polygon({
               attrs: {
                 class: 'triangle',
@@ -148,7 +148,7 @@ describe('DOMSource.select()', function () {
     }
 
     const {sources, run} = Cycle(app, {
-      DOM: makeDOMDriver(createRenderTarget())
+      DOM: makeDomDriver(createRenderTarget())
     });
 
     // Make assertions

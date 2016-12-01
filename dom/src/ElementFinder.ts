@@ -13,7 +13,7 @@ export class ElementFinder {
   call (rootElement: HTMLElement): HTMLElement | Array<HTMLElement> {
     const namespace = this.namespace
     if (namespace.join(``) === ``) {
-      return rootElement
+      return [rootElement];
     }
 
     const scope = getScope(namespace)

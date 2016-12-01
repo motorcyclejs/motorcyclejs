@@ -1,39 +1,21 @@
-import { Stream } from 'most'
-import { VNode, VNodeData } from '../interfaces'
+import { VNode, VNodeData } from 'snabbdom-ts';
 
-function isStream(x: any): boolean {
-  return x instanceof Stream
-}
+import { HyperscriptFn } from 'snabbdom-ts/h';
 
-function mutateStreamWithNS(vNode: VNode): void {
-  addNS(vNode.data as VNodeData, vNode.children as Array<VNode | string>, vNode.sel as string)
-}
-
-function addNS(data: VNodeData, children: Array<VNode | string | Stream<VNode> | null>, selector: string): void {
+function addNS(data: VNodeData, children: Array<VNode | string | null>, selector: string): void {
   data.ns = `http://www.w3.org/2000/svg`;
   if (selector !== `foreignObject` && typeof children !== `undefined` && Array.isArray(children)) {
     for (let i = 0; i < children.length; ++i) {
-      if (isStream(children[i])) {
-        children[i] = (<Stream<VNode>> children[i]).tap(mutateStreamWithNS);
-      } else {
-        addNS((children[i] as VNode).data as VNodeData,
-              (children[i] as VNode).children as Array<VNode | string | Stream<VNode>>,
-              (children[i] as VNode).sel as string);
-      }
+      addNS((children[i] as VNode).data as VNodeData,
+            (children[i] as VNode).children as Array<VNode | string>,
+            (children[i] as VNode).sel as string);
     }
   }
 }
 
-export interface HyperscriptFn {
-  (sel: string): VNode
-  (sel: string, data: VNodeData): VNode
-  (sel: string, children: string | number | Array<string | VNode | Stream<VNode> | null>): VNode
-  (sel: string, data: VNodeData, children: string | number | Array<string | VNode | Stream<VNode> | null>): VNode
-}
-
 export const h: HyperscriptFn = <HyperscriptFn>function (selector: string, b?: any, c?: any): VNode {
   let data: VNodeData = {}
-  let children: Array<VNode | string | Stream<VNode>> | undefined
+  let children: Array<VNode | string | null | undefined> = c;
   let text: string | undefined
   let i: number
 
@@ -77,23 +59,23 @@ export const h: HyperscriptFn = <HyperscriptFn>function (selector: string, b?: a
   }
 
   if (selector[0] === 's' && selector[1] === 'v' && selector[2] === 'g') {
-    addNS(data, children as Array<VNode | string | Stream<VNode> | null>, selector)
+    addNS(data, children as Array<VNode | string | null>, selector)
   }
 
-  return MotorcycleVNode.create(selector, data, children, text, undefined, data && data.key)
+  return MotorcycleVNode.create(selector, data, children as any, text, undefined, data && data.key)
 }
 
 export class MotorcycleVNode implements VNode {
   constructor(public sel: string | undefined,
               public data: VNodeData | undefined,
-              public children: Array<string | VNode | Stream<VNode>> | undefined,
+              public children: Array<string | VNode> | undefined,
               public text: string | undefined,
               public elm: HTMLElement | Text | undefined,
               public key: string | number | undefined) { }
 
   static create(sel: string,
                 data: VNodeData,
-                children: Array<string | VNode | Stream<VNode>> | undefined,
+                children: Array<string | VNode> | undefined,
                 text: string | undefined,
                 elm: HTMLElement | Text | undefined,
                 key: string | number | undefined): MotorcycleVNode {
