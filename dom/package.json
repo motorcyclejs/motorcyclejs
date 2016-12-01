@@ -6,7 +6,7 @@
   "main": "lib/commonjs/index.js",
   "typings": "lib/commonjs/index.d.ts",
   "scripts": {
-    "build:es2015": "tsc --declaration --module es2015 --moduleResolution node --noFallthroughCasesInSwitch --noImplicitAny --noImplicitReturns --noUnusedLocals --outDir lib/es2015 --preserveConstEnums --pretty --sourceMap --strictNullChecks --target es2015 src/*.ts",
+    "build:es2015": "tsc -P tsconfig-es2015.json",
     "build:commonjs": "tsc",
     "build": "npm run build:es2015 && npm run build:commonjs",
     "commit": "git-cz",
@@ -60,10 +60,9 @@
   },
   "dependencies": {
     "@most/dom-event": "^1.3.1",
-    "@most/hold": "^1.3.1",
+    "@most/hold": "^1.4.1",
     "most-subject": "^5.2.0",
-    "snabbdom": "^0.5.4",
-    "snabbdom-to-html": "^3.0.0"
+    "snabbdom-ts": "^0.1.0"
   },
   "peerDependencies": {
     "most": "^1.1.0"
