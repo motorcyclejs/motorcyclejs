@@ -31,7 +31,7 @@ const eventTypesThatDontBubble = [
   `waiting`,
 ]
 
-export function determineUseCapture (eventType: string, options: EventsFnOptions | undefined): boolean {
+export function shouldUseCapture (eventType: string, options: EventsFnOptions | undefined): boolean {
   let result = false
   if (!options) {
     options = {}

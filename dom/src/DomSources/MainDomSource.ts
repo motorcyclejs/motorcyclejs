@@ -10,7 +10,7 @@ import { ElementFinder } from '../ElementFinder';
 import { getScope } from '../util';
 import { isolateSource, isolateSink } from './isolate';
 import { select } from './select';
-import { determineUseCapture } from './determineUseCapture';
+import { shouldUseCapture } from './shouldUseCapture';
 
 export class MainDomSource implements DomSource {
   constructor(
@@ -40,7 +40,7 @@ export class MainDomSource implements DomSource {
       throw new Error(`Dom driver's events() expects argument to be a ` +
         `string representing the event type to listen for.`)
     }
-    const useCapture: boolean = determineUseCapture(eventType, options);
+    const useCapture: boolean = shouldUseCapture(eventType, options);
 
     const namespace = this._namespace;
     const isolateModule = this._isolateModule;

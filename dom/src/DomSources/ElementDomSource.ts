@@ -7,7 +7,7 @@ import { EventDelegator } from '../EventDelegator';
 import { DomSource, EventsFnOptions } from './DomSource';
 import { select } from './select';
 import { isolateSink, isolateSource } from './isolate';
-import { determineUseCapture } from './determineUseCapture';
+import { shouldUseCapture } from './shouldUseCapture';
 
 export class ElementDomSource implements DomSource {
   constructor(
@@ -28,7 +28,7 @@ export class ElementDomSource implements DomSource {
 
   events<T extends Event>(eventType: string, options?: EventsFnOptions) {
     return this._rootElement$.constant(this._element)
-      .map(element => domEvent(eventType, element, determineUseCapture(eventType, options)) as Stream<T>)
+      .map(element => domEvent(eventType, element, shouldUseCapture(eventType, options)) as Stream<T>)
       .switch()
       .multicast();
   }
