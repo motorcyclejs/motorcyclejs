@@ -7,7 +7,7 @@ import { ElementDomSource } from './ElementDomSource';
 
 const noop = () => void 0;
 
-function getBodyElement(): any {
+function bodyElement(): any {
   try {
     return document && document.body;
   } catch (e) {
@@ -18,7 +18,7 @@ function getBodyElement(): any {
   }
 }
 
-function getDocumentElement(): any {
+function documentElement(): any {
   try {
     return document;
   } catch (e) {
@@ -29,7 +29,7 @@ function getDocumentElement(): any {
   }
 }
 
-function getWindowElement(): any {
+function windowElement(): any {
   try {
     return window;
   } catch (e) {
@@ -41,9 +41,9 @@ function getWindowElement(): any {
 }
 
 const specialElementMap: { [key: string]: HTMLElement } = {
-  window: getWindowElement(),
-  document: getDocumentElement(),
-  body: getBodyElement(),
+  window: windowElement(),
+  document: documentElement(),
+  body: bodyElement(),
 }
 
 const specialElements = Object.keys(specialElementMap);
