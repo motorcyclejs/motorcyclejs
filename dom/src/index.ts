@@ -1,7 +1,5 @@
 // hyperscript
 export * from 'snabbdom-ts';
-export * from './hyperscript/hyperscript'
-export * from './hyperscript/helpers'
 import thunk from 'snabbdom-ts/thunk';
 export { thunk };
 export * from './modules/index';
