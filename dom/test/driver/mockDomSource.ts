@@ -216,7 +216,7 @@ describe('isolation on MockedDOMSource', function () {
       };
     }
 
-    const {sources, dispose} = run(app, {
+    const {sources} = run(app, {
       DOM: () => mockDomSource({
         '.___ISOLATION': {
           '.bar': {

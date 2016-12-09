@@ -12,6 +12,7 @@
     "noImplicitAny": false,
     "sourceMap": true,
     "noUnusedParameters": false,
+    "noUnusedLocals": true,
     "strictNullChecks": true,
     "types": [
       "hyperscript",

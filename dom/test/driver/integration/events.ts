@@ -1,6 +1,6 @@
 import * as assert from 'assert';
 import * as Motorcycle from '@motorcycle/core';
-import { div, h4, h3, h2, span, form, input, makeDomDriver } from '../../../src';
+import { div, h4, h3, h2, input, makeDomDriver } from '../../../src';
 import * as most from 'most';
 import { createRenderTarget } from '../../helpers';
 
@@ -348,7 +348,7 @@ describe('DOMSource.events()', function () {
       el.dispatchEvent(ev);
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
+    const { sources } = Motorcycle.run<any, any>(app, {
       DOM: makeDomDriver(createRenderTarget()),
     });
 
@@ -382,7 +382,7 @@ describe('DOMSource.events()', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
+    const { sources } = Motorcycle.run<any, any>(app, {
       DOM: makeDomDriver(createRenderTarget()),
     });
 
@@ -416,7 +416,7 @@ describe('DOMSource.events()', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
+    const { sources } = Motorcycle.run<any, any>(app, {
       DOM: makeDomDriver(createRenderTarget()),
     });
 

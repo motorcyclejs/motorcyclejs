@@ -212,7 +212,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sinks, dispose } = Motorcycle.run<any, any>(app, {
+    const { sinks } = Motorcycle.run<any, any>(app, {
       DOM: makeDomDriver(createRenderTarget()),
     });
 
@@ -304,7 +304,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sinks, dispose } = Motorcycle.run<any, any>(IsolatedApp, {
+    const { sinks } = Motorcycle.run<any, any>(IsolatedApp, {
       DOM: makeDomDriver(createRenderTarget()),
     });
 
@@ -343,7 +343,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
+    const { sources } = Motorcycle.run<any, any>(app, {
       DOM: makeDomDriver(createRenderTarget()),
     });
 
@@ -389,7 +389,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
+    const { sources } = Motorcycle.run<any, any>(app, {
       DOM: makeDomDriver(createRenderTarget()),
     });
 
@@ -421,7 +421,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
+    const { sources } = Motorcycle.run<any, any>(app, {
       DOM: makeDomDriver(createRenderTarget()),
     });
     const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'foo');

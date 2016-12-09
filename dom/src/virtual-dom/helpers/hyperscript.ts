@@ -12,7 +12,7 @@ export interface HyperscriptHelperFn<T extends Node> {
   (children: VNodeChildren): VirtualNode<T>;
 }
 
-export function hh <T extends Node>(tagName: string): HyperscriptHelperFn<T> {
+export function hh <T extends Node>(tagName: HtmlTagNames): HyperscriptHelperFn<T> {
   return function (): VirtualNode<T> {
     const selector = arguments[0];
     const data = arguments[1];

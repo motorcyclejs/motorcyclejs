@@ -12,7 +12,7 @@ export interface SvgHyperscriptHelperFn<T extends SVGElement> {
   (children: VNodeChildren): VirtualNode<T>;
 }
 
-function hh <T extends SVGElement>(tagName: string): SvgHyperscriptHelperFn<T> {
+function hh <T extends SVGElement>(tagName: SvgTagNames): SvgHyperscriptHelperFn<T> {
   return function (): VirtualNode<T> {
     const selector = arguments[0];
     const data = arguments[1];
