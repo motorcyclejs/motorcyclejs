@@ -1,4 +1,3 @@
-// Place your settings in this file to overwrite default and user settings.
 {
   "editor.fontFamily": "'Fira Code Medium', 'Courier New', monospace, 'Droid Sans Fallback'",
 
@@ -6,7 +5,7 @@
 
   "editor.rulers": [80, 160],
 
-  "editor.wrappingColumn": 180,
+  "editor.wrappingColumn": 120,
 
   "editor.wrappingIndent": "indent",
 

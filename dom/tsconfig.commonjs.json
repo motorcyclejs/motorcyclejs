@@ -2,7 +2,7 @@
   "compilerOptions": {
     "declaration": true,
     "moduleResolution": "node",
-    "module": "es2015",
+    "module": "commonjs",
     "target": "es5",
     "lib": [
       "dom",
@@ -12,9 +12,8 @@
     "noImplicitAny": true,
     "sourceMap": true,
     "noUnusedParameters": true,
-    "noUnusedLocals": true,
     "strictNullChecks": true,
-    "outDir": "lib/es2015",
+    "outDir": "lib/commonjs",
     "types": [
     ]
   },
