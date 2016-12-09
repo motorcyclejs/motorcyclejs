@@ -1,3 +1,20 @@
+<a name="6.0.0"></a>
+# [6.0.0](https://github.com/motorcyclejs/dom/compare/v5.0.0...v6.0.0) (2016-12-09)
+
+
+### Features
+
+* **dom:** complete reimplementation of dom driver on top of snabbdom fork ([#108](https://github.com/motorcyclejs/dom/issues/108)) ([2ae7b8b](https://github.com/motorcyclejs/dom/commit/2ae7b8b))
+
+
+### BREAKING CHANGES
+
+* dom: VNode shape no longer has .sel, but .tagName, .className, and .id.
+Events are no longer mutated to point to a different currentTarget.
+Parent elements will receive non-bubbling events originating from child elements.
+
+
+
 <a name="5.0.0"></a>
 # [5.0.0](https://github.com/motorcyclejs/dom/compare/v4.2.0...v5.0.0) (2016-12-01)
 
@@ -388,5 +405,6 @@ References #4
 
 <a name="0.1.0"></a>
 # 0.1.0 (2015-11-01)
+
 
 
