@@ -2,21 +2,21 @@ import { Stream } from 'most';
 import { hold } from 'most-subject';
 import switchPath from 'switch-path';
 
-import { Location, Pathname, RouteDefinitions } from './types';
+import { Location, Path, RouteDefinitions } from './types';
 import { splitPath, pathJoin, isStrictlyInScope, getFilteredPath } from './helpers';
 
 export class RouterSource {
   constructor(
     private _history$: Stream<Location>,
-    private _previousRoutes: Pathname[]) { }
+    private _previousRoutes: Path[]) { }
 
   public history(): Stream<Location> {
     return this._history$;
   }
 
-  public path(pathname: Pathname): RouterSource {
-    const scopedNamespace: Pathname[] =
-      this._previousRoutes.concat(splitPath(pathname));
+  public path(path: Path): RouterSource {
+    const scopedNamespace: Path[] =
+      this._previousRoutes.concat(splitPath(path));
 
     const scopedHistory$: Stream<Location> =
       this._history$.filter(isStrictlyInScope(scopedNamespace)).thru(hold(1));
@@ -30,13 +30,13 @@ export class RouterSource {
 
     return this._history$
       .map(function matchRoute(location: Location) {
-        const filteredPath = getFilteredPath(previousRoutes, location.pathname);
+        const filteredPath = getFilteredPath(previousRoutes, location.path);
         return { ...switchPath(filteredPath, routes), location, createHref };
       })
       .thru(hold(1));
   }
 
-  public createHref(path: Pathname): Pathname {
+  public createHref(path: Path): Path {
     const previousRoutes = this._previousRoutes;
 
     if (previousRoutes.length === 0)
@@ -48,7 +48,7 @@ export class RouterSource {
 
 export interface DefineReturn {
   location: Location;
-  createHref: (path: Pathname) => Pathname;
+  createHref: (path: Path) => Path;
   path: string | null;
   value: any | null;
 }
