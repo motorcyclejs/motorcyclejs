@@ -1,50 +1,29 @@
 import { Stream } from 'most';
-import { createBrowserHistory, createMemoryHistory, createHashHistory } from 'history';
-import { createHistory$ } from './createHistory$';
-import {
-  BrowserHistoryOptions,
-  MemoryHistoryOptions,
-  HashHistoryOptions,
-  GoBackHistoryInput,
-  GoForwardHistoryInput,
-  GoHistoryInput,
-  PushHistoryInput,
-  ReplaceHistoryInput,
-  HistoryInput,
-  Location,
-  LocationAndKey,
-} from './types';
+import { Location, Path, createHistory } from 'prehistoric';
+import { HistoryInput } from './types';
 
-/**
- * Create a History Driver to be used in the browser.
- */
-export function makeHistoryDriver(options?: BrowserHistoryOptions) {
-  const history = createBrowserHistory(options);
+export function historyDriver(sink$: Stream<HistoryInput | Path>): Stream<Location> {
+  const { push, replace, go, history } = createHistory();
 
-  return function historyDriver(sink$: Stream<HistoryInput | string>): Stream<LocationAndKey> {
-    return createHistory$(history, sink$);
-  };
-}
+  sink$.observe(function (input: HistoryInput | Path) {
+    if (typeof input === 'string')
+      return push(input);
 
-/**
- * Create a History Driver to be used in non-browser enviroments
- * such as server-side node.js.
- */
-export function makeMemoryHistoryDriver(options?: MemoryHistoryOptions) {
-  const history = createMemoryHistory(options);
+    if (input.type === 'push')
+      return push(input.path, input.state);
 
-  return function serverHistoryDriver(sink$: Stream<HistoryInput | string>): Stream<Location> {
-    return createHistory$(history, sink$);
-  };
-}
+    if (input.type === 'replace')
+      return replace(input.path, input.state);
 
-/**
- * Create a History Driver for older browsers using hash routing
- */
-export function makeHashHistoryDriver(options?: HashHistoryOptions) {
-  const history = createHashHistory(options);
+    if (input.type === 'go')
+      return go(input.amount);
 
-  return function hashHistoryDriver(sink$: Stream<HistoryInput | string>): Stream<Location> {
-    return createHistory$(history, sink$);
-  };
+    if (input.type === 'goBack')
+      return go(-1);
+
+    if (input.type === 'goForward')
+      return go(1);
+  });
+
+  return history;
 }

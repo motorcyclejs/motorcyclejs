@@ -1,14 +1,22 @@
 import * as assert from 'assert';
 import { Stream, Subscriber } from 'most';
 import { async } from 'most-subject';
-import { makeHistoryDriver, Location, HistoryInput, LocationAndKey } from '../../src';
+import { historyDriver, Location, HistoryInput } from '../../src';
+
+window.onpopstate = function (ev) {
+  ev.preventDefault();
+};
 
 describe(`historyDriver`, () => {
+  beforeEach(() => {
+    window.history.replaceState(null, '', '/');
+  });
+
   it('should create a location from pathname', (done) => {
     const { stream, listen } = buildTest(done);
 
     listen(function (location: Location) {
-      assert.strictEqual(location.pathname, '/test');
+      assert.strictEqual(location.path, '/test');
     });
 
     stream.next('/test');
@@ -19,7 +27,7 @@ describe(`historyDriver`, () => {
     const { stream, listen } = buildTest(done);
 
     listen(function (location: Location) {
-      assert.strictEqual(location.pathname, '/test');
+      assert.strictEqual(location.path, '/test');
     });
 
     stream.next({ type: 'push', pathname: '/test' });
@@ -30,7 +38,7 @@ describe(`historyDriver`, () => {
     const { stream, listen } = buildTest(done);
 
     listen(function (location: Location) {
-      assert.strictEqual(location.pathname, '/test');
+      assert.strictEqual(location.path, '/test');
     });
 
     stream.next({ type: 'replace', pathname: '/test' });
@@ -47,7 +55,7 @@ describe(`historyDriver`, () => {
     ];
 
     listen(function (location: Location) {
-      assert.strictEqual(location.pathname, expected.shift());
+      assert.strictEqual(location.path, expected.shift());
     });
 
     stream.next('/test');
@@ -67,14 +75,14 @@ describe(`historyDriver`, () => {
       ];
 
       listen(function (location: Location) {
-        assert.strictEqual(location.pathname, expected.shift());
+        assert.strictEqual(location.path, expected.shift());
       });
 
       stream.next('/test');
       stream.next('/other');
       stream.next({ type: 'goBack' });
       stream.complete();
-    })
+    });
   });
 
   it('should allow going forward a route with type `go`', (done) => {
@@ -88,7 +96,7 @@ describe(`historyDriver`, () => {
     ];
 
     listen(function (location: Location) {
-      assert.strictEqual(location.pathname, expected.shift());
+      assert.strictEqual(location.path, expected.shift());
     });
 
     stream.next('/test');
@@ -109,7 +117,7 @@ describe(`historyDriver`, () => {
     ];
 
     listen(function (location: Location) {
-      assert.strictEqual(location.pathname, expected.shift());
+      assert.strictEqual(location.path, expected.shift());
       if (expected.length === 0) {
         done();
       }
@@ -126,16 +134,14 @@ describe(`historyDriver`, () => {
 function buildTest (done: Function) {
   const stream = async<any>();
 
-  const next = (x: HistoryInput | string) => stream.next(x);
-
-  const historyDriver = makeHistoryDriver();
+  const send = (x: HistoryInput | string) => stream.next(x);
 
   const history$ = historyDriver(stream.continueWith(() => {
     done();
     return stream;
   }));
 
-  function listen (next: (location: LocationAndKey) => any) {
+  function listen (next: (location: Location) => any) {
     const observer = {
       next,
       error: (err: Error) => done(err),

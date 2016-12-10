@@ -1,17 +1,14 @@
-export { BrowserHistoryOptions, MemoryHistoryOptions,
-         HashHistoryOptions, Location, LocationAndKey } from 'history';
-
-export type Pathname = string;
+import { Path } from 'prehistoric';
 
 export interface PushHistoryInput {
   type: 'push';
-  pathname: Pathname;
+  path: Path;
   state?: any;
 };
 
 export interface ReplaceHistoryInput {
   type: 'replace';
-  pathname: Pathname;
+  path: Path;
   state?: any;
 };
 

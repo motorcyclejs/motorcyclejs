@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import { Stream, Subscriber } from 'most';
 import { sync } from 'most-subject';
-import { makeMemoryHistoryDriver, Location } from '../../src';
+import { historyDriver, Location } from '../../src';
 
 describe(`memoryHistoryDriver`, () => {
   it('should create a location from pathname', (done) => {
@@ -9,7 +9,7 @@ describe(`memoryHistoryDriver`, () => {
 
     listen({
       next (location: Location) {
-        assert.strictEqual(location.pathname, '/test');
+        assert.strictEqual(location.path, '/test');
         done();
       },
       error: done,
@@ -24,7 +24,7 @@ describe(`memoryHistoryDriver`, () => {
 
     listen({
       next (location: Location) {
-        assert.strictEqual(location.pathname, '/test');
+        assert.strictEqual(location.path, '/test');
         done();
       },
       error: done,
@@ -32,7 +32,7 @@ describe(`memoryHistoryDriver`, () => {
     });
 
     setTimeout(() => {
-      next({ type: 'push', pathname: '/test' });
+      next({ type: 'push', path: '/test' });
     }, 0);
   });
 
@@ -41,14 +41,14 @@ describe(`memoryHistoryDriver`, () => {
 
     listen({
       next (location: Location) {
-        assert.strictEqual(location.pathname, '/test');
+        assert.strictEqual(location.path, '/test');
         done();
       },
       error: done,
       complete: () => void 0,
     });
 
-    setTimeout(() => { next({ type: 'replace', pathname: '/test' }); }, 0);
+    setTimeout(() => { next({ type: 'replace', path: '/test' }); }, 0);
   });
 
   it('should allow going back a route with type `go`', (done) => {
@@ -62,7 +62,7 @@ describe(`memoryHistoryDriver`, () => {
 
     listen({
       next (location: Location) {
-        assert.strictEqual(location.pathname, expected.shift());
+        assert.strictEqual(location.path, expected.shift());
         if (expected.length === 0) {
           done();
         }
@@ -89,7 +89,7 @@ describe(`memoryHistoryDriver`, () => {
 
     listen({
       next (location: Location) {
-        assert.strictEqual(location.pathname, expected.shift());
+        assert.strictEqual(location.path, expected.shift());
         if (expected.length === 0) {
           done();
         }
@@ -117,7 +117,7 @@ describe(`memoryHistoryDriver`, () => {
 
     listen({
       next (location: Location) {
-        assert.strictEqual(location.pathname, expected.shift());
+        assert.strictEqual(location.path, expected.shift());
         if (expected.length === 0) {
           done();
         }
@@ -146,7 +146,7 @@ describe(`memoryHistoryDriver`, () => {
 
     listen({
       next (location: Location) {
-        assert.strictEqual(location.pathname, expected.shift());
+        assert.strictEqual(location.path, expected.shift());
         if (expected.length === 0) {
           done();
         }
@@ -169,8 +169,6 @@ function buildTest () {
   const stream = sync<any>();
 
   const next = (x: any) => stream.next(x);
-
-  const historyDriver = makeMemoryHistoryDriver();
 
   const history$ = historyDriver(stream);
 

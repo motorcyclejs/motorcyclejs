@@ -10,9 +10,7 @@
     "test:lint": "tslint src/**/*.ts src/*.ts",
     "test:unit": "TS_NODE_PROJECT=./test/tsconfig.json mocha -r ts-node/register test/node/*.ts",
     "test:browser:pre": "rimraf test/.tmp test/browser/bundle.js && tsc -P test/tsconfig.json",
-    "test:browser:hash": "npm run test:browser:pre && browserify test/.tmp/test/browser/createHashHistory.js -o test/browser/bundle.js && karma start --single-run",
-    "test:browser:history": "npm run test:browser:pre && browserify test/.tmp/test/browser/createBrowserHistory.js -o test/browser/bundle.js && karma start --single-run",
-    "test:browser": "npm run test:browser:hash && npm run test:browser:history",
+    "test:browser": "npm run test:browser:pre && browserify test/.tmp/test/browser/historyDriver.js -o test/browser/bundle.js && karma start --single-run && rimraf test/browser/bundle.js",
     "test": "npm run test:lint && npm run test:unit && npm run test:browser",
     "commit": "git-cz",
     "changelog": "conventional-changelog --infile CHANGELOG.md --same-file --release-count 0 --preset angular",
@@ -42,9 +40,9 @@
   "homepage": "https://github.com/motorcyclejs/history#readme",
   "dependencies": {
     "@motorcycle/core": "^1.6.0",
-    "history": "^4.4.0",
     "most": "^1.1.0",
-    "most-subject": "^5.2.0"
+    "most-subject": "^5.2.0",
+    "prehistoric": "^1.1.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.33",
