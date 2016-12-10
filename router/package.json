@@ -1,7 +1,7 @@
 {
   "name": "@motorcycle/router",
   "description": "Standard Router Driver for Motorcycle.js",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "author": "Tylor Steinberger <tlsteinberger167@gmail.com>",
   "bugs": {
     "url": "https://github.com/motorcyclejs/router/issues"
