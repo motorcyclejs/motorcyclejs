@@ -1,3 +1,8 @@
+<a name="4.1.0"></a>
+# [4.1.0](https://github.com/motorcyclejs/history/compare/v4.0.0...v4.1.0) (2016-12-10)
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/motorcyclejs/history/compare/v3.0.0...v4.0.0) (2016-12-10)
 
