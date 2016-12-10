@@ -1,3 +1,13 @@
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/motorcyclejs/router/compare/v3.1.0...v4.0.0) (2016-12-10)
+
+
+### Features
+
+* **router:** update to latest [@motorcycle](https://github.com/motorcycle)/history and new api ([427aff4](https://github.com/motorcyclejs/router/commit/427aff4))
+
+
+
 <a name="3.1.0"></a>
 # [3.1.0](https://github.com/motorcyclejs/router/compare/v3.0.0...v3.1.0) (2016-11-26)
 
