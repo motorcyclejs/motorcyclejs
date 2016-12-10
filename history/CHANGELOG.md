@@ -1,3 +1,13 @@
+<a name="4.0.0"></a>
+# [4.0.0](https://github.com/motorcyclejs/history/compare/v3.0.0...v4.0.0) (2016-12-10)
+
+
+### Features
+
+* **history:** reimplement on top of prehistoric ([1c83ec0](https://github.com/motorcyclejs/history/commit/1c83ec0))
+
+
+
 <a name="3.0.0"></a>
 # [3.0.0](https://github.com/motorcyclejs/history/compare/1e41f0b...v3.0.0) (2016-11-17)
 
