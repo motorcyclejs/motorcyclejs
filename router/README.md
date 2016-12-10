@@ -16,7 +16,7 @@ npm install --save @motorcycle/router
 ```typescript
 import { run } from '@motorcycle/core';
 import { makeDOMDriver, div, h1 } from '@motorcycle/dom';
-import { makeRouterDriver } from '@motorcycle/router';
+import { routerDriver } from '@motorcycle/router';
 import { of } from 'most';
 
 function main(sources) {
@@ -37,7 +37,7 @@ function main(sources) {
 
 run(main, {
   DOM: makeDOMDriver('#app'),
-  router: makeRouterDriver()
+  router: routerDriver,
 })
 
 function HomeComponent() {
@@ -58,21 +58,10 @@ function OtherComponent() {
 For all types not defined here, please refer to `@motorcycle/history`'s type
 documentation [here](https://github.com/motorcyclejs/history#types)
 
-#### `makeRouterDriver(options?: BrowserHistoryOptions | HashHistoryOptions | MemoryHistoryOptions): RouterDriver`
+#### `routerDriver(sink$: Stream<HistoryInput | Path>): RouterSource`
 
-This creates our router driver. The router driver internally makes calls to
-`makeHistoryDriver`, `makeHashHistoryDriver`, or `makeMemoryHistoryDriver` from 
-`@motorcycle/history`. If you are in a browser, and the browser supports the 
-history API `makeHistoryDriver` will be used, and `BrowserHistoryOptions` should 
-be passed in as options. If you are in a browser, but does not support the 
-history API, `makeHashHistoryDriver` will be used and `HashHistoryOptions` 
-should be passed in for options. If you are not in a browser, 
-`makeMemoryHistoryDriver` will be used and `MemoryHistoryOptions` should be 
-passed in.
-
-```typescript
-makeRouterDriver(options)
-```
+This is the main API of this driver. This function simply wraps `@motorcycle/history`
+and returns a source object containing methods instead of a stream.
 
 #### `Router: RouterHOC`
 
@@ -100,12 +89,6 @@ function main(sources: Sources): Sinks {
 ```
 
 ## Types
-
-#### `RouterDriver`
-
-```typescript
-export type RouterDriver: (sink$: Stream<HistoryInput | Pathname>) => RouterSource;
-```
 
 #### `RouterSource`
 
