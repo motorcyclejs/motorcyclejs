@@ -16,7 +16,6 @@
     "outDir": "lib/commonjs"
   },
   "files": [
-    "custom-typings/history.d.ts",
     "src/index.ts"
   ]
 }

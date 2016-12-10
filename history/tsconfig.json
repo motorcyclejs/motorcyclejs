@@ -16,7 +16,6 @@
     "outDir": "lib/es2015"
   },
   "files": [
-    "custom-typings/history.d.ts",
     "src/index.ts"
   ]
 }
