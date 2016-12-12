@@ -18,7 +18,6 @@
     ]
   },
   "include": [
-    "custom-typings/*.d.ts",
     "src/index.ts"
   ]
 }

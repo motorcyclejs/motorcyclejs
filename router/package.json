@@ -15,7 +15,7 @@
     "@most/prelude": "^1.4.1",
     "@motorcycle/history": "^4.1.0",
     "most-subject": "^5.2.0",
-    "switch-path": "^1.1.8"
+    "switch-path": "^1.2.0"
   },
   "devDependencies": {
     "@motorcycle/tslint": "^1.0.0",
