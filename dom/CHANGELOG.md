@@ -22,6 +22,7 @@
 * dom: VNode shape no longer has .sel, but .tagName, .className, and .id.
 Events are no longer mutated to point to a different currentTarget.
 Parent elements will receive non-bubbling events originating from child elements.
+`makeDomDriver(container)` - container **must** be an HTMLElement and not just a selector.
 
 
 
