@@ -1,3 +1,13 @@
+<a name="6.1.0"></a>
+# [6.1.0](https://github.com/motorcyclejs/dom/compare/v6.0.0...v6.1.0) (2016-12-13)
+
+
+### Bug Fixes
+
+* **hyperscript:** include missing img tag ([3cd90fb](https://github.com/motorcyclejs/dom/commit/3cd90fb))
+
+
+
 <a name="6.0.0"></a>
 # [6.0.0](https://github.com/motorcyclejs/dom/compare/v5.0.0...v6.0.0) (2016-12-09)
 
@@ -12,7 +22,6 @@
 * dom: VNode shape no longer has .sel, but .tagName, .className, and .id.
 Events are no longer mutated to point to a different currentTarget.
 Parent elements will receive non-bubbling events originating from child elements.
-`makeDomDriver(container)` takes an element **only** and not a selector.
 
 
 
