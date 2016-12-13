@@ -106,6 +106,7 @@ export const header = hh('header');
 export const hgroup = hh('hgroup');
 export const hr = hh<HTMLHRElement>('hr');
 export const html = hh<HTMLHtmlElement>('html');
+export const img = hh<HTMLImageElement>('img');
 export const input = hh<HTMLInputElement>('input');
 export const ins = hh('ins');
 export const isindex = hh('isindex');
