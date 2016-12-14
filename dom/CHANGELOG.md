@@ -1,3 +1,13 @@
+<a name="6.2.0"></a>
+# [6.2.0](https://github.com/motorcyclejs/dom/compare/v6.1.0...v6.2.0) (2016-12-14)
+
+
+### Bug Fixes
+
+* **virtual-dom:** fix test node patching errors ([#110](https://github.com/motorcyclejs/dom/issues/110)) ([68f1a41](https://github.com/motorcyclejs/dom/commit/68f1a41))
+
+
+
 <a name="6.1.0"></a>
 # [6.1.0](https://github.com/motorcyclejs/dom/compare/v6.0.0...v6.1.0) (2016-12-13)
 
@@ -22,7 +32,6 @@
 * dom: VNode shape no longer has .sel, but .tagName, .className, and .id.
 Events are no longer mutated to point to a different currentTarget.
 Parent elements will receive non-bubbling events originating from child elements.
-`makeDomDriver(container)` - container **must** be an HTMLElement and not just a selector.
 
 
 
