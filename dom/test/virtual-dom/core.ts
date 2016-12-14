@@ -145,7 +145,7 @@ describe('snabbdom', function () {
       }
     });
   });
-  describe('pathing an element', function () {
+  describe('patching an element', function () {
     it('changes the elements classes', function () {
       let vnode1 = h('i', { class: { i: true, am: true, horse: true } });
       let vnode2 = h('i', { class: { i: true, am: true, horse: false } });

@@ -180,6 +180,7 @@ export function init(
             createElm(newStartVnode, insertedVnodeQueue),
             (oldStartVnode as VNode).elm as Element,
           );
+
           newStartVnode = newCh[++newStartIdx];
         } else {
           elmToMove = oldCh[idxInOld];
@@ -212,6 +213,13 @@ export function init(
       i(oldVnode, vnode);
     }
     let elm = vnode.elm = oldVnode.elm, oldCh = oldVnode.children, ch = vnode.children;
+
+    if (vnode.id)
+      elm.id = vnode.id;
+
+    if (vnode.className)
+      elm.className = vnode.className;
+
     if (oldVnode === vnode) return;
     if (!sameVNode(oldVnode, vnode)) {
       let parentElm = (api as SnabbdomAPI<Element, Text, Node>).parentNode(oldVnode.elm as Element);

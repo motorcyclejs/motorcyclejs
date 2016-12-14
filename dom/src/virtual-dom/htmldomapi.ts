@@ -37,8 +37,8 @@ export function nextSibling(node: Element | Text): Node | Element {
   return node.nextSibling as Node | Element;
 }
 
-export function tagName(node: Element): string {
-  return node.tagName;
+export function tagName(node: Element | Text): string {
+  return (node as Element).tagName || '';
 }
 
 export function setTextContent(node: Element | Text, text: string): void {

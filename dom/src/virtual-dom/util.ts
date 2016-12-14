@@ -30,8 +30,8 @@ export function emptyNodeAt(elm: HTMLElement): VNode {
     elm.className,
     elm.id,
     {},
-    elm.children ? Array.prototype.slice.call(elm.children).map(emptyNodeAt) : [],
-    undefined,
+    elm.children ? Array.prototype.slice.call(elm.childNodes).map(emptyNodeAt) : [],
+    elm.textContent || void 0,
     elm,
     undefined,
   );
