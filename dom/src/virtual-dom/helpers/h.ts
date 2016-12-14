@@ -73,26 +73,38 @@ export const h: HyperscriptFn = function (selector: string, b?: any, c?: any): V
   );
 };
 
-function parseSelector(sel: string) {
-  // Parse selector
-  let hashIdx = sel.indexOf('#');
-  let dotIdx = sel.indexOf('.', hashIdx);
-  let hash = hashIdx > 0 ? hashIdx : sel.length;
-  let dot = dotIdx > 0 ? dotIdx : sel.length;
+const classIdSplit = /([\.#]?[a-zA-Z0-9\u007F-\uFFFF_:-]+)/;
 
-  let tagName = hashIdx !== -1 || dotIdx !== -1
-    ? sel.slice(0, Math.min(hash, dot))
-    : sel;
+export function parseSelector (selector: string) {
+  let tagName: string | void;
+  let id = '';
+  const classes: Array<string> = [];
 
-  const id = sel.slice(hash + 1, dot) || void 0;
+  const tagParts = selector.split(classIdSplit);
 
-  const className = dotIdx < sel.length &&  dotIdx > 0
-    ? sel.slice(dot + 1).replace(/\./g, ' ')
-    : void 0;
+  let part: string | void;
+  let type;
+
+  for (let i = 0; i < tagParts.length; i++) {
+    part = tagParts[i];
+
+    if (!part)
+      continue;
+
+    type = part.charAt(0);
+
+    if (!tagName) {
+      tagName = part;
+    } else if (type === '.') {
+      classes.push(part.substring(1, part.length));
+    } else if (type === '#') {
+      id = part.substring(1, part.length);
+    }
+  }
 
   return {
-    tagName: tagName,
+    tagName: tagName as string,
     id,
-    className,
+    className: classes.join(' '),
   };
 }
