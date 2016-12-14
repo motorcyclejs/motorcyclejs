@@ -110,7 +110,6 @@ describe('DOMSource.events()', function () {
       DOM: makeDomDriver(createRenderTarget('parent-001')),
     });
 
-
     // Make assertions
     sources.DOM.select('#parent-001').events('click').observe((ev: Event) => {
       assert.strictEqual(ev.type, 'click');
@@ -141,7 +140,6 @@ describe('DOMSource.events()', function () {
     const { sources, dispose } = Motorcycle.run<any, any>(app, {
       DOM: makeDomDriver(createRenderTarget('parent-002')),
     });
-
 
     // Make assertions
     sources.DOM.select('#myElementId').events('click').observe((ev: Event) => {
@@ -176,7 +174,6 @@ describe('DOMSource.events()', function () {
     const { sources, dispose } = Motorcycle.run<any, any>(app, {
       DOM: makeDomDriver(createRenderTarget()),
     });
-
 
     // Make assertions
     sources.DOM.events('click').observe((ev: Event) => {
@@ -215,7 +212,6 @@ describe('DOMSource.events()', function () {
     const { sources, dispose } = Motorcycle.run<any, any>(app, {
       DOM: makeDomDriver(createRenderTarget()),
     });
-
 
     // Make assertions
     sources.DOM.select('.foo').select('.bar').events('click').observe((ev: Event) => {
@@ -256,7 +252,6 @@ describe('DOMSource.events()', function () {
     const { sources, dispose } = Motorcycle.run<any, any>(app, {
       DOM: makeDomDriver(createRenderTarget()),
     });
-
 
     // Make assertions
     sources.DOM.select('.clickable').events('click').take(1)
@@ -302,7 +297,6 @@ describe('DOMSource.events()', function () {
     const { sources, dispose } = Motorcycle.run<any, any>(app, {
       DOM: makeDomDriver(createRenderTarget('parent-002')),
     });
-
 
     // Make assertions
     sources.DOM.select('.blosh').events('click').observe((ev: Event) => {
@@ -372,6 +366,8 @@ describe('DOMSource.events()', function () {
   });
 
   it('should catch a blur event with useCapture', function (done) {
+    if (!document.hasFocus()) return done();
+
     function app() {
       return {
         DOM: most.of(div('.parent', [
@@ -406,6 +402,8 @@ describe('DOMSource.events()', function () {
   });
 
   it('should catch a blur event by default (no options)', function (done) {
+    if (!document.hasFocus()) return done();
+
     function app() {
       return {
         DOM: most.of(div('.parent', [

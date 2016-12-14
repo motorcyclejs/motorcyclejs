@@ -78,7 +78,6 @@ describe('isolateSink', function () {
       DOM: makeDomDriver(createRenderTarget()),
     });
 
-
     // Make assertions
     sinks.DOM.take(1).observe(function (vtree: VNode) {
       assert.strictEqual(vtree.tagName, 'h3');
@@ -124,7 +123,6 @@ describe('isolateSink', function () {
     const { sinks, dispose } = Motorcycle.run<any, any>(app, {
       DOM: makeDomDriver(createRenderTarget()),
     });
-
 
     // Make assertions
     sinks.DOM.skip(2).take(1).observe(function (vtree: VNode) {
@@ -362,7 +360,6 @@ describe('isolation', function () {
         done();
       });
 
-
   });
 
   it('should allow DOM.select()ing all elements with `*`', function (done) {
@@ -403,8 +400,6 @@ describe('isolation', function () {
         assert.strictEqual(elements.length, 4);
         done();
       });
-
-
   });
 
   it('should select() isolated element with tag + class', function (done) {
@@ -547,7 +542,6 @@ describe('isolation', function () {
       DOM: makeDomDriver(createRenderTarget()),
     });
 
-
     sources.DOM.select(':root').elements().skip(2).take(1).observe(function ([root]: HTMLElement[]) {
       const parentEl = root.querySelector('.parent') as HTMLElement;
       const foo: any = parentEl.querySelectorAll('.foo')[1];
@@ -594,7 +588,6 @@ describe('isolation', function () {
     const { sources, dispose } = Motorcycle.run<any, any>(main, {
       DOM: makeDomDriver(createRenderTarget()),
     });
-
 
     sources.DOM.select(':root').elements().skip(1).observe(function ([root]: HTMLElement[]) {
       setTimeout(() => {
@@ -652,7 +645,6 @@ describe('isolation', function () {
         assert.notStrictEqual(element, null);
         setTimeout(() => element.click());
       });
-
 
     });
 
@@ -743,7 +735,6 @@ describe('isolation', function () {
         setTimeout(() => element.click());
       });
 
-
     });
 
   it('should allow an isolated child to receive events when it is used as ' +
@@ -788,7 +779,6 @@ describe('isolation', function () {
         assert.notStrictEqual(element, null);
         setTimeout(() => element.click());
       });
-
 
     });
 
@@ -836,7 +826,6 @@ describe('isolation', function () {
       const { sources, dispose } = Motorcycle.run<any, any>(main, {
         DOM: makeDomDriver(createRenderTarget()),
       });
-
 
       sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
         const components = root.querySelectorAll('.btn');

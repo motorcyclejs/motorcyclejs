@@ -47,7 +47,6 @@ describe('issue 105', () => {
   });
 });
 
-
 function withUseCaptureFalse (sources: any) {
   // ORIGINAL PROBLEM:
   // -------

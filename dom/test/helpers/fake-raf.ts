@@ -15,7 +15,7 @@ function use() {
 function restore() {
   setTimeout(() => {
     window.requestAnimationFrame = original;
-  }, 2000)
+  }, 2000);
 }
 
 function step() {

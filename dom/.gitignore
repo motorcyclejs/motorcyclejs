@@ -40,3 +40,4 @@ jspm_packages
 # generated files
 lib
 .tmp
+test/bundle.js

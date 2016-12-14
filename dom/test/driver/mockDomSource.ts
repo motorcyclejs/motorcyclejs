@@ -136,7 +136,7 @@ describe('mockDOMSource', function () {
   it('multiple .select()s should return some observable if not defined', () => {
     const DOM = mockDomSource({});
     const domSource = DOM.select('.something').select('.other');
-    assert(domSource.events('click') instanceof most.Stream,'domSource.events(click) should be an Observable instance');
+    assert(domSource.events('click') instanceof most.Stream, 'domSource.events(click) should be an Observable instance');
     assert.strictEqual(domSource.elements() instanceof most.Stream, true, 'domSource.elements() should be an Observable instance');
   });
 });

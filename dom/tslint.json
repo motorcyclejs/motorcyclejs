@@ -3,6 +3,7 @@
     "@motorcycle/tslint"
   ],
   "rules": {
+    "eofline": true,
     "max-line-length": [
       150
     ],

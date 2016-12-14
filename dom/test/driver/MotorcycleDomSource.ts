@@ -20,14 +20,14 @@ describe('MotorcycleDomSource', () => {
       const domSource: DomSource = new MotorcycleDomSource(empty(), []);
       const namespace = domSource.select('hello').namespace();
 
-      assert.deepStrictEqual(namespace, ['hello']);
+      assert.deepEqual(namespace, ['hello']);
     });
 
     it('does not append to namespace when given `:root`', () => {
       const domSource: DomSource = new MotorcycleDomSource(empty(), []);
       const namespace = domSource.select(':root').namespace();
 
-      assert.deepStrictEqual(namespace, []);
+      assert.deepEqual(namespace, []);
     });
   });
 
@@ -70,17 +70,26 @@ describe('MotorcycleDomSource', () => {
         });
       });
 
-      it('returns svg elements', () => {
+      it('returns svg elements', (done) => {
         const svgElement = document.createElementNS(`http://www.w3.org/2000/svg`, 'svg');
-        svgElement.className = 'triangle';
+        svgElement.setAttribute('className', 'triangle');
+
+        try {
+          svgElement.classList.add('triangle');
+        } catch (e) {
+          // done();
+        }
 
         const element = h('div', svgElement);
         const domSource = new MotorcycleDomSource(just(element), ['.triangle']);
 
-        return domSource.elements().observe(elements => {
-          assert.strictEqual(elements.length, 1);
-          assert.strictEqual(elements[0], svgElement);
-        });
+        domSource.elements()
+          .observe(elements => {
+            assert.strictEqual(elements.length, 1);
+            assert.strictEqual(elements[0], svgElement);
+            done();
+          })
+          .catch(done);
       });
     });
   });
@@ -264,7 +273,7 @@ describe('MotorcycleDomSource', () => {
     it('returns a new DomSource with amended namespace', () => {
       const domSource = new MotorcycleDomSource(just(h('div')), []);
 
-      assert.deepStrictEqual(domSource.isolateSource(domSource, 'hello').namespace(), ['$$MOTORCYCLEDOM$$-hello']);
+      assert.deepEqual(domSource.isolateSource(domSource, 'hello').namespace(), ['$$MOTORCYCLEDOM$$-hello']);
     });
   });
 

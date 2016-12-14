@@ -23,7 +23,7 @@ function setValueOnNextFrame(obj: any, prop: string, value: any) {
 function updateStyle(formerVNode: VNode, vNode: VNode): void {
   let styleValue: any;
   let key: string;
-  let element: any = vNode.elm;
+  let element: HTMLElement = vNode.elm;
   let formerStyle: any = (formerVNode.data as any).style;
   let style: any = (vNode.data as any).style;
 
@@ -37,7 +37,10 @@ function updateStyle(formerVNode: VNode, vNode: VNode): void {
 
   for (key in formerStyle)
     if (!style[key])
-      element.style[key] = '';
+      if (key.startsWith('--'))
+        element.style.removeProperty(key);
+      else
+        (element.style as any)[key] = '';
 
   for (key in style) {
     styleValue = style[key];
@@ -50,7 +53,11 @@ function updateStyle(formerVNode: VNode, vNode: VNode): void {
           setValueOnNextFrame((element as any).style, key, styleValue);
       }
     } else if (key !== 'remove' && styleValue !== formerStyle[key]) {
-      element.style[key] = styleValue;
+      if (key.startsWith('--')) {
+        element.style.setProperty(key, styleValue);
+      }
+      else
+        (element.style as any)[key] = styleValue;
     }
   }
 }
