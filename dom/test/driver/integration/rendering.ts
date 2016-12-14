@@ -11,7 +11,7 @@ interface DomSinks {
   dom: Stream<VNode>;
 }
 
-describe.only('rendering', () => {
+describe('rendering', () => {
   it('patches text nodes initially present on rootElement', (done) => {
     function main() {
       const dom = just(
