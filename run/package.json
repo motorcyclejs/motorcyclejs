@@ -1,0 +1,71 @@
+{
+  "name": "@motorcycle/run",
+  "version": "0.0.0",
+  "description": "A Reactive Framework For Modern Browsers",
+  "main": "lib/commonjs",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test:lint": "tslint src/**/*.ts src/*.ts",
+    "test:unit": "TS_NODE_PROJECT=tsconfig.test.json mocha -r ts-node/register src/*.test.ts src/**/*.test.ts",
+    "test": "npm run test:lint && npm run test:unit",
+    "commit": "git-cz",
+    "changelog": "conventional-changelog --infile CHANGELOG.md --same-file --release-count 0 --preset angular",
+    "postchangelog": "git add CHANGELOG.md && git commit -m 'docs(CHANGELOG): append to changelog'",
+    "build:es2015": "tsc -P tsconfig.json",
+    "build:commonjs": "tsc -P tsconfig.commonjs.json",
+    "build": "npm run build:es2015 && npm run build:commonjs",
+    "preversion": "npm run build",
+    "postversion": "npm run changelog && git push origin master --tags && npm publish",
+    "release:minor": "npm version minor -m 'chore(package): v%s'",
+    "release:major": "npm version major -m 'chore(package): v%s'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/motorcyclejs/run.git"
+  },
+  "keywords": [
+    "motorcycle",
+    "cycle",
+    "most",
+    "mostjs",
+    "reactive",
+    "functional",
+    "framework"
+  ],
+  "author": "Tylor Steinberger <tlsteinberger167@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/motorcyclejs/run/issues"
+  },
+  "homepage": "https://github.com/motorcyclejs/run#readme",
+  "config": {
+    "ghooks": {
+      "commit-msg": "node ./node_modules/.bin/validate-commit-msg"
+    }
+  },
+  "jsnext:main": "lib/es2015/index.js",
+  "module": "lib/es2015/index.js",
+  "typings": "lib/es2015/index.d.ts",
+  "devDependencies": {
+    "@motorcycle/tslint": "^1.2.0",
+    "@types/mocha": "^2.2.33",
+    "@types/node": "^6.0.52",
+    "@types/sinon": "^1.16.33",
+    "commitizen": "^2.9.0",
+    "conventional-changelog-cli": "^1.2.0",
+    "cz-conventional-changelog": "^1.2.0",
+    "ghooks": "^1.3.2",
+    "mocha": "^3.2.0",
+    "sinon": "^1.17.6",
+    "ts-node": "^1.7.2",
+    "tslint": "^4.0.2",
+    "typescript": "^2.1.4",
+    "validate-commit-msg": "^2.8.2"
+  },
+  "dependencies": {
+    "most": "^1.1.1",
+    "most-subject": "^5.3.0"
+  }
+}
