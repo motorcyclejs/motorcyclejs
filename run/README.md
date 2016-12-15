@@ -16,7 +16,11 @@ This library **only** supports modern browsers with the feature.
 
 ## API
 
-```run<Sources, Sinks>(main: Component<Sources, Sinks>, effects: Component<Sinks, Sources>)```
+### `run`
+
+```typescript
+run<Sources, Sinks>(main: Component<Sources, Sinks>, effects: Component<Sinks, Sources>): RunReturn<Sources, Sinks>;
+```
 
 This function creates a circular dependencies between your `main` and `effects`
 functions. The input to `main` is the output of `effects` and the input to `effects`
@@ -53,8 +57,6 @@ function effects(sinks) {
 run(main, effects)
 ```
 
-`run` returns the type of `RunReturn<Sources, Sinks>`
-
 ## Types
 
 ### Component
@@ -65,7 +67,7 @@ export interface Component<Sources, Sinks> {
 }
 ```
 
-#### RunReturn
+### RunReturn
 
 ```typescript
 export interface RunReturn<Sources, Sinks> {
