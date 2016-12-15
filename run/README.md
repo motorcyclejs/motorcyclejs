@@ -19,7 +19,9 @@ This library **only** supports modern browsers with the feature.
 ### `run`
 
 ```typescript
-run<Sources, Sinks>(main: Component<Sources, Sinks>, effects: Component<Sinks, Sources>): RunReturn<Sources, Sinks>;
+run<Sources, Sinks>(
+  main: Component<Sources, Sinks>,
+  effects: Component<Sinks, Sources>): RunReturn<Sources, Sinks>;
 ```
 
 This function creates a circular dependencies between your `main` and `effects`
