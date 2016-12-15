@@ -24,7 +24,7 @@ run<Sources, Sinks>(
   effects: Component<Sinks, Sources>): RunReturn<Sources, Sinks>;
 ```
 
-This function creates a circular dependencies between your `main` and `effects`
+This function creates circular dependencies between your `main` and `effects`
 functions. The input to `main` is the output of `effects` and the input to `effects`
 is the output of `main`. The return values of `main` and `effects` both must be
 objects.
