@@ -11,9 +11,9 @@ npm install --save @motorcycle/dom
 
 ## Polyfills
 
-Internally this driver makes direct use of ES2015 `Map` and `Array.from`, if
-you plan to support browser that do not natively support these features a polyfill
-will need to be used.
+Internally this driver makes direct use of ES2015 `Map`, if you plan to support
+browser that do not natively support these features a polyfill will need to be
+used.
 
 # API
 
@@ -21,6 +21,7 @@ will need to be used.
 - [`mockDomSource`](#mockDomSource)
 - [`h`](#h)
 - [`hasCssSelector`](#hasCssSelector)
+- [`API Wrappers`](#api-wrappers)
 
 ### <a id="makeDomDriver"></a> `makeDomDriver(container, options)`
 
@@ -163,4 +164,52 @@ console.log(hasCssSelector('.bar', div('.foo'))) // false
 console.log(hasCssSelector('div', div('.foo'))) // true
 console.log(hasCssSelector('#foo', div('#foo'))) // true
 console.log(hasCssSelector('.foo .bar'), div('.foo.bar')) // ERROR!
+```
+
+### <a id="api-wrappers"></a> `API Wrappers`
+
+**`elements(domSource: DomSource): Stream<Element>`**
+
+A functional implementation for `DomSource.elements()`.
+
+**`events(eventType: string, domSource: DomSource): Stream<Event>`**
+
+A functional implementation for `DomSource.events(eventType)`. This function is
+curried by default.
+
+**`query(cssSelector: string, domSource: DomSource): DomSource`**
+
+A functional implementation for `DomSource.select(cssSelector)`. This function is
+curried by default.
+
+The name of this function is `query` and not `select` because it is a name conflict
+with the hyperscript helper function for the `SELECT` HTML element.
+
+**`useCapture(domSource: DomSource): DomSource`**
+
+Combined with `events`, this allows for an equivalent of
+`DomSource.events(eventType, { useCapture: true })`.
+
+```typescript
+import { events, useCapture } from '@motorcycle/dom'
+
+const event$ = events('click', useCapture(sources.dom));
+```
+
+## Types
+
+### `DomSource`
+
+```typescript
+export interface DomSource {
+  select(selector: string): DomSource;
+  elements<T extends Element>(): Stream<Array<T>>;
+
+  events<T extends Event>(eventType: StandardEvents, options?: EventsFnOptions): Stream<T>;
+  events<T extends Event>(eventType: string, options?: EventsFnOptions): Stream<T>;
+
+  namespace(): Array<string>;
+  isolateSource(source: DomSource, scope: string): DomSource;
+  isolateSink(sink: Stream<VNode>, scope: string): Stream<VNode>;
+}
 ```
