@@ -1,7 +1,7 @@
 {
   "name": "@motorcycle/dom",
   "description": "Standard DOM Driver for Motorcycle.js",
-  "version": "6.3.0",
+  "version": "6.4.0",
   "author": "Tylor Steinberger <tlsteinberger167@gmail.com>",
   "bugs": {
     "url": "https://github.com/motorcyclejs/dom/issues"
