@@ -4,6 +4,9 @@ import { Subject } from 'most-subject';
 export type Source = any;
 export type Sink<T> = Stream<T>;
 
+export type Sources = Object<Source>;
+export type Sinks = Object<Sink<any>>;
+
 export type DisposableSource = { dispose?: () => void };
 export type ProxySinks = Object<Subject<any>>;
 
