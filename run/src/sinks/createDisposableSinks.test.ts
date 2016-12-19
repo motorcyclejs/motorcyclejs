@@ -1,4 +1,3 @@
-import * as assert from 'assert';
 import { periodic } from 'most';
 import { sync } from 'most-subject';
 import { createDisposableSinks } from './createDisposableSinks';

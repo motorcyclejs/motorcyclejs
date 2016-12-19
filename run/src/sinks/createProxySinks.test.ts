@@ -1,6 +1,5 @@
 import * as assert from 'assert';
 import { Stream, just } from 'most';
-import { sync } from 'most-subject';
 import { createProxySinks } from './createProxySinks';
 
 describe('createProxySinks', () => {

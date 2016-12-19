@@ -11,11 +11,11 @@ export interface Object<T> {
   [key: string]: T;
 }
 
-export interface Component<Sources, Sinks> {
+export interface Component<Sources extends Object<Source>, Sinks extends Object<Sink<any>>> {
   (sources: Sources): Sinks;
 }
 
-export interface RunReturn<Sources, Sinks> {
+export interface RunReturn<Sources extends Object<Source>, Sinks extends Object<Sink<any>>> {
   sources: Sources;
   sinks: Sinks;
   dispose: Function;

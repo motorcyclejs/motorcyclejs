@@ -1,5 +1,4 @@
 import * as assert from 'assert';
-import * as sinon from 'sinon';
 import * as most from 'most';
 import { sync } from 'most-subject';
 
@@ -142,7 +141,7 @@ describe('Motorcycle Core', () => {
           };
         }
 
-        const { sinks, dispose } =
+        const { dispose } =
           Motorcycle.run<any, { test: most.Stream<number> }>(main, effects);
 
         setTimeout(() => {

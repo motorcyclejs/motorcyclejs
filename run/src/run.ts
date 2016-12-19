@@ -1,6 +1,6 @@
 import { Subscription } from 'most';
 import { sync } from 'most-subject';
-import { Component, Object, Sink, ProxySinks, RunReturn } from './types';
+import { Component, Object, Sink, RunReturn } from './types';
 import { createProxySinks, replicateSinks, createDisposableSinks } from './sinks';
 import { createDispose } from './dispose';
 
