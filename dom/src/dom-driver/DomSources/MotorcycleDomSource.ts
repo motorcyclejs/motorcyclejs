@@ -9,7 +9,7 @@ import { elementMap } from './elementMap';
 import { SCOPE_PREFIX } from './common';
 import { isInScope } from './isInScope';
 import { generateScope, generateSelector } from './namespaceParsers';
-import { createScopedEventStream } from './createScopedEventStream';
+import { createEventStream } from './createEventStream';
 
 const SCOPE_SEPARATOR = `~`;
 
@@ -87,13 +87,22 @@ export class MotorcycleDomSource implements DomSource {
         .multicast();
 
     const delegator = this._delegator;
+    const scope = this._scope;
+    const selector = this._selector;
 
     const eventListenerInput: EventListenerInput =
       this.createEventListenerInput(eventType, useCapture);
 
+    const checkElementIsInScope = isInScope(scope);
+
     return this._rootElement$
       .map(findMostSpecificElement(this._scope))
-      .map(element => delegator.addEventListener(element, eventListenerInput))
+      .skipRepeats()
+      .map(function createScopedEventStream(element: Element) {
+        const event$ = delegator.addEventListener(element, eventListenerInput);
+
+        return scopeEventStream(event$, checkElementIsInScope, selector, element);
+      })
       .switch()
       .multicast();
   }
@@ -115,13 +124,11 @@ export class MotorcycleDomSource implements DomSource {
 
   private createEventListenerInput(eventType: string, useCapture: boolean) {
     const scope = this._scope;
-    const selector = this._selector;
     const delegator = this._delegator;
 
-    const checkElementIsInScope = isInScope(scope);
     const scopeMap = delegator.findScopeMap(eventType);
     const createEventStreamFromElement =
-      createScopedEventStream(selector, eventType, useCapture, checkElementIsInScope);
+      createEventStream(eventType, useCapture);
 
     const scopeWithUseCapture: string =
       scope + SCOPE_SEPARATOR + useCapture;
@@ -150,4 +157,22 @@ function findMatchingElements(selector: string, checkIsInScope: (element: HTMLEl
 
     return matchedNodesArray.filter(checkIsInScope);
   };
+}
+
+function scopeEventStream(
+  eventStream: Stream<Event>,
+  checkElementIsInScope: (element: Element) => boolean,
+  selector: string,
+  element: Element,
+): Stream<Event> {
+  return eventStream
+    .filter(ev => checkElementIsInScope(ev.target as HTMLElement))
+    .filter(ev => ensureMatches(selector, element, ev))
+    .multicast();
+}
+
+function ensureMatches(selector: string, element: Element, ev: Event) {
+  return !selector ||
+    (ev.target as Element).matches(selector) ||
+    element.matches(selector);
 }
