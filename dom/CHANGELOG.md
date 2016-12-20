@@ -4,7 +4,7 @@
 
 ### Bug Fixes
 
-* **MotorcycleDomSource:** correctly simulate events ([#118](https://github.com/motorcyclejs/dom/issues/118)) ([bbf6aed](https://github.com/motorcyclejs/dom/commit/bbf6aed))
+* **MotorcycleDomSource:** correctly simulate events ([#118](https://github.com/motorcyclejs/dom/issues/118)) ([9bd15be](https://github.com/motorcyclejs/dom/commit/9bd15be))
 
 
 
@@ -14,17 +14,27 @@
 
 ### Bug Fixes
 
-* **events:** fix event delegation ([#117](https://github.com/motorcyclejs/dom/issues/117)) ([a480cea](https://github.com/motorcyclejs/dom/commit/a480cea))
+* **events:** fix event delegation ([#117](https://github.com/motorcyclejs/dom/issues/117)) ([10f6fb4](https://github.com/motorcyclejs/dom/commit/10f6fb4))
 
 
 
 <a name="6.4.0"></a>
-# [6.4.0](https://github.com/motorcyclejs/dom/compare/v6.3.0...v6.4.0) (2016-12-17)
+# [6.4.0](https://github.com/motorcyclejs/dom/compare/v6.3.0...v6.4.0) (2016-12-20)
+
+
+### Features
+
+* **api-wrappers:** implement functional api wrappers for DomSource ([9ad262b](https://github.com/motorcyclejs/dom/commit/9ad262b))
 
 
 
 <a name="6.3.0"></a>
-# [6.3.0](https://github.com/motorcyclejs/dom/compare/v6.2.0...v6.3.0) (2016-12-14)
+# [6.3.0](https://github.com/motorcyclejs/dom/compare/v6.2.0...v6.3.0) (2016-12-20)
+
+
+### Features
+
+* **hasCssSelector:** implement hasCssSelector function ([05cc55f](https://github.com/motorcyclejs/dom/commit/05cc55f))
 
 
 
