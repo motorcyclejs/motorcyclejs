@@ -172,7 +172,11 @@ function scopeEventStream(
 }
 
 function ensureMatches(selector: string, element: Element, ev: Event) {
-  return !selector ||
-    (ev.target as Element).matches(selector) ||
-    element.matches(selector);
+  if (!selector) return true;
+
+  for (let target = ev.target as Element; target !== element; target = target.parentElement as Element)
+    if (target.matches(selector))
+      return true;
+
+  return element.matches(selector);
 }
