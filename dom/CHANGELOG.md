@@ -11,11 +11,51 @@
 <a name="6.4.0"></a>
 # [6.4.0](https://github.com/motorcyclejs/dom/compare/v6.3.0...v6.4.0) (2016-12-17)
 
+### Features
 
+**dom:** feat(api-wrappers): implement functional api wrappers for DomSource
+
+A functional implementation for `DomSource.elements()`.
+
+`events(eventType: string, domSource: DomSource): Stream<Event>`
+
+A functional implementation for `DomSource.events(eventType)`. This function is
+curried by default.
+
+`query(cssSelector: string, domSource: DomSource): DomSource`
+
+A functional implementation for `DomSource.select(cssSelector)`. This function is
+curried by default. The name of this function is `query` and not `select`
+because it is a name conflict with the hyperscript helper function for the
+`SELECT` HTML element.
+
+`useCapture(domSource: DomSource): DomSource`
+
+Combined with `events`, this allows for an equivalent of
+`DomSource.events(eventType, { useCapture: true })`.
 
 <a name="6.3.0"></a>
 # [6.3.0](https://github.com/motorcyclejs/dom/compare/v6.2.0...v6.3.0) (2016-12-14)
 
+### Features
+
+**dom:** feat(hasCssSelector): implement hasCssSelector function
+
+hasCssSelector(cssSelector: string, vNode: VNode): boolean
+
+Given a CSS selector without spaces, this function does not search children, it
+will return true if the given CSS selector matches that of the VNode and false
+if it does not. If a CSS selector with spaces is given it will throw an error.
+
+```typescript
+import { hasCssSelector, div } from '@motorcycle/dom';
+
+console.log(hasCssSelector('.foo', div('.foo'))) // true
+console.log(hasCssSelector('.bar', div('.foo'))) // false
+console.log(hasCssSelector('div', div('.foo'))) // true
+console.log(hasCssSelector('#foo', div('#foo'))) // true
+console.log(hasCssSelector('.foo .bar'), div('.foo.bar')) // ERROR!
+```
 
 
 <a name="6.2.0"></a>
