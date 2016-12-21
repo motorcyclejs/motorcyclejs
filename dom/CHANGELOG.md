@@ -1,3 +1,13 @@
+<a name="6.7.0"></a>
+# [6.7.0](https://github.com/motorcyclejs/dom/compare/v6.6.0...v6.7.0) (2016-12-21)
+
+
+### Bug Fixes
+
+* **MotorcycleDomSource:** fix selecting of elements with no prior select() ([#121](https://github.com/motorcyclejs/dom/issues/121)) ([f548609](https://github.com/motorcyclejs/dom/commit/f548609))
+
+
+
 <a name="6.6.0"></a>
 # [6.6.0](https://github.com/motorcyclejs/dom/compare/v6.5.0...v6.6.0) (2016-12-20)
 
