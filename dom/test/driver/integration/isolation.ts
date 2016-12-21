@@ -4,7 +4,8 @@ import { h, svg, div, span, h2, h3, h4, button, makeDomDriver, VNode, DomSource 
 import isolate from '@cycle/isolate';
 import * as most from 'most';
 import { sync, hold } from 'most-subject';
-import { createRenderTarget, interval } from '../../helpers';
+import { createRenderTarget } from '../../helpers/createRenderTarget';
+import { interval } from '../../helpers/interval';
 
 describe('isolateSource', function () {
   it('should have the same effect as DOM.select()', function (done) {

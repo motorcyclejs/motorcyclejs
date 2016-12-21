@@ -7,7 +7,6 @@ addons:
   firefox: latest
 
 node_js:
-  - 6
   - 7
 
 before_install:

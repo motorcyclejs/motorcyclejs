@@ -64,6 +64,10 @@ export class MotorcycleDomSource implements DomSource {
 
     const selector = this._selector;
     const scope = this._scope;
+
+    if (!selector)
+      return this._rootElement$.map(findMostSpecificElement(scope)).map(Array);
+
     const matchElement = findMatchingElements(selector, isInScope(scope));
 
     return this._rootElement$.map(matchElement);

@@ -2,7 +2,7 @@ import * as assert from 'assert';
 import * as Motorcycle from '@motorcycle/core';
 import { div, h4, h3, h2, input, makeDomDriver } from '../../../src';
 import * as most from 'most';
-import { createRenderTarget } from '../../helpers';
+import { createRenderTarget } from '../../helpers/createRenderTarget';
 
 describe('DOMSource.events()', function () {
   it('should catch a basic click interaction Observable', function (done) {

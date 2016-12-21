@@ -5,7 +5,7 @@ export function generateSelector(namespace: Array<string>): string {
 }
 
 function findSelector(selector: string) {
-  return !selector.startsWith(SCOPE_PREFIX);
+  return !findScope(selector);
 }
 
 export function generateScope(namespace: Array<string>) {
@@ -15,5 +15,5 @@ export function generateScope(namespace: Array<string>) {
 }
 
 function findScope(selector: string): boolean {
-  return selector.startsWith(SCOPE_PREFIX);
+  return selector.indexOf(SCOPE_PREFIX) === 0;
 }

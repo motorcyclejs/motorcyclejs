@@ -4,6 +4,7 @@ import { DomSource, div, button } from '../../src';
 import * as h from 'hyperscript';
 import { MotorcycleDomSource } from '../../src/dom-driver/DomSources';
 import { IsolateModule } from '../../src/modules/IsolateModule';
+import { SCOPE_PREFIX } from '../../src/dom-driver/DomSources/common';
 
 describe('MotorcycleDomSource', () => {
   it('implements DomSource interface', () => {
@@ -44,6 +45,31 @@ describe('MotorcycleDomSource', () => {
     });
 
     describe('with non-empty namespace', () => {
+      describe('with no previous select', () => {
+        it('returns an array of most specific element', () => {
+          const element = document.createElement('div');
+          const scope = SCOPE_PREFIX + '1';
+
+          const wrongElement = document.createElement('div');
+
+          const isolatedElement = document.createElement('div');
+          isolatedElement.setAttribute('data-isolate', scope);
+
+          element.appendChild(wrongElement);
+          element.appendChild(isolatedElement);
+
+          const domSource = new MotorcycleDomSource(just(element), [scope]);
+
+          return domSource.elements().observe(elements => {
+            assert.strictEqual(elements.length, 1);
+            assert.strictEqual(elements[0].tagName, 'DIV');
+            assert.notStrictEqual(elements[0], element, 'Should not match rootElement');
+            assert.notStrictEqual(elements[0], wrongElement, 'Should not match non-isolated element');
+            assert.strictEqual(elements[0], isolatedElement);
+          });
+        });
+      });
+
       it('returns an array of elements matching a given selector', () => {
         const element = h('div', h('i.hello'), h('a.hello'), h('b.hello'), h('a.hello2'));
         const domSource = new MotorcycleDomSource(just(element), []);

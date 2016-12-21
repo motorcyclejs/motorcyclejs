@@ -3,6 +3,10 @@
   "description": "Standard DOM Driver for Motorcycle.js",
   "version": "6.6.0",
   "author": "Tylor Steinberger <tlsteinberger167@gmail.com>",
+  "main": "lib/commonjs",
+  "module": "lib/es2015/index.js",
+  "jsnext:main": "lib/es2015/index.js",
+  "typings": "lib/es2015/index.d.ts",
   "bugs": {
     "url": "https://github.com/motorcyclejs/dom/issues"
   },
@@ -11,6 +15,13 @@
       "commit-msg": "node ./node_modules/.bin/validate-commit-msg"
     }
   },
+  "dependencies": {
+    "@most/dom-event": "^1.3.2",
+    "@most/prelude": "^1.4.1",
+    "@motorcycle/core": "^1.6.0",
+    "most": "^1.1.1",
+    "most-subject": "^5.2.0"
+  },
   "devDependencies": {
     "@cycle/isolate": "^1.4.0",
     "@motorcycle/core": "^1.6.0",
@@ -18,28 +29,24 @@
     "@types/hyperscript": "0.0.1",
     "@types/mocha": "^2.2.33",
     "@types/node": "0.0.2",
-    "browserify": "^13.1.1",
     "commitizen": "^2.8.6",
     "conventional-changelog-cli": "^1.2.0",
+    "coveralls": "^2.11.15",
     "cz-conventional-changelog": "^1.2.0",
-    "es6-map": "^0.1.4",
     "ghooks": "^1.3.2",
     "hyperscript": "^2.0.2",
-    "jsdom": "^9.8.3",
-    "jsdom-global": "^2.1.0",
     "karma": "^1.3.0",
     "karma-chrome-launcher": "^2.0.0",
+    "karma-coveralls": "^1.1.2",
     "karma-firefox-launcher": "^1.0.0",
     "karma-mocha": "^1.3.0",
+    "karma-typescript": "^2.1.5",
     "mocha": "^3.2.0",
-    "ts-node": "^1.7.0",
-    "tsify": "^2.0.3",
     "tslint": "^4.0.2",
     "typescript": "^2.1.4",
     "validate-commit-msg": "^2.8.2"
   },
   "homepage": "https://github.com/motorcyclejs/dom#readme",
-  "jsnext:main": "lib/es2015/index.js",
   "keywords": [
     "dom",
     "events",
@@ -49,16 +56,14 @@
     "virtual-dom"
   ],
   "license": "MIT",
-  "main": "lib/commonjs",
-  "module": "lib/es2015/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/motorcyclejs/dom.git"
   },
   "scripts": {
     "build": "npm run build:es2015 && npm run build:commonjs",
-    "build:commonjs": "tsc -P tsconfig.commonjs.json",
-    "build:es2015": "tsc -P tsconfig.json",
+    "build:commonjs": "tsc -P .config/tsconfig.commonjs.json",
+    "build:es2015": "tsc -P .config/tsconfig.es2015.json",
     "changelog": "conventional-changelog --infile CHANGELOG.md --same-file --release-count 0 --preset angular",
     "commit": "git-cz",
     "postchangelog": "git add CHANGELOG.md && git commit -m 'docs(CHANGELOG): append to changelog'",
@@ -66,18 +71,10 @@
     "preversion": "npm run build",
     "release:major": "npm version major -m 'chore(package): v%s'",
     "release:minor": "npm version minor -m 'chore(package): v%s'",
-    "test": "npm run test:lint && npm run test:unit && npm run test:browser",
-    "test:browser": "browserify -p [ tsify -p test/tsconfig.json ] test/index.ts -o test/bundle.js && karma start --single-run",
-    "test:debug": "TS_NODE_PROJECT=test/tsconfig.json node --debug-brk --inspect ./node_modules/.bin/_mocha test/**/*.ts",
+    "test": "npm run test:lint && npm run test:karma",
+    "test:karma": "karma start --single-run",
     "test:lint": "tslint src/**/*.ts src/*.ts test/*.ts test/**/*.ts test/**/**/*.ts test/**/**/**/*.ts",
-    "test:unit": "TS_NODE_PROJECT=test/tsconfig.json mocha test/**/*.ts test/**/**/*.ts"
-  },
-  "typings": "lib/es2015/index.d.ts",
-  "dependencies": {
-    "@most/dom-event": "^1.3.2",
-    "@most/prelude": "^1.4.1",
-    "@motorcycle/core": "^1.6.0",
-    "most": "^1.1.1",
-    "most-subject": "^5.2.0"
+    "test:sauce": "export SAUCE=true && npm run test:karma",
+    "test:unit": "export UNIT=true && npm run test:karma"
   }
 }
