@@ -19,5 +19,7 @@
     "history/**/*.ts",
     "router/**/*.ts"
   ],
-  "exclude": []
+  "exclude": [
+    "**/node_modules/**"
+  ]
 }
