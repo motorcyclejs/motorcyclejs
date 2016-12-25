@@ -26,11 +26,6 @@ module.exports = function (config) {
 
       browsers: [],
 
-      coverageReporter: {
-        type: 'lcov',
-        dir: 'coverage'
-      },
-
       karmaTypescriptConfig: {
         tsconfig: 'tsconfig.json',
         reports: {
@@ -43,10 +38,8 @@ module.exports = function (config) {
   if (process.env.UNIT)
     options.browsers.push('Chrome')
 
-  if (process.env.TRAVIS) {
+  if (process.env.TRAVIS)
     options.browsers.push('Chrome_travis_ci', 'Firefox')
-    options.reporters.push('coverage', 'coveralls')
-  }
 
   if (options.browsers.length === 0)
     options.browsers.push('Chrome', 'Firefox')
