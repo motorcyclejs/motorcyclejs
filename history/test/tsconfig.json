@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "target": "es5",
+    "lib": [
+      "dom",
+      "es5",
+      "es2015"
+    ],
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "types": [
+      "mocha",
+      "node"
+    ],
+    "outDir": ".tmp"
+  },
+  "include": [
+    "../custom-typings/*.d.ts",
+    "./**/*.ts"
+  ]
+}
