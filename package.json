@@ -6,7 +6,7 @@
   "scripts": {
     "build": "northbrook tsc",
     "test": "northbrook tslint && northbrook mocha && northbrook exec -- npm test",
-    "test:ci": "northbrook tslint && nortbrook mocha --changed && northbrook exec --npm test",
+    "test:ci": "northbrook tslint && northbrook mocha --changed && northbrook exec --npm test",
     "release": "northbrook release",
     "postinstall": "northbrook exec -- npm install"
   },
