@@ -1,8 +1,6 @@
 module.exports = function (config) {
   const options =
     {
-      basePath: '../',
-
       files: [
         'src/**/*.ts',
         'test/**/*.ts',
@@ -54,7 +52,7 @@ module.exports = function (config) {
     options.browsers.push('Chrome', 'Firefox')
 
   if (options.reporters.length === 0)
-    options.reports.push('progress', 'karma-typescript')
+    options.reporters.push('progress', 'karma-typescript')
 
   config.set(options);
 }

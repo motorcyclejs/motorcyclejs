@@ -30,16 +30,16 @@ function updateAttrs(oldVnode: VNode, vnode: VNode) {
     if (old !== cur) {
       // TODO: add support to namespaced attributes (setAttributeNS)
       if (!cur && booleanAttrsDict[key]) {
-        (<HTMLElement> elm).removeAttribute(key);
+        (elm as HTMLElement).removeAttribute(key);
       } else {
-        (<HTMLElement> elm).setAttribute(key, cur);
+        (elm as HTMLElement).setAttribute(key, cur);
       }
     }
   }
   //remove removed attributes
   for (key in oldAttrs) {
     if (!(key in attrs)) {
-      (<HTMLElement> elm).removeAttribute(key);
+      (elm as HTMLElement).removeAttribute(key);
     }
   }
 }

@@ -35,7 +35,6 @@ function hh <T extends SVGElement>(tagName: SvgTagNames): SvgHyperscriptHelperFn
   };
 };
 
-
 function isValidString (param: any): boolean {
   return typeof param === 'string' && param.length > 0;
 }

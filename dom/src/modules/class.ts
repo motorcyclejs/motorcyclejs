@@ -9,7 +9,7 @@ function updateClass(oldVnode: VNode, vnode: VNode) {
 
   for (name in oldClass) {
     if (!klass[name]) {
-      (<HTMLElement>elm).classList.remove(name);
+      (elm as HTMLElement).classList.remove(name);
     }
   }
   for (name in klass) {

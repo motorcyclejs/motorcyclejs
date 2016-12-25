@@ -17,4 +17,3 @@ export interface EventsFn {
   <T extends Event>(eventType: string): (domSource: DomSource) => Stream<T>;
   <T extends Event>(eventType: string, domSource: DomSource): Stream<T>;
 }
-

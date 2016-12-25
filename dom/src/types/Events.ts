@@ -1,6 +1,8 @@
 // All events types described at
 // https://developer.mozilla.org/en-US/docs/Web/Events
 
+// tslint:disable:max-file-line-count
+
 export type ResourceEvents =
   'cached' | 'error' | 'abort' | 'load' | 'beforeunload' | 'unload';
 

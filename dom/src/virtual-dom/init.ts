@@ -1,3 +1,5 @@
+/* tslint:disable:max-line-length */
+/* tslint:disable:no-shadowed-variable */
 import { Module, SnabbdomAPI, VNode, VNodeData } from '../types';
 import { MotorcycleVNode } from './MotorcycleVNode';
 import is from './is';
