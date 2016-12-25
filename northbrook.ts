@@ -24,8 +24,8 @@ const config: NorthbrookConfig =
     tslint: {
       patterns: [
         'src/**/.ts',
-      ]
-    }
+      ],
+    },
   };
 
 export = config;
