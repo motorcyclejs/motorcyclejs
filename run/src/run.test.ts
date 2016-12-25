@@ -112,7 +112,7 @@ describe('Motorcycle Core', () => {
         });
       });
 
-      it('stops sinkProxies from emitting', (done) => {
+      it('stops sinkProxies from emitting', (done: Function) => {
         const test = most.periodic(100)
           .scan((x) => x + 1, 0);
         // at time 0 - scan emits seed value 0
@@ -149,7 +149,7 @@ describe('Motorcycle Core', () => {
         }, 250);
       });
 
-      it('stops Sources with a `dispose` method from emitting', (done) => {
+      it('stops Sources with a `dispose` method from emitting', (done: Function) => {
         const test = most.periodic(100)
           .scan((x) => x + 1, 0);
         // at time 0 - scan emits seed value 0
@@ -194,7 +194,7 @@ describe('Motorcycle Core', () => {
             }
           })
           .then(() => done())
-          .catch(done);
+          .catch((err: Error) => done(err));
       });
     });
   });

@@ -46,7 +46,7 @@ describe('replicateSinks', () => {
       }, 10);
     });
 
-    it('logs errors from sinks to console', (done) => {
+    it('logs errors from sinks to console', (done: Function) => {
       const sandbox = sinon.sandbox.create();
       const stub = sandbox.stub(console, 'error');
 
