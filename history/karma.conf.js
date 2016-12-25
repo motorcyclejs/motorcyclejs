@@ -2,12 +2,18 @@ module.exports = function (config) {
   const configuration =
     {
       files: [
-        'test/browser/bundle.js'
+        'src/**/*.ts',
+        'test/**/*.ts',
       ],
 
       frameworks: [
-        'mocha'
+        'mocha',
+        'karma-typescript'
       ],
+
+      preprocessors: {
+        '**/*.ts': ['karma-typescript']
+      },
 
       customLaunchers: {
         Chrome_travis_ci: {
@@ -19,6 +25,14 @@ module.exports = function (config) {
       browsers: [
         'Chrome',
       ],
+
+      karmaTypescriptConfig: {
+        tsconfig: 'tsconfig.json',
+        reports: {
+          "html": "coverage",
+          "lcovonly": "coverage",
+        }
+      }
     }
 
   if (process.env.TRAVIS)

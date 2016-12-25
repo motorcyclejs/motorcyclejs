@@ -1,51 +1,49 @@
 import * as assert from 'assert';
 import { Stream, Subscriber } from 'most';
-import { async } from 'most-subject';
-import { historyDriver, Location, HistoryInput } from '../../src';
-
-window.onpopstate = function (ev) {
-  ev.preventDefault();
-};
+import { sync } from 'most-subject';
+import { historyDriver, Location, HistoryInput } from '../src';
 
 describe(`historyDriver`, () => {
   beforeEach(() => {
-    window.history.replaceState(null, '', '/');
+    try {
+      window.history.replaceState(null, '', '/');
+    } catch (e) {}
   });
 
-  it('should create a location from pathname', (done) => {
+  it('should create a location from pathname', (done: Function) => {
     const { stream, listen } = buildTest(done);
 
     listen(function (location: Location) {
       assert.strictEqual(location.path, '/test');
+      done();
     });
 
     stream.next('/test');
-    stream.complete();
   });
 
-  it('should create a location from PushHistoryInput', (done) => {
+  it('should create a location from PushHistoryInput', (done: Function) => {
     const { stream, listen } = buildTest(done);
 
     listen(function (location: Location) {
       assert.strictEqual(location.path, '/test');
+      done();
     });
 
-    stream.next({ type: 'push', pathname: '/test' });
-    stream.complete();
+    stream.next({ type: 'push', path: '/test' });
   });
 
-  it('should create a location from ReplaceHistoryInput', (done) => {
+  it('should create a location from ReplaceHistoryInput', (done: Function) => {
     const { stream, listen } = buildTest(done);
 
     listen(function (location: Location) {
       assert.strictEqual(location.path, '/test');
+      done();
     });
 
-    stream.next({ type: 'replace', pathname: '/test' });
-    stream.complete();
+    stream.next({ type: 'replace', path: '/test' });
   });
 
-  it('should allow going back a route with type `go`', (done) => {
+  it('should allow going back a route with type `go`', (done: Function) => {
     const { stream, listen } = buildTest(done);
 
     const expected = [
@@ -56,15 +54,16 @@ describe(`historyDriver`, () => {
 
     listen(function (location: Location) {
       assert.strictEqual(location.path, expected.shift());
+
+      if (expected.length === 0) done();
     });
 
     stream.next('/test');
     stream.next('/other');
     stream.next({ type: 'go', amount: -1 });
-    stream.complete();
   });
 
-  it('should allow going back a route with type `goBack`', (done) => {
+  it('should allow going back a route with type `goBack`', (done: Function) => {
     setTimeout(() => {
       const { stream, listen } = buildTest(done);
 
@@ -76,16 +75,17 @@ describe(`historyDriver`, () => {
 
       listen(function (location: Location) {
         assert.strictEqual(location.path, expected.shift());
+
+        if (expected.length === 0) done();
       });
 
       stream.next('/test');
       stream.next('/other');
       stream.next({ type: 'goBack' });
-      stream.complete();
     });
   });
 
-  it('should allow going forward a route with type `go`', (done) => {
+  it('should allow going forward a route with type `go`', (done: Function) => {
     const { stream, listen } = buildTest(done);
 
     const expected = [
@@ -97,16 +97,26 @@ describe(`historyDriver`, () => {
 
     listen(function (location: Location) {
       assert.strictEqual(location.path, expected.shift());
+
+      if (expected.length === 0) done();
     });
 
-    stream.next('/test');
-    stream.next('/other');
-    stream.next({ type: 'go', amount: -1 });
-    stream.next({ type: 'go', amount: 1 });
-    stream.complete();
+    const commands =
+      [
+        '/test',
+        '/other',
+        { type: 'go', amount: -1 },
+        { type: 'go', amount: 1 },
+      ]
+
+    commands.forEach(function (cmd: string, i: number) {
+      setTimeout(function() {
+        stream.next(cmd);
+      }, i * 10);
+    });
   });
 
-  it('should allow going forward a route with type `goForward`', (done) => {
+  it('should allow going forward a route with type `goForward`', (done: Function) => {
     const { stream, listen } = buildTest(done);
 
     const expected = [
@@ -123,16 +133,24 @@ describe(`historyDriver`, () => {
       }
     });
 
-    stream.next('/test');
-    stream.next('/other');
-    stream.next({ type: 'go', amount: -1 });
-    stream.next({ type: 'goForward' });
-    stream.complete();
+    const commands = [
+      '/test',
+      '/other',
+      { type: 'goBack' },
+      { type: 'goForward' },
+    ]
+
+    commands.forEach(function (cmd: string, i: number) {
+      setTimeout(function() {
+        stream.next(cmd);
+      }, i * 10);
+    });
+
   });
 });
 
 function buildTest (done: Function) {
-  const stream = async<any>();
+  const stream = sync<any>();
 
   const send = (x: HistoryInput | string) => stream.next(x);
 

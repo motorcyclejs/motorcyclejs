@@ -1,6 +1,0 @@
-node_modules
-lib
-*.log
-.tmp
-test/.tmp
-bundle.js
