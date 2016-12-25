@@ -2,13 +2,13 @@
 
 > Type-Safe Functional and Reactive Web Framework
 
-<!-- Write a short summary about your library here -->
+This is the home to the official packages of Motorcycle.js
 
-## Let me have it!
-```sh
-npm install --save Motorcycle.js
-```
+## Packages
 
-## API
+Each package has a README with more information!
 
-<!-- Describe your API here -->
+- [`@motorcycle/run - The Heart and Soul`](https://github.com/motorcyclejs/motorcyclejs/tree/master/run)
+- [`@motorcycle/dom - DOM Interactions`](https://github.com/motorcyclejs/motorcyclejs/tree/master/dom)
+- [`@motorcycle/history - History API Interactions`](https://github.com/motorcyclejs/motorcyclejs/tree/master/history)
+- [`@motorcycle/router - Reactive Routing`](https://github.com/motorcyclejs/motorcyclejs/tree/master/router)
