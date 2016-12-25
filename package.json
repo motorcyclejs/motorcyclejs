@@ -1,0 +1,57 @@
+{
+  "private": true,
+  "name": "motorcyclejs",
+  "version": "1.0.0",
+  "description": "Type-Safe Functional and Reactive Web Framework",
+  "scripts": {
+    "build": "northbrook tsc",
+    "test": "northbrook tslint && northbrook mocha && northbrook exec -- npm test",
+    "release": "northbrook release",
+    "postinstall": "northbrook exec -- npm install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/motorcyclejs/motorcyclejs.git"
+  },
+  "keywords": [
+    "motorcyclejs",
+    "motorcycle",
+    "cyclejs",
+    "cycle",
+    "functional",
+    "reactive",
+    "typescript",
+    "typesafe",
+    "type-safe",
+    "most",
+    "mostjs",
+    "most.js",
+    "web",
+    "framework"
+  ],
+  "author": "Tylor Steinberger <tlsteinberger167@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/motorcyclejs/motorcyclejs/issues"
+  },
+  "homepage": "https://github.com/motorcyclejs/motorcyclejs#readme",
+  "config": {
+    "ghooks": {
+      "commit-msg": "node ./node_modules/.bin/validate-commit-msg"
+    }
+  },
+  "jsnext:main": "lib/es2015/index.js",
+  "module": "lib/es2015/index.js",
+  "typings": "lib/es2015/index.d.ts",
+  "devDependencies": {
+    "@motorcycle/tslint": "^1.3.0",
+    "@northbrook/mocha": "^2.1.1",
+    "@northbrook/tsc": "^1.0.3",
+    "@northbrook/tslint": "^2.1.4",
+    "@types/sinon": "^1.16.33",
+    "northbrook": "^4.1.5",
+    "sinon": "^1.17.6",
+    "tslint": "^4.2.0",
+    "typescript": "^2.1.4"
+  }
+}
