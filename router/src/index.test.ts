@@ -3,13 +3,13 @@ import { Stream, periodic, of, never } from 'most';
 import { routerDriver, Router, RouterSource, HistoryInput, Location } from '../src';
 
 describe('@motorcycle/router', function () {
-  it('changes the route', (done) => {
+  it('changes the route', (done: Function) => {
     routerDriver(from(['/path'])).history().skip(1)
       .observe((location: Location) => {
         assert.strictEqual(location.path, '/path');
         done();
       })
-      .catch(done);
+      .catch(err => done(err));
   });
 
   describe('path()', () => {
@@ -49,7 +49,7 @@ describe('@motorcycle/router', function () {
   });
 
   describe('define()', () => {
-    it('should match routes against a definition object', done => {
+    it('should match routes against a definition object', (done: Function) => {
       const defintion = {
         '/some': {
           '/route': 123,
@@ -71,7 +71,7 @@ describe('@motorcycle/router', function () {
       });
     });
 
-    it('should respect prior filtering by path()', done => {
+    it('should respect prior filtering by path()', (done: Function) => {
       const defintion = {
         '/correct': {
           '/route': 123,
@@ -94,7 +94,7 @@ describe('@motorcycle/router', function () {
       });
     });
 
-    it('should match a default route if one is not found', done => {
+    it('should match a default route if one is not found', (done: Function) => {
       const definition = {
         '/correct': {
           '/route': 123,
@@ -119,7 +119,7 @@ describe('@motorcycle/router', function () {
       });
     });
 
-    it('should create a proper href using createHref()', done => {
+    it('should create a proper href using createHref()', (done: Function) => {
       const defintion = {
         '/correct': {
           '/route': 123,
@@ -143,7 +143,7 @@ describe('@motorcycle/router', function () {
       });
     });
 
-    it('should match partials', done => {
+    it('should match partials', (done: Function) => {
       const defintion = {
         '/correct': {
           '/route': 123,
