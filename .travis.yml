@@ -19,4 +19,4 @@ before_install:
 script: npm run test:ci
 
 after_success:
-  bash .script/deploy.sh
+  bash .scripts/deploy.sh
