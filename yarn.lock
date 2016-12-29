@@ -1080,13 +1080,13 @@ inflight@^1.0.4:
     once "^1.3.0"
     wrappy "1"
 
-inherits@2, inherits@^2.0.3, inherits@~2.0.0, inherits@~2.0.1:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
-
-inherits@2.0.1:
+inherits@2, inherits@2.0.1, inherits@~2.0.0, inherits@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.1.tgz#b17d08d326b4423e568eff719f91b0b1cbdf69f1"
+
+inherits@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
 
 ini@^1.3.4, ini@~1.3.0:
   version "1.3.4"
@@ -1371,11 +1371,7 @@ lodash.keys@^3.0.0:
     lodash.isarguments "^3.0.0"
     lodash.isarray "^3.0.0"
 
-lodash@^4.2.0, lodash@^4.3.0:
-  version "4.17.3"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.3.tgz#557ed7d2a9438cac5fd5a43043ca60cb455e01f7"
-
-lodash@~4.13.x:
+lodash@^4.2.0, lodash@^4.3.0, lodash@~4.13.x:
   version "4.13.1"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.13.1.tgz#83e4b10913f48496d4d16fec4a560af2ee744b68"
 
@@ -1531,9 +1527,33 @@ normalize-path@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-2.0.1.tgz#47886ac1662760d4261b7d979d241709d3ce3f7a"
 
-northbrook@^4.1.3, northbrook@^4.1.4, northbrook@^4.1.5:
+northbrook@^4.1.3, northbrook@^4.1.4:
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/northbrook/-/northbrook-4.1.5.tgz#5bfab2584b54e22c15ea9a1bfe0630fcdfa1e5f5"
+  dependencies:
+    "@typed/sequence" "^1.1.0"
+    "@types/findup-sync" "^0.3.29"
+    "@types/minimist" "^1.1.29"
+    "@types/mkdirp" "^0.3.29"
+    "@types/node" "^6.0.52"
+    "@types/ramda" "0.0.2"
+    "@types/semver" "^5.3.30"
+    app-module-path "^2.1.0"
+    findup-sync "^0.4.3"
+    mkdirp "^0.5.1"
+    ramda "^0.22.1"
+    reginn "^2.1.4"
+    semver "^5.3.0"
+    simple-spinner "0.0.5"
+    stdio-mock "^1.1.0"
+    ts-node "^1.7.2"
+    typed-colors "^1.0.0"
+    typed-figures "^1.0.0"
+    typed-prompts "^1.4.0"
+
+northbrook@^4.1.6:
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/northbrook/-/northbrook-4.1.6.tgz#1f0a59717dd1160769c32f155f8a971d97aca7bf"
   dependencies:
     "@typed/sequence" "^1.1.0"
     "@types/findup-sync" "^0.3.29"

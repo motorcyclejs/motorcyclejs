@@ -50,7 +50,7 @@
     "@northbrook/tsc": "^1.0.3",
     "@northbrook/tslint": "^2.1.4",
     "@types/sinon": "^1.16.33",
-    "northbrook": "^4.1.5",
+    "northbrook": "^4.1.6",
     "sinon": "^1.17.6",
     "tslint": "^4.2.0",
     "typescript": "^2.1.4",
