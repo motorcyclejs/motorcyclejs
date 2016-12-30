@@ -12,6 +12,7 @@ const config: NorthbrookConfig =
       'history',
       'router',
       'run',
+      'i18n',
     ],
 
     plugins: [
