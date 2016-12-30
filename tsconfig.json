@@ -17,7 +17,8 @@
     "dom/**/*.ts",
     "run/**/*.ts",
     "history/**/*.ts",
-    "router/**/*.ts"
+    "router/**/*.ts",
+    "i18n/**/*.ts"
   ],
   "exclude": [
     "node_modules/*",
