@@ -19,5 +19,5 @@ if [[ $BRANCH == "master" ]]; then
 
   echo "Running release"
   # run deployment
-  northbrook release;
+  northbrook release --skip-login --skip-tests;
 fi
