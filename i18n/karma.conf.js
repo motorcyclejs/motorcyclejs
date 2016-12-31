@@ -2,8 +2,13 @@ module.exports = function (config) {
   const options =
     {
       files: [
-        'src/**/*.ts'
+        'src/**/*.ts',
+        { pattern: 'src/__test__/locales/**/*.json*', watched: true, included: false, served: true },
       ],
+
+      proxies: {
+        '/locales': 'http://localhost:8081/base/src/__test__/locales'
+      },
 
       frameworks: [
         'mocha',
