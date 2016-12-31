@@ -1,10 +1,30 @@
 import * as assert from 'assert';
 import * as i18next from 'i18next';
-import * as xhr from 'i18next-xhr-backend';
 
 import { concat, delay, empty, just } from 'most';
 
+import { join } from 'path'
 import { makeI18nDriver } from './makeI18nDriver';
+
+const options: any =
+  {
+    "load": `currentOnly`,
+    "fallbackLng": false,
+  };
+
+const plugin = (function () {
+  try {
+    if (window && window.console)
+      return require('i18next-xhr-backend')
+  } catch (e) {
+    options.backend =
+      {
+        loadPath: join(__dirname, '__test__/locales/{{lng}}/{{ns}}.json'),
+      };
+
+    return require('i18next-node-fs-backend')
+  }
+})()
 
 describe('makeI18nDriver', () => {
   it('returns a driver function', () => {
@@ -33,13 +53,7 @@ describe('makeI18nDriver', () => {
               delay(100, just(`es-ES`)),
             );
 
-            const options: any =
-              {
-                "load": "currentOnly",
-                "fallbackLng": false,
-              };
-
-            const stream = makeI18nDriver([xhr], options)(languages$)('hello');
+            const stream = makeI18nDriver([plugin], options)(languages$)('hello');
 
             const expected = ['hej', 'hola'];
 
