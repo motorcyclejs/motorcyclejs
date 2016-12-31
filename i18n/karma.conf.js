@@ -7,7 +7,7 @@ module.exports = function (config) {
       ],
 
       proxies: {
-        '/locales': 'http://localhost:8081/base/src/__test__/locales'
+        '/locales': '/base/src/__test__/locales'
       },
 
       frameworks: [
