@@ -1,5 +1,4 @@
 import * as assert from 'assert';
-import { Stream, Subscriber } from 'most';
 import { sync } from 'most-subject';
 import { historyDriver, Location, HistoryInput } from '../src';
 
@@ -107,12 +106,12 @@ describe(`historyDriver`, () => {
         '/other',
         { type: 'go', amount: -1 },
         { type: 'go', amount: 1 },
-      ]
+      ];
 
     commands.forEach(function (cmd: string, i: number) {
       setTimeout(function() {
         stream.next(cmd);
-      }, i * 10);
+      }, i * 400);
     });
   });
 
@@ -138,12 +137,12 @@ describe(`historyDriver`, () => {
       '/other',
       { type: 'goBack' },
       { type: 'goForward' },
-    ]
+    ];
 
     commands.forEach(function (cmd: string, i: number) {
       setTimeout(function() {
         stream.next(cmd);
-      }, i * 10);
+      }, i * 400);
     });
 
   });
