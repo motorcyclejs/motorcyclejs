@@ -1,10 +1,10 @@
 #!/bin/bash
 
-if [[ ! $TRAVIS_BRANCH == "master" ]]; then
+if [[ ! $BRANCH == "master" ]]; then
   echo "No deployment needed!";
 fi
 
-if [[ $TRAVIS_BRANCH == "master" ]]; then
+if [[ $BRANCH == "master" ]]; then
   # setup git stuff
   echo "Configuring git..."
   git config --global user.name "${USER_NAME}";
