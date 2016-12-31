@@ -1,5 +1,9 @@
 import * as assert from 'assert';
-import { empty, from } from 'most';
+import * as i18next from 'i18next';
+import * as xhr from 'i18next-xhr-backend';
+
+import { concat, delay, empty, just } from 'most';
+
 import { makeI18nDriver } from './makeI18nDriver';
 
 describe('makeI18nDriver', () => {
@@ -24,11 +28,20 @@ describe('makeI18nDriver', () => {
       describe('source stream', () => {
         describe('given a key of type string as input', () => {
           it('returns a stream of translations', (done: any) => {
-            const languages$ = from<string>(['en-US', 'es-ES']);
+            const languages$ = concat(
+              just(`da-DK`),
+              delay(100, just(`es-ES`)),
+            );
 
-            const stream = makeI18nDriver()(languages$)('hello');
+            const options: any =
+              {
+                "load": "currentOnly",
+                "fallbackLng": false,
+              };
 
-            const expected = [ 'hello', 'hola' ];
+            const stream = makeI18nDriver([xhr], options)(languages$)('hello');
+
+            const expected = ['hej', 'hola'];
 
             stream
               .observe(str => {
