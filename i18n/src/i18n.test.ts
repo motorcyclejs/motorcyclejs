@@ -49,8 +49,8 @@ describe('makeI18nDriver', () => {
         describe('given a key of type string as input', () => {
           it('returns a stream of translations', (done: any) => {
             const languages$ = concat(
-              just(`da-DK`),
-              delay(100, just(`es-ES`)),
+              delay(700, just(`da-DK`)),
+              delay(700, just(`es-ES`)),
             );
 
             const stream = makeI18nDriver([plugin], options)(languages$)('hello');
