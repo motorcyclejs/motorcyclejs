@@ -21,6 +21,13 @@ const config: NorthbrookConfig =
       tslint,
     ],
 
+    tsc: {
+      es2015: true,
+      patterns: [
+        'src/**/*.ts',
+      ]
+    },
+
     tslint: {
       patterns: [
         'src/**/.ts',
