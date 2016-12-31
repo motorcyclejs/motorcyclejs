@@ -17,7 +17,10 @@ if [[ $BRANCH == "master" ]]; then
   echo "Logging in to NPM..."
   bash .scripts/npm-login.sh;
 
-  echo "Running release"
+  echo "Building packages..."
+  northbrook tsc
+
+  echo "Running release..."
   # run deployment
   northbrook release --skip-login --skip-tests;
 fi
