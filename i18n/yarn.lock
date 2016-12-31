@@ -12,12 +12,13 @@
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@most/prelude/-/prelude-1.4.1.tgz#b940b5563096f27637401618a5351f42466ea8f3"
 
-"@motorcycle/core@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@motorcycle/core/-/core-1.6.0.tgz#bf5dda5b0abac9d785efacf4f1dc84e1c55e59eb"
-  dependencies:
-    most "^1.1.0"
-    most-subject "^5.2.0"
+"@types/i18next-xhr-backend@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@types/i18next-xhr-backend/-/i18next-xhr-backend-1.2.2.tgz#761a2730b4f7e4dde3be96e8efe6ac9df362abcf"
+
+"@types/i18next@^2.3.34":
+  version "2.3.34"
+  resolved "https://registry.yarnpkg.com/@types/i18next/-/i18next-2.3.34.tgz#8abf5c7d0a030085f2d542b6ffaa015c6eee345e"
 
 JSONStream@^1.0.3:
   version "1.3.0"
@@ -91,7 +92,7 @@ are-we-there-yet@~1.1.2:
     delegates "^1.0.0"
     readable-stream "^2.0.0 || ^1.1.13"
 
-argparse@^1.0.7:
+argparse@^1.0.2, argparse@^1.0.7:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/argparse/-/argparse-1.0.9.tgz#73d83bc263f86e97f8cc4f6bae1b0e90a7d22c86"
   dependencies:
@@ -1298,6 +1299,21 @@ https-browserify@~0.0.0:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-0.0.1.tgz#3f91365cabe60b77ed0ebba24b454e3e09d95a82"
 
+i18next-node-fs-backend@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/i18next-node-fs-backend/-/i18next-node-fs-backend-0.1.3.tgz#961596396cadd2112e167ce20f13f0200c44eef8"
+  dependencies:
+    js-yaml "3.5.4"
+    json5 "0.5.0"
+
+i18next-xhr-backend@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/i18next-xhr-backend/-/i18next-xhr-backend-1.2.1.tgz#33cd9d8d6192f81c1074b45fe440f370f5cf0395"
+
+i18next@^4.1.4:
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-4.1.4.tgz#d9514fe51b43e9d80d55ca73072fe11564182dc8"
+
 iconv-lite@0.4.13:
   version "0.4.13"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.13.tgz#1f88aba4ab0b1508e8312acc39345f36e992e2f2"
@@ -1500,6 +1516,13 @@ jodid25519@^1.0.0:
   dependencies:
     jsbn "~0.1.0"
 
+js-yaml@3.5.4:
+  version "3.5.4"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.5.4.tgz#f64f16dcd78beb9ce8361068e733ebe47b079179"
+  dependencies:
+    argparse "^1.0.2"
+    esprima "^2.6.0"
+
 js-yaml@3.x:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.7.0.tgz#5c967ddd837a9bfdca5f2de84253abe8a1c03b80"
@@ -1532,6 +1555,10 @@ json3@3.2.6:
 json3@3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/json3/-/json3-3.3.2.tgz#3c0434743df93e2f5c42aee7b19bcb483575f4e1"
+
+json5@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.0.tgz#9b20715b026cbe3778fd769edccd822d8332a5b2"
 
 jsonify@~0.0.0:
   version "0.0.0"
@@ -1569,6 +1596,10 @@ karma-coverage@^1.1.1:
     lodash "^3.8.0"
     minimatch "^3.0.0"
     source-map "^0.5.1"
+
+karma-firefox-launcher@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/karma-firefox-launcher/-/karma-firefox-launcher-1.0.0.tgz#e08af3ce42e39860c2952ea7b7eaa64d63508bdc"
 
 karma-mocha@^1.3.0:
   version "1.3.0"
@@ -1940,7 +1971,7 @@ module-deps@^4.0.8:
     through2 "^2.0.0"
     xtend "^4.0.0"
 
-most-subject@^5.2.0:
+most-subject@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/most-subject/-/most-subject-5.3.0.tgz#3a6e3efd436fa93bd8b33c2a239c9088230a6102"
   dependencies:
@@ -2198,13 +2229,6 @@ pinkie@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
 
-prehistoric@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/prehistoric/-/prehistoric-1.2.0.tgz#603dcdd4782a76c235169274fc3004ffafa2ae70"
-  dependencies:
-    most "^1.1.1"
-    most-subject "^5.2.0"
-
 prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
@@ -2449,7 +2473,7 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
-rimraf@2, rimraf@^2.3.3, rimraf@^2.5.4, rimraf@~2.5.1, rimraf@~2.5.4:
+rimraf@2, rimraf@^2.3.3, rimraf@~2.5.1, rimraf@~2.5.4:
   version "2.5.4"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.5.4.tgz#96800093cbf1a0c86bd95b4625467535c29dfa04"
   dependencies:
@@ -2459,13 +2483,13 @@ ripemd160@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/ripemd160/-/ripemd160-1.0.1.tgz#93a4bbd4942bc574b69a8fa57c71de10ecca7d6e"
 
-"semver@2 || 3 || 4 || 5", semver@~4.3.3:
-  version "4.3.6"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-4.3.6.tgz#300bc6e0e86374f7ba61068b5b1ecd57fc6532da"
-
-semver@~5.3.0:
+"semver@2 || 3 || 4 || 5", semver@~5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
+
+semver@~4.3.3:
+  version "4.3.6"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-4.3.6.tgz#300bc6e0e86374f7ba61068b5b1ecd57fc6532da"
 
 set-blocking@~2.0.0:
   version "2.0.0"
