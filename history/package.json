@@ -7,8 +7,7 @@
   "module": "lib.es2015/index.js",
   "typings": "lib.es2015/index.d.ts",
   "scripts": {
-    "test:browser": "karma start --single-run",
-    "test": "npm run test:browser"
+    "test": "nb tslint -o @motorcycle/history && nb mocha -o @motorcycle/history && nb karma -o @motorcycle/history"
   },
   "repository": {
     "type": "git",

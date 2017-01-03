@@ -7,7 +7,7 @@
   "module": "lib.es2015/index.js",
   "typings": "lib.es2015/index.d.ts",
   "scripts": {
-    "test": "echo 'No need for browser tests for @motorcycle/run'"
+    "test": "nb tslint -o @motorcycle/run && nb mocha -o @motorcycle/run"
   },
   "repository": {
     "type": "git",
