@@ -30,6 +30,6 @@
     "url": "git+https://github.com/motorcyclejs/router.git"
   },
   "scripts": {
-    "test": "echo 'No browsers tests for @motorcycle/router'"
+    "test": "nb tslint -o @motorcycle/router && nb mocha -o @motorcycle/router"
   }
 }

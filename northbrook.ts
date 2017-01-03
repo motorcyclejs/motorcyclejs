@@ -22,6 +22,10 @@ const config: NorthbrookConfig =
       '.plugins/karma.ts',
     ],
 
+    mocha: {
+      exclude: ['@motorcycle/dom'],
+    },
+
     tsc: {
       es2015: true,
       patterns: [
@@ -31,7 +35,7 @@ const config: NorthbrookConfig =
 
     tslint: {
       patterns: [
-        'src/**/.ts',
+        'src/**/*.ts',
       ],
     },
   };
