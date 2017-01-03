@@ -19,13 +19,14 @@ const config: NorthbrookConfig =
       mocha,
       tsc,
       tslint,
+      '.plugins/karma.ts',
     ],
 
     tsc: {
       es2015: true,
       patterns: [
         'src/**/*.ts',
-      ]
+      ],
     },
 
     tslint: {
