@@ -35,7 +35,7 @@ const config: NorthbrookConfig =
 
     tslint: {
       patterns: [
-        'src/**/.ts',
+        'src/**/*.ts',
       ],
     },
   };
