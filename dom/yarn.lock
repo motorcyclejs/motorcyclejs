@@ -20,13 +20,6 @@
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@most/prelude/-/prelude-1.4.1.tgz#b940b5563096f27637401618a5351f42466ea8f3"
 
-"@motorcycle/core@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@motorcycle/core/-/core-1.6.0.tgz#bf5dda5b0abac9d785efacf4f1dc84e1c55e59eb"
-  dependencies:
-    most "^1.1.0"
-    most-subject "^5.2.0"
-
 "@motorcycle/run@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@motorcycle/run/-/run-1.2.0.tgz#a5903b9c2d75a28114a332bd73b37842064a91eb"
@@ -82,9 +75,9 @@ most@^1.1.0, most@^1.1.1:
     "@most/prelude" "^1.4.0"
     symbol-observable "^1.0.2"
 
-mostly-dom@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/mostly-dom/-/mostly-dom-1.1.1.tgz#313659c18e34e370ec91e1c9e2c87b0c69121cd5"
+mostly-dom@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/mostly-dom/-/mostly-dom-1.1.2.tgz#c10db198640f49a4d648573614976cd7942d8b23"
 
 symbol-observable@^1.0.2:
   version "1.0.4"

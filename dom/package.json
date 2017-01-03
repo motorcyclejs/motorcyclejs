@@ -15,7 +15,7 @@
     "@most/prelude": "^1.4.1",
     "most": "^1.1.1",
     "most-subject": "^5.2.0",
-    "mostly-dom": "^1.1.1"
+    "mostly-dom": "1.1.2"
   },
   "devDependencies": {
     "@cycle/isolate": "^1.4.0",
@@ -38,6 +38,6 @@
     "url": "git+https://github.com/motorcyclejs/dom.git"
   },
   "scripts": {
-    "test": "karma start --single-run"
+    "test": "nb tslint -o @motorcycle/dom && nb karma -o @motorcycle/dom"
   }
 }
