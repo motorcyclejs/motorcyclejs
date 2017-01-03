@@ -309,7 +309,6 @@ describe('DOMSource.events()', function () {
 
     sources.DOM.select(':root').elements().skip(3).take(1)
       .observe(function ([root]: HTMLElement[]) {
-        console.log(root);
         const myElement: any = root.querySelector('.blosh');
         assert.notStrictEqual(myElement, null);
         assert.notStrictEqual(typeof myElement, 'undefined');
