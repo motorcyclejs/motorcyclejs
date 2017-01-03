@@ -1,5 +1,5 @@
 import { Stream } from 'most';
-import { VNode } from './virtual-dom';
+import { VNode } from 'mostly-dom';
 import { StandardEvents } from './Events';
 
 export interface EventsFnOptions {

@@ -15,7 +15,8 @@
     "@most/prelude": "^1.4.1",
     "@motorcycle/core": "^1.6.0",
     "most": "^1.1.1",
-    "most-subject": "^5.2.0"
+    "most-subject": "^5.2.0",
+    "mostly-dom": "^1.1.1"
   },
   "devDependencies": {
     "@cycle/isolate": "^1.4.0",
