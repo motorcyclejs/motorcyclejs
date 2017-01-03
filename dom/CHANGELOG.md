@@ -1,3 +1,11 @@
+# 7.0.0 (2017-01-03)
+---
+
+## Features
+
+- feat(dom): remove dependency on @motorcycle/core [bf7c2314](https://github.com/motorcyclejs/dom/commits/bf7c231459f864acaf23d6806408adb08ddd758f)
+- feat(dom): reimplement on top of mostly-dom [09e79e57](https://github.com/motorcyclejs/dom/commits/09e79e57dbf64e96b5aa9e2f781c0c93ab9231ef)
+
 <a name="6.7.0"></a>
 # [6.7.0](https://github.com/motorcyclejs/dom/compare/v6.6.0...v6.7.0) (2016-12-21)
 
