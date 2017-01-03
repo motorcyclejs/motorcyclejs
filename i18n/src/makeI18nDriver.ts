@@ -1,6 +1,6 @@
 import * as i18next from 'i18next';
 
-import { Stream, map, startWith } from 'most';
+import { Stream, map } from 'most';
 
 import { sync } from 'most-subject';
 

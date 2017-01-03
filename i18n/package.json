@@ -7,7 +7,7 @@
   "module": "lib.es2015/index.js",
   "typings": "lib.es2015/index.d.ts",
   "scripts": {
-    "test": "karma start"
+    "test": "nb tslint -o @motorcycle/i18n && nb mocha -o @motorcycle/i18n"
   },
   "repository": {
     "type": "git",
