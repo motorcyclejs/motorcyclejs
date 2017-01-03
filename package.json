@@ -6,8 +6,9 @@
   "scripts": {
     "build": "northbrook tsc",
     "test": "northbrook tslint && northbrook mocha && northbrook karma",
-    "test:ci": "northbrook tslint && northbrook mocha --changed && northbrook karma --changed",
+    "test:ci": "nb tslint --changed && nb mocha --changed && nb karma --changed",
     "prerelease": "npm run build",
+    "preversion": "nb tsc --changed",
     "release": "northbrook release",
     "postinstall": "northbrook exec -- yarn install"
   },
