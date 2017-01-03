@@ -1,4 +1,3 @@
-import { Stream } from 'most';
 import { historyDriver } from '@motorcycle/history';
 import { RouterSource } from './RouterSource';
 import { RouterInput } from './types';

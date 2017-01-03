@@ -1,6 +1,6 @@
 import * as assert from 'assert';
-import { Stream, periodic, of, never } from 'most';
-import { routerDriver, Router, RouterSource, HistoryInput, Location } from '../src';
+import { Stream, periodic, of } from 'most';
+import { routerDriver, Router, HistoryInput, Location } from '../src';
 
 describe('@motorcycle/router', function () {
   it('changes the route', (done: Function) => {
