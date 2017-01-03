@@ -1,6 +1,5 @@
 import { Stream, map, scan } from 'most';
 import { hold } from 'most-subject';
-import { DriverFn } from '@motorcycle/core';
 import { init, elementToVNode, ElementVNode, VNode, Module } from 'mostly-dom';
 import { vNodeWrapper } from './vNodeWrapper';
 import { MotorcycleDomSource } from './DomSources';
@@ -8,7 +7,7 @@ import { DomSource } from './types';
 
 export function makeDomDriver(
   rootElement: HTMLElement,
-  options: DomDriverOptions = { modules: [] }): DriverFn
+  options: DomDriverOptions = { modules: [] })
 {
   const modules = options.modules || [];
   const patch = init(modules);

@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import { run } from '@motorcycle/core';
+import { run } from '@motorcycle/run';
 import { h4, h3, h2, div, h, mockDomSource, DomSource } from './';
 import * as most from 'most';
 
@@ -156,15 +156,15 @@ describe('isolation on MockedDOMSource', function () {
       };
     }
 
-    const {sources, dispose} = run<any, any>(app, {
-      DOM: () => mockDomSource({
+    const {sources, dispose} = run<any, any>(app, () => ({
+      DOM: mockDomSource({
         '.___foo': {
           '.bar': {
             elements: most.from(['skipped', 135]),
           },
         },
       }),
-    });
+    }));
 
     const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'foo');
 
@@ -185,9 +185,9 @@ describe('isolation on MockedDOMSource', function () {
       };
     }
 
-    const {sources, dispose} = run<any, any>(app, {
-      DOM: () => mockDomSource({}),
-    });
+    const {sources, dispose} = run<any, any>(app, () => ({
+      DOM: mockDomSource({}),
+    }));
 
     const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'foo');
     // Make assertions
@@ -216,8 +216,8 @@ describe('isolation on MockedDOMSource', function () {
       };
     }
 
-    const {sources} = run(app, {
-      DOM: () => mockDomSource({
+    const {sources} = run(app, () => ({
+      DOM: mockDomSource({
         '.___ISOLATION': {
           '.bar': {
             elements: most.from(['skipped', 'Wrong']),
@@ -227,7 +227,7 @@ describe('isolation on MockedDOMSource', function () {
           elements: most.from(['skipped', 'Correct']),
         },
       }),
-    });
+    }));
 
     sources.DOM.select('.bar').elements().skip(1).take(1).observe(function (x: any) {
       assert.strictEqual(x, 'Correct');

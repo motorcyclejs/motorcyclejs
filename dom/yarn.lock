@@ -27,6 +27,13 @@
     most "^1.1.0"
     most-subject "^5.2.0"
 
+"@motorcycle/run@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@motorcycle/run/-/run-1.2.0.tgz#a5903b9c2d75a28114a332bd73b37842064a91eb"
+  dependencies:
+    most "^1.1.1"
+    most-subject "^5.3.0"
+
 "@types/hyperscript@0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@types/hyperscript/-/hyperscript-0.0.1.tgz#3a30ad62427ca82d11f59e6fffa1ac3121b4e08b"
@@ -59,7 +66,7 @@ indexof@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/indexof/-/indexof-0.0.1.tgz#82dc336d232b9062179d05ab3293a66059fd435d"
 
-most-subject@^5.2.0:
+most-subject@^5.2.0, most-subject@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/most-subject/-/most-subject-5.3.0.tgz#3a6e3efd436fa93bd8b33c2a239c9088230a6102"
   dependencies:

@@ -1,13 +1,13 @@
 import * as assert from 'assert';
 import { Stream, just } from 'most';
 import { makeDomDriver, div, h2, a, p, DomSource, VNode } from '../../src';
-import { run } from '@motorcycle/core';
+import { run, Object } from '@motorcycle/run';
 
 interface DomSources {
   dom: DomSource;
 }
 
-interface DomSinks {
+interface DomSinks extends Object<any> {
   dom: Stream<VNode>;
 }
 
@@ -29,9 +29,9 @@ describe('rendering', () => {
       return { dom };
     }
 
-    const { sources, dispose } = run<DomSources, DomSinks>(main, {
-      dom: makeDomDriver(createInitialRenderTarget()),
-    });
+    const { sources, dispose } = run<DomSources, DomSinks>(main, (sinks: DomSinks) => ({
+      dom: makeDomDriver(createInitialRenderTarget())(sinks.dom),
+    }));
 
     sources.dom.elements().skip(1).take(1)
       .observe(elements => {

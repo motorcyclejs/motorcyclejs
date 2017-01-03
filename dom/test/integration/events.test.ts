@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import * as Motorcycle from '@motorcycle/core';
+import * as Motorcycle from '@motorcycle/run';
 import { div, h4, h3, h2, input, makeDomDriver } from '../../src';
 import * as most from 'most';
 import { createRenderTarget } from '../helpers/createRenderTarget';
@@ -12,9 +12,9 @@ describe('DOMSource.events()', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
-      DOM: makeDomDriver(createRenderTarget()),
-    });
+    const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
+      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+    }));
 
     sources.DOM.select('.myelementclass').events('click').observe((ev: Event) => {
       assert.strictEqual(ev.type, 'click');
@@ -42,9 +42,9 @@ describe('DOMSource.events()', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
-      DOM: makeDomDriver(createRenderTarget()),
-    });
+    const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
+      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+    }));
 
     sources.DOM.select('.myelementclass').events('click').observe((ev: Event) => {
       assert.strictEqual(ev.type, 'click');
@@ -77,9 +77,9 @@ describe('DOMSource.events()', function () {
     headerElement.textContent = 'Foobar';
     containerElement.appendChild(headerElement);
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
-      DOM: makeDomDriver(containerElement),
-    });
+    const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
+      DOM: makeDomDriver(containerElement)(sinks.DOM),
+    }));
 
     sources.DOM.select('.myelementclass').events('click').observe((ev: Event) => {
       assert.strictEqual(ev.type, 'click');
@@ -106,9 +106,9 @@ describe('DOMSource.events()', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
-      DOM: makeDomDriver(createRenderTarget('parent-001')),
-    });
+    const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
+      DOM: makeDomDriver(createRenderTarget('parent-001'))(sinks.DOM),
+    }));
 
     // Make assertions
     sources.DOM.select('#parent-001').events('click').observe((ev: Event) => {
@@ -137,9 +137,9 @@ describe('DOMSource.events()', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
-      DOM: makeDomDriver(createRenderTarget('parent-002')),
-    });
+    const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
+      DOM: makeDomDriver(createRenderTarget('parent-002'))(sinks.DOM),
+    }));
 
     // Make assertions
     sources.DOM.select('#myElementId').events('click').observe((ev: Event) => {
@@ -171,9 +171,9 @@ describe('DOMSource.events()', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
-      DOM: makeDomDriver(createRenderTarget()),
-    });
+    const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
+      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+    }));
 
     // Make assertions
     sources.DOM.events('click').observe((ev: Event) => {
@@ -209,9 +209,9 @@ describe('DOMSource.events()', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
-      DOM: makeDomDriver(createRenderTarget()),
-    });
+    const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
+      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+    }));
 
     // Make assertions
     sources.DOM.select('.foo').select('.bar').events('click').observe((ev: Event) => {
@@ -249,9 +249,9 @@ describe('DOMSource.events()', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
-      DOM: makeDomDriver(createRenderTarget()),
-    });
+    const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
+      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+    }));
 
     // Make assertions
     sources.DOM.select('.clickable').events('click').take(1)
@@ -294,9 +294,9 @@ describe('DOMSource.events()', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, {
-      DOM: makeDomDriver(createRenderTarget('parent-002')),
-    });
+    const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
+      DOM: makeDomDriver(createRenderTarget('parent-002'))(sinks.DOM),
+    }));
 
     // Make assertions
     sources.DOM.select('.blosh').events('click').observe((ev: Event) => {
@@ -345,9 +345,9 @@ describe('DOMSource.events()', function () {
       el.dispatchEvent(ev);
     }
 
-    const { sources } = Motorcycle.run<any, any>(app, {
-      DOM: makeDomDriver(createRenderTarget()),
-    });
+    const { sources } = Motorcycle.run<any, any>(app, (sinks: any) => ({
+      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+    }));
 
     sources.DOM.select('.clickable').events('click', {useCapture: true})
       .observe((ev: Event) => {
@@ -381,9 +381,9 @@ describe('DOMSource.events()', function () {
       };
     }
 
-    const { sources } = Motorcycle.run<any, any>(app, {
-      DOM: makeDomDriver(createRenderTarget()),
-    });
+    const { sources } = Motorcycle.run<any, any>(app, (sinks: any) => ({
+      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+    }));
 
     sources.DOM.select('.correct').events('blur', {useCapture: true})
       .observe((ev: Event) => {
@@ -417,9 +417,9 @@ describe('DOMSource.events()', function () {
       };
     }
 
-    const { sources } = Motorcycle.run<any, any>(app, {
-      DOM: makeDomDriver(createRenderTarget()),
-    });
+    const { sources } = Motorcycle.run<any, any>(app, (sinks: any) => ({
+      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+    }));
 
     sources.DOM.select('.correct').events('blur')
       .observe((ev: Event) => {
