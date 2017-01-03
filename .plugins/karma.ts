@@ -37,7 +37,7 @@ function executeAllPackages(input: HandlerOptions, io: Stdio) {
   if (packages.length === 0)
     return io.stderr.write(EOL + `No packages could be found` + EOL + EOL);
 
-  return sequence(packages, runKarma(io));
+  return sequence(packages, runKarma(io)).catch(() => process.exit(1));
 }
 
 function runChangedPackages(packages: Array<string>, io: Stdio) {
@@ -48,7 +48,7 @@ function runChangedPackages(packages: Array<string>, io: Stdio) {
     if (packagesToTest.length === 0)
       return io.stdout.write(EOL + `No packages need to be tested!` + EOL + EOL);
 
-    return sequence<Pkg>(packagesToTest, runKarma(io));
+    return sequence<Pkg>(packagesToTest, runKarma(io)).catch(() => process.exit(1));
   });
 }
 
