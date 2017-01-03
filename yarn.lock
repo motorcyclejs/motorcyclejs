@@ -6,9 +6,9 @@
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@motorcycle/tslint/-/tslint-1.3.0.tgz#c8624624ce9b074e437cc4853ee8fc85a0b2a143"
 
-"@northbrook/mocha@2.1.5":
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/@northbrook/mocha/-/mocha-2.1.5.tgz#f8bd8838264ed99c1ea67ac80ed541bc3d638337"
+"@northbrook/mocha@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@northbrook/mocha/-/mocha-2.2.0.tgz#c17b5833e87f72e79ce3d9e398bfa0b394d377bd"
   dependencies:
     "@typed/sequence" "^1.1.0"
     "@types/glob-expand" "0.0.30"
