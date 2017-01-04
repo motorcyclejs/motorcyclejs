@@ -1,6 +1,6 @@
 {
   "name": "@motorcycle/i18n",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Internationalization for Motorcycle.js",
   "main": "lib/index.js",
   "jsnext:main": "lib.es2015/index.js",
