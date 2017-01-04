@@ -21,14 +21,14 @@
     simple-spinner "0.0.5"
     ts-node "^1.7.2"
 
-"@northbrook/tsc@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@northbrook/tsc/-/tsc-1.0.3.tgz#590aa256953eb8d73ee9ef8ca81a76be0d6f20cf"
+"@northbrook/tsc@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@northbrook/tsc/-/tsc-1.0.4.tgz#d3499a85d39f9086e11db46b6995171769a6eeeb"
   dependencies:
     "@types/glob-expand" "0.0.30"
     "@types/rimraf" "0.0.28"
     glob-expand "^0.2.1"
-    northbrook "^4.1.4"
+    northbrook "^4.3.3"
     rimraf "^2.5.4"
     simple-spinner "0.0.5"
     typescript "^2.1.4"
@@ -2803,33 +2803,9 @@ normalize-path@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-2.0.1.tgz#47886ac1662760d4261b7d979d241709d3ce3f7a"
 
-northbrook@4.3.3:
+northbrook@4.3.3, northbrook@^4.1.4, northbrook@^4.2.3, northbrook@^4.3.3:
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/northbrook/-/northbrook-4.3.3.tgz#cf9b874c70b6771856fca0b7f72985a9ae7968ba"
-  dependencies:
-    "@typed/sequence" "^1.1.0"
-    "@types/findup-sync" "^0.3.29"
-    "@types/minimist" "^1.1.29"
-    "@types/mkdirp" "^0.3.29"
-    "@types/node" "^6.0.52"
-    "@types/ramda" "0.0.2"
-    "@types/semver" "^5.3.30"
-    app-module-path "^2.1.0"
-    findup-sync "^0.4.3"
-    mkdirp "^0.5.1"
-    ramda "^0.22.1"
-    reginn "^2.1.4"
-    semver "^5.3.0"
-    simple-spinner "0.0.5"
-    stdio-mock "^1.1.0"
-    ts-node "^1.7.2"
-    typed-colors "^1.0.0"
-    typed-figures "^1.0.0"
-    typed-prompts "^1.4.0"
-
-northbrook@^4.1.4, northbrook@^4.2.3:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/northbrook/-/northbrook-4.3.0.tgz#421d488a13c6d6c57d867eb7fbf185fc7b774ff5"
   dependencies:
     "@typed/sequence" "^1.1.0"
     "@types/findup-sync" "^0.3.29"

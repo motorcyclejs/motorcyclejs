@@ -1,6 +1,12 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "declaration": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
     "lib": [
       "dom",
       "es5",

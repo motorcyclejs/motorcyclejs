@@ -6,7 +6,13 @@
       "es5",
       "es2015"
     ],
-    "noUnusedLocals": false
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "declaration": true,
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true
   },
   "include": [
     "src/**/*.ts",
