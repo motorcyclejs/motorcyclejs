@@ -1,6 +1,6 @@
 {
   "name": "@motorcycle/run",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A Reactive Framework For Modern Browsers",
   "main": "lib/index.js",
   "jsnext:main": "lib.es2015/index.js",
