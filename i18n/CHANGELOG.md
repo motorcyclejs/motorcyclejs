@@ -1,3 +1,10 @@
+# 1.0.3 (2017-01-04)
+---
+
+## Bug Fixes
+
+- fix(META): update to latest northbrook [47c971d3](https://github.com/motorcyclejs/motorcyclejs/commits/47c971d3312d1df80049b4bcc2b410ccdc48f8f3)
+
 # 1.0.2 (2017-01-03)
 ---
 
