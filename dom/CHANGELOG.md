@@ -1,3 +1,10 @@
+# 7.0.1 (2017-01-03)
+---
+
+## Bug Fixes
+
+- fix(META): fix npmignoring [adee7dfe](https://github.com/motorcyclejs/dom/commits/adee7dfeaf56820919d290194dd2a575a1b2ff03)
+
 # 7.0.0 (2017-01-03)
 ---
 
