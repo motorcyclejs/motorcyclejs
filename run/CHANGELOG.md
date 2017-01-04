@@ -1,3 +1,10 @@
+# 1.2.1 (2017-01-03)
+---
+
+## Bug Fixes
+
+- fix(META): fix npmignoring [adee7dfe](https://github.com/motorcyclejs/run/commits/adee7dfeaf56820919d290194dd2a575a1b2ff03)
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/motorcyclejs/run/compare/v1.1.0...v1.2.0) (2016-12-19)
 
