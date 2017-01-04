@@ -1,3 +1,10 @@
+# 4.1.2 (2017-01-04)
+---
+
+## Bug Fixes
+
+- fix(history): update tsconfig [488d2e98](https://github.com/motorcyclejs/history/commits/488d2e986ed01a9da5f293e316c17fb8eb727866)
+
 # 4.1.1 (2017-01-03)
 ---
 
