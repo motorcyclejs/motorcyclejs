@@ -1,3 +1,10 @@
+# 4.1.1 (2017-01-03)
+---
+
+## Bug Fixes
+
+- fix(META): fix npmignoring [adee7dfe](https://github.com/motorcyclejs/history/commits/adee7dfeaf56820919d290194dd2a575a1b2ff03)
+
 <a name="4.1.0"></a>
 # [4.1.0](https://github.com/motorcyclejs/history/compare/v4.0.0...v4.1.0) (2016-12-10)
 
