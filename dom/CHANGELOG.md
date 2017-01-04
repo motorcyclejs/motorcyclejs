@@ -1,3 +1,10 @@
+# 7.0.2 (2017-01-04)
+---
+
+## Bug Fixes
+
+- fix(dom): update tsconfig [660d4d61](https://github.com/motorcyclejs/dom/commits/660d4d611fd7afb848b40ebcca8d57130b5b604f)
+
 # 7.0.1 (2017-01-03)
 ---
 
