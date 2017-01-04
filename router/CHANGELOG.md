@@ -1,3 +1,10 @@
+# 4.1.2 (2017-01-03)
+---
+
+## Bug Fixes
+
+- fix(META): fix npmignoring [adee7dfe](https://github.com/motorcyclejs/router/commits/adee7dfeaf56820919d290194dd2a575a1b2ff03)
+
 # 4.1.1 (2016-12-31)
 ---
 
