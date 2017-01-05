@@ -1,3 +1,10 @@
+# 7.0.3 (2017-01-05)
+---
+
+## Bug Fixes
+
+- fix(dom): add files field [d2b19fd6](https://github.com/motorcyclejs/dom/commits/d2b19fd626e7d25f293f916c1bc2bf3cff9a88d4)
+
 # 7.0.2 (2017-01-04)
 ---
 
