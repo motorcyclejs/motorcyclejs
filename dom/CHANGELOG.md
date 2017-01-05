@@ -1,3 +1,10 @@
+# 7.0.4 (2017-01-05)
+---
+
+## Bug Fixes
+
+- fix(deploy): ensure all packages a being built before releasing [247fac3e](https://github.com/motorcyclejs/dom/commits/247fac3ecbc1110343a0c48ee6c9fe1cad0b95d7)
+
 # 7.0.3 (2017-01-05)
 ---
 
