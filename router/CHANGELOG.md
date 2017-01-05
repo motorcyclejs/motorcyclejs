@@ -1,3 +1,10 @@
+# 4.1.3 (2017-01-05)
+---
+
+## Bug Fixes
+
+- fix(router): add files field [8acc7417](https://github.com/motorcyclejs/router/commits/8acc74171cdb7aaf0eb730942ef3f27fa0770421)
+
 # 4.1.2 (2017-01-03)
 ---
 
