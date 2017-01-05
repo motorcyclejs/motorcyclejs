@@ -16,12 +16,16 @@ export function makeI18nDriver(plugins: Array<any> = [], options?: Options) {
 
   return function i18nDriver(sink$: Stream<string>): I18nSource {
 
+    const language$: Stream<string> = sink$.thru(hold(1));
+
+    language$.drain();
+
     const translationFn$ = hold<TranslationFunction>(1, sync<TranslationFunction>());
 
     plugins
       .reduce((i18next: I18n, plugin: any) => i18next.use(plugin), i18n)
       .init(options, function () {
-        sink$.observe((language: string) => {
+        language$.observe((language: string) => {
           i18n.changeLanguage(language, function (err: any, t: TranslationFunction) {
             if (err)
               return translationFn$.error(err);
