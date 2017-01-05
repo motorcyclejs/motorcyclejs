@@ -1,23 +1,28 @@
-import * as i18next from 'i18next';
-
+import {
+  I18n,
+  Options,
+  TranslationFunction,
+  TranslationOptions,
+  i18n,
+} from '@typed/i18next';
 import { Stream, map } from 'most';
 
 import { sync } from 'most-subject';
 
 export type I18nSource =
-  (key: string, translationOptions?: i18next.TranslationOptions) => Stream<string>;
+  (key: string, translationOptions?: TranslationOptions) => Stream<string>;
 
-export function makeI18nDriver(plugins: Array<any> = [], options?: i18next.Options) {
+export function makeI18nDriver(plugins: Array<any> = [], options?: Options) {
 
   return function i18nDriver(sink$: Stream<string>): I18nSource {
 
-    const translationFn$ = sync<i18next.TranslationFunction>();
+    const translationFn$ = sync<TranslationFunction>();
 
     plugins
-      .reduce((i18n, plugin) => i18n.use(plugin), i18next)
+      .reduce((i18next: I18n, plugin: any) => i18next.use(plugin), i18n)
       .init(options, function () {
         sink$.observe((language: string) => {
-          i18next.changeLanguage(language, function (err: any, t: i18next.TranslationFunction) {
+          i18n.changeLanguage(language, function (err: any, t: TranslationFunction) {
             if (err)
               return translationFn$.error(err);
 
@@ -26,7 +31,7 @@ export function makeI18nDriver(plugins: Array<any> = [], options?: i18next.Optio
         });
       });
 
-    return function i18nSource(key: string, translationOptions?: i18next.TranslationOptions) {
+    return function i18nSource(key: string, translationOptions?: TranslationOptions) {
       return map(t => t(key, translationOptions), translationFn$);
     };
   };
