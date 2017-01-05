@@ -1,3 +1,10 @@
+# 1.2.2 (2017-01-05)
+---
+
+## Bug Fixes
+
+- fix(run): add files fields [f40f24cb](https://github.com/motorcyclejs/run/commits/f40f24cbe4750c8424deb5272ef9e228ddfb85ad)
+
 # 1.2.1 (2017-01-03)
 ---
 
