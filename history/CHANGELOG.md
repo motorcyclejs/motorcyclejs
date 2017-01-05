@@ -1,3 +1,10 @@
+# 4.1.4 (2017-01-05)
+---
+
+## Bug Fixes
+
+- fix(history): add files field [955b9465](https://github.com/motorcyclejs/history/commits/955b94656b7249fbacbc31a387c096f30a4f1cdc)
+
 # 4.1.2 (2017-01-04)
 ---
 
