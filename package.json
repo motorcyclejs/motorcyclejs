@@ -48,7 +48,7 @@
   "typings": "lib/es2015/index.d.ts",
   "devDependencies": {
     "@motorcycle/tslint": "^1.3.0",
-    "@northbrook/mocha": "^2.2.0",
+    "@northbrook/mocha": "latest",
     "@northbrook/tsc": "^1.0.4",
     "@northbrook/tslint": "^2.1.4",
     "@types/sinon": "^1.16.33",
