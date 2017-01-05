@@ -6,6 +6,10 @@
   "jsnext:main": "lib.es2015/index.js",
   "module": "lib.es2015/index.js",
   "typings": "lib.es2015/index.d.ts",
+  "files": [
+    "lib",
+    "lib.es2015"
+  ],
   "scripts": {
     "test": "nb tslint -o @motorcycle/history && nb mocha -o @motorcycle/history && nb karma -o @motorcycle/history"
   },
