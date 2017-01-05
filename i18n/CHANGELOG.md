@@ -1,3 +1,10 @@
+# 1.0.7 (2017-01-05)
+---
+
+## Bug Fixes
+
+- fix(i18n): fix for late subscribers [515e8007](https://github.com/motorcyclejs/motorcyclejs/commits/515e80073204d7dad423528f9d892a3ac4a58a08)
+
 # 1.0.6 (2017-01-05)
 ---
 
