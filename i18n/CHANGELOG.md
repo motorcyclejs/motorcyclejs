@@ -1,3 +1,11 @@
+# 1.0.8 (2017-01-05)
+---
+
+## Bug Fixes
+
+- fix(i18n): fix for race conditions [205d746e](https://github.com/motorcyclejs/motorcyclejs/commits/205d746ec397e9c90933e20ae0a604d56c43e49d)
+- fix(deploy): ensure all packages a being built before releasing [247fac3e](https://github.com/motorcyclejs/motorcyclejs/commits/247fac3ecbc1110343a0c48ee6c9fe1cad0b95d7)
+
 # 1.0.7 (2017-01-05)
 ---
 
