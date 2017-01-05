@@ -1,3 +1,10 @@
+# 1.0.5 (2017-01-05)
+---
+
+## Bug Fixes
+
+- fix(i18n): add files field [bdba56cd](https://github.com/motorcyclejs/motorcyclejs/commits/bdba56cd4a42f06c55637cce8277b9664d665501)
+
 # 1.0.4 (2017-01-05)
 ---
 
