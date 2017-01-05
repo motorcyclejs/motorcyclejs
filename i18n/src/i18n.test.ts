@@ -55,6 +55,34 @@ describe('makeI18nDriver', () => {
               })
               .catch(done);
           });
+
+          it('returns a stream of translations to late subscribers', (done: any) => {
+            const languages$ = just(`da-DK`);
+
+            const options: any =
+              {
+                load: `currentOnly`,
+                fallbackLng: false,
+                backend: {
+                  loadPath: join(__dirname, '__test__/locales/{{lng}}/{{ns}}.json'),
+                },
+              };
+
+            const stream = makeI18nDriver([fsBackend], options)(languages$)('hello');
+
+            stream.observe(str => {
+              assert.strictEqual(`hej`, str);
+            })
+            .catch(done);
+
+            setTimeout(() => {
+              stream.observe(str => {
+                assert.strictEqual(`hej`, str);
+                done();
+              })
+              .catch(done);
+            }, 10);
+          });
         });
       });
     });
