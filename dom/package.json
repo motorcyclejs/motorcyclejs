@@ -7,6 +7,10 @@
   "module": "lib.es2015/index.js",
   "jsnext:main": "lib.es2015/index.js",
   "typings": "lib.es2015/index.d.ts",
+  "files": [
+    "lib",
+    "lib.es2015"
+  ],
   "bugs": {
     "url": "https://github.com/motorcyclejs/dom/issues"
   },
