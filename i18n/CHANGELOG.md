@@ -1,3 +1,10 @@
+# 1.0.4 (2017-01-05)
+---
+
+## Bug Fixes
+
+- fix(i18n): use @typed/i18next [c09c8c6d](https://github.com/motorcyclejs/motorcyclejs/commits/c09c8c6df54bceddea7efe7f56e3683bf793128f)
+
 # 1.0.3 (2017-01-04)
 ---
 
