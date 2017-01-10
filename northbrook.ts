@@ -20,6 +20,7 @@ const config: NorthbrookConfig =
       tsc,
       tslint,
       '.plugins/karma.ts',
+      '.plugins/create.ts',
     ],
 
     mocha: {
