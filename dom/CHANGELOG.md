@@ -1,3 +1,10 @@
+# 7.0.6 (2017-01-19)
+---
+
+## Bug Fixes
+
+- fix(dom): update to latest dependencies [ba91b214](https://github.com/motorcyclejs/dom/commits/ba91b214d696cb3d498cafab804c01749cce4f8e)
+
 # 7.0.5 (2017-01-05)
 ---
 
