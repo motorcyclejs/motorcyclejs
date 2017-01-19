@@ -1,3 +1,10 @@
+# 1.2.5 (2017-01-19)
+---
+
+## Bug Fixes
+
+- fix(run): update latest dependencies [3bdba180](https://github.com/motorcyclejs/run/commits/3bdba180012ae9257e49f776d09316792d3e053a)
+
 # 1.2.4 (2017-01-05)
 ---
 
