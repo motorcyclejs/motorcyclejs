@@ -4,13 +4,14 @@
   "version": "1.0.0",
   "description": "Type-Safe Functional and Reactive Web Framework",
   "scripts": {
+    "clean": "northbrook exec -- rimraf yarn.lock node_modules && rimraf yarn.lock node_modules",
     "build": "northbrook tsc",
     "test": "northbrook tslint && northbrook mocha && northbrook karma",
-    "test:ci": "nb tslint --changed && nb mocha --changed && nb karma --changed",
+    "test:ci": "northbrook tslint --changed && northbrook mocha --changed && northbrook karma --changed",
     "prerelease": "npm run build",
-    "preversion": "nb tsc --changed",
+    "preversion": "northbrook tsc --changed",
     "release": "northbrook release",
-    "postinstall": "northbrook exec -- yarn install"
+    "postinstall": "northbrook exec -- yarn && northbrook link"
   },
   "repository": {
     "type": "git",
