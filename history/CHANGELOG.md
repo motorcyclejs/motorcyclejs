@@ -1,3 +1,10 @@
+# 4.1.7 (2017-01-19)
+---
+
+## Bug Fixes
+
+- fix(history): update to latest dependencies [1e584139](https://github.com/motorcyclejs/history/commits/1e58413958e92bad5ce0e8fe727907214451fb64)
+
 # 4.1.6 (2017-01-05)
 ---
 
