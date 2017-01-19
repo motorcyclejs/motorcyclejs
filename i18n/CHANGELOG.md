@@ -1,3 +1,10 @@
+# 1.0.9 (2017-01-19)
+---
+
+## Bug Fixes
+
+- fix(i18n): update to latest dependencies [8f6bc1fe](https://github.com/motorcyclejs/motorcyclejs/commits/8f6bc1fe7930a78284021f4e0c440cd237f1b14f)
+
 # 1.0.8 (2017-01-05)
 ---
 
