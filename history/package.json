@@ -31,13 +31,8 @@
   },
   "homepage": "https://github.com/motorcyclejs/history#readme",
   "dependencies": {
-    "@motorcycle/core": "^1.6.0",
-    "most": "^1.1.0",
-    "most-subject": "^5.2.0",
+    "most": "^1.2.1",
+    "most-subject": "^5.3.0",
     "prehistoric": "^1.2.0"
-  },
-  "devDependencies": {
-    "browserify": "^13.1.1",
-    "rimraf": "^2.5.4"
   }
 }

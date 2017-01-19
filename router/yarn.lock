@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@most/multicast@^1.2.3", "@most/multicast@^1.2.4":
+"@most/multicast@^1.2.4", "@most/multicast@^1.2.5":
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/@most/multicast/-/multicast-1.2.5.tgz#ba5abc997f9a6511094bec117914f4959720a8fb"
   dependencies:
@@ -19,16 +19,16 @@
     most "^1.1.0"
     most-subject "^5.2.0"
 
-"@motorcycle/history@^4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@motorcycle/history/-/history-4.1.0.tgz#23768f56673489a4d8ef98567fe3063f22a03430"
+"@motorcycle/history@latest":
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/@motorcycle/history/-/history-4.1.6.tgz#dd9cfa9549b1a3741cd1aea65bc9b1a7cf85fd0a"
   dependencies:
     "@motorcycle/core" "^1.6.0"
     most "^1.1.0"
     most-subject "^5.2.0"
-    prehistoric "^1.1.0"
+    prehistoric "^1.2.0"
 
-most-subject@^5.2.0:
+most-subject@^5.2.0, most-subject@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/most-subject/-/most-subject-5.3.0.tgz#3a6e3efd436fa93bd8b33c2a239c9088230a6102"
   dependencies:
@@ -37,14 +37,14 @@ most-subject@^5.2.0:
     most "^1.1.0"
 
 most@^1.1.0, most@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/most/-/most-1.1.1.tgz#75ccbb4c61a086b6794c378583ae0113b20fc7b5"
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/most/-/most-1.2.1.tgz#6457a1a34ca6ef3004168a810fa025b3a56e8769"
   dependencies:
-    "@most/multicast" "^1.2.3"
+    "@most/multicast" "^1.2.5"
     "@most/prelude" "^1.4.0"
     symbol-observable "^1.0.2"
 
-prehistoric@^1.1.0:
+prehistoric@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/prehistoric/-/prehistoric-1.2.0.tgz#603dcdd4782a76c235169274fc3004ffafa2ae70"
   dependencies:

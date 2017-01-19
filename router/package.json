@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@most/prelude": "^1.4.1",
-    "@motorcycle/history": "^4.1.0",
-    "most-subject": "^5.2.0",
+    "@motorcycle/history": "latest",
+    "most-subject": "^5.3.0",
     "switch-path": "^1.2.0"
   },
   "homepage": "https://github.com/motorcyclejs/router#readme",
