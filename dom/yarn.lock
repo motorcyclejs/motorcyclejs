@@ -20,7 +20,7 @@
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@most/prelude/-/prelude-1.4.1.tgz#b940b5563096f27637401618a5351f42466ea8f3"
 
-"@motorcycle/run@^1.2.0":
+"@motorcycle/run@latest":
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@motorcycle/run/-/run-1.2.4.tgz#317a85858f0d3b5389ad41a4f14b6a9830bf68cc"
   dependencies:
