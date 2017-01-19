@@ -1,3 +1,10 @@
+# 4.1.6 (2017-01-19)
+---
+
+## Bug Fixes
+
+- fix(router): update to latest dependencies [c5f48298](https://github.com/motorcyclejs/router/commits/c5f48298348b428aecd9763a9fcd517cf392b459)
+
 # 4.1.5 (2017-01-05)
 ---
 
