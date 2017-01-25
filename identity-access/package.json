@@ -1,0 +1,32 @@
+{
+  "name": "@motorcycle/identity-access",
+  "version": "0.0.0",
+  "description": "Identity and Access Abstractions",
+  "main": "lib/index.js",
+  "jsnext:main": "lib.es2015/index.js",
+  "module": "lib.es2015/index.js",
+  "typings": "lib.es2015/index.d.ts",
+  "files": [
+    "lib",
+    "lib.es2015"
+  ],
+  "scripts": {
+    "test": "nb tslint --only @motorcyle/identity-access && nb mocha --only @motorcycle/identity-access"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/motorcyclejs/motorcyclejs"
+  },
+  "author": "Tylor Steinberger <tlsteinberger167@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/motorcyclejs/motorcyclejs/issues"
+  },
+  "homepage": "https://github.com/motorcyclejs/motorcyclejs#readme",
+  "dependencies": {
+    "most": "^1.2.1"
+  },
+  "devDependencies": {
+    "@typed/is-stream": "^1.0.1"
+  }
+}

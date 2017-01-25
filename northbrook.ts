@@ -12,6 +12,7 @@ const config: NorthbrookConfig =
       'router',
       'run',
       'i18n',
+      'identity-access',
     ],
 
     plugins: [
