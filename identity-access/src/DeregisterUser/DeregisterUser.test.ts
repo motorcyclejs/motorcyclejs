@@ -42,7 +42,7 @@ describe('DeregisterUser', () => {
             };
 
           const users = new Map([
-            [user.id, user],
+            [user.id, { username: user.username, password: `secret` }],
           ]);
 
           const userRepository = new MockUserRepository(users);
