@@ -1,6 +1,6 @@
-import { UserRepository, User, UserCredentials } from './types';
+import { User, UserCredentials, UserRepository } from './types';
 
-export class MockUserRepostiory implements UserRepository {
+export class MockUserRepository implements UserRepository {
   private users: Map<string, User>;
   private id = 0;
 

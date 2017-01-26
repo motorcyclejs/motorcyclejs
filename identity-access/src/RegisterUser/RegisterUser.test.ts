@@ -1,21 +1,22 @@
 import * as assert from 'assert';
-import { just, combineArray } from 'most';
+
 import {
   RegisterUser,
   RegisterUserSinks,
   RegisterUserSources,
 } from './RegisterUser';
-
 import { User, UserCredentials } from '../types';
-import { MockUserRepostiory } from '../MockUserRepository';
+import { combineArray, just } from 'most';
+
+import { MockUserRepository } from '../MockUserRepository';
 
 describe('RegisterUser', () => {
   describe('given RegisterUserSinks', () => {
     it('returns RegisterUserSources', () => {
       const users = new Map();
 
-      const userRepository = new MockUserRepostiory(users);
-      const alternateUserRepository = new MockUserRepostiory(users);
+      const userRepository = new MockUserRepository(users);
+      const alternateUserRepository = new MockUserRepository(users);
 
       const userCredentials: UserCredentials =
         {

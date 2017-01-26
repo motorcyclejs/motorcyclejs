@@ -1,16 +1,18 @@
 import * as assert from 'assert';
-import { just } from 'most';
-import { isStream } from '@typed/is-stream';
+
 import { DeregisterUser, DeregisterUserSinks } from './DeregisterUser';
-import { MockUserRepostiory } from '../MockUserRepository';
+
+import { MockUserRepository } from '../MockUserRepository';
 import { User } from '../types';
+import { isStream } from '@typed/is-stream';
+import { just } from 'most';
 
 describe('DeregisterUser', () => {
   describe('given DeregisterUserSinks as input', () => {
     it('returns an object containing a stream at key `unregistered$`', () => {
       const users = new Map();
 
-      const userRepository = new MockUserRepostiory(users);
+      const userRepository = new MockUserRepository(users);
 
       const user: User =
         {
@@ -43,7 +45,7 @@ describe('DeregisterUser', () => {
             [user.id, user],
           ]);
 
-          const userRepository = new MockUserRepostiory(users);
+          const userRepository = new MockUserRepository(users);
 
           const sinks: DeregisterUserSinks =
             {
@@ -67,7 +69,7 @@ describe('DeregisterUser', () => {
 
           const users = new Map();
 
-          const userRepository = new MockUserRepostiory(users);
+          const userRepository = new MockUserRepository(users);
 
           const sinks: DeregisterUserSinks =
             {
