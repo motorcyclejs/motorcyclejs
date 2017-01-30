@@ -1,6 +1,6 @@
 import { Stream, of, never } from 'most';
 import { curry2 } from '@most/prelude';
-import { Component } from '@motorcycle/core';
+import { Component } from '@motorcycle/run';
 import { hold } from 'most-subject';
 import { RouterSource, DefineReturn } from './RouterSource';
 import { RouterInput } from './types';
