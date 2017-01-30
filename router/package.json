@@ -1,7 +1,7 @@
 {
   "name": "@motorcycle/router",
   "description": "Standard Router Driver for Motorcycle.js",
-  "version": "4.1.6",
+  "version": "4.1.7",
   "author": "Tylor Steinberger <tlsteinberger167@gmail.com>",
   "main": "lib/index.js",
   "module": "lib.es2015/index.js",
