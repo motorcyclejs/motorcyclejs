@@ -40,6 +40,12 @@ export class MockUserRepository implements UserRepository {
     return Promise.reject(new Error(`Unable to sign in.`));
   }
 
+  public signOutUser(user: User): Promise<boolean> {
+    const hasUserId = this.userDb.has(user.id);
+
+    return Promise.resolve(hasUserId);
+  }
+
   private generateId(): string {
     return String(++this.id);
   }
