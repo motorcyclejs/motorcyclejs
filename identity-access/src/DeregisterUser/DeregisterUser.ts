@@ -1,5 +1,7 @@
-import { Stream, combineArray, fromPromise, map, switchLatest } from 'most';
 import { User, UserRepository } from '../types';
+
+import { Stream } from 'most';
+import { makeSourceStream } from '../makeSourceStream';
 
 export interface DeregisterUserSinks {
   userRepository$: Stream<UserRepository>;
@@ -13,14 +15,7 @@ export interface DeregisterUserSources {
 export function DeregisterUser(sinks: DeregisterUserSinks): DeregisterUserSources {
   const { userRepository$, user$ } = sinks;
 
-  const unregisteredPromise$: Stream<Promise<boolean>> =
-    combineArray(deregisterUser, [
-      userRepository$,
-      user$,
-    ]);
-
-  const unregistered$: Stream<boolean> =
-    switchLatest(map<Promise<boolean>, Stream<boolean>>(fromPromise, unregisteredPromise$));
+  const unregistered$ = makeSourceStream(deregisterUser, userRepository$, user$);
 
   return { unregistered$ };
 }

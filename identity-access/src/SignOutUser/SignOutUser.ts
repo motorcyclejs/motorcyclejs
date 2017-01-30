@@ -1,5 +1,7 @@
-import { Stream, combineArray, fromPromise, map, switchLatest } from 'most';
 import { User, UserRepository } from '../';
+
+import { Stream } from 'most';
+import { makeSourceStream } from '../makeSourceStream';
 
 export interface SignOutUserSinks {
   userRepository$: Stream<UserRepository>;
@@ -13,14 +15,7 @@ export interface SignOutUserSources {
 export function SignOutUser(sinks: SignOutUserSinks): SignOutUserSources {
   const { userRepository$, user$ } = sinks;
 
-  const signedOutPromise$: Stream<Promise<boolean>> =
-    combineArray(signOutUser, [
-      userRepository$,
-      user$,
-    ]);
-
-  const signedOut$: Stream<boolean> =
-    switchLatest(map<Promise<boolean>, Stream<boolean>>(fromPromise, signedOutPromise$));
+  const signedOut$ = makeSourceStream(signOutUser, userRepository$, user$);
 
   return { signedOut$ };
 }

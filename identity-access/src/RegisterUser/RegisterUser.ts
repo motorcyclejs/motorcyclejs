@@ -1,5 +1,7 @@
-import { Stream, combineArray, fromPromise, map, switchLatest } from 'most';
-import { UserRepository, User, UserCredentials } from '../types';
+import { User, UserCredentials, UserRepository } from '../types';
+
+import { Stream } from 'most';
+import { makeSourceStream } from '../makeSourceStream';
 
 export interface RegisterUserSinks {
   userRepository$: Stream<UserRepository>;
@@ -13,14 +15,7 @@ export interface RegisterUserSources {
 export function RegisterUser(sinks: RegisterUserSinks): RegisterUserSources {
   const { userRepository$, userCredentials$ } = sinks;
 
-  const userPromise$: Stream<Promise<User>> =
-    combineArray(registerUser, [
-      userRepository$,
-      userCredentials$,
-    ]);
-
-  const user$: Stream<User> =
-    switchLatest(map<Promise<User>, Stream<User>>(fromPromise, userPromise$));
+  const user$ = makeSourceStream(registerUser, userRepository$, userCredentials$);
 
   return { user$ };
 }
