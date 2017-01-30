@@ -4,8 +4,8 @@ export class MockUserRepository implements UserRepository {
   private userDb: Map<string, UserCredentials>;
   private id = 0;
 
-  constructor(users: Map<string, UserCredentials>) {
-    this.userDb = users;
+  constructor(userDb: Map<string, UserCredentials>) {
+    this.userDb = userDb;
   }
 
   public registerUser(userCredentials: UserCredentials): Promise<User> {
