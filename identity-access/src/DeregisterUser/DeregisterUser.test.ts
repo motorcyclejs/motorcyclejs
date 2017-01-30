@@ -1,6 +1,10 @@
 import * as assert from 'assert';
 
-import { DeregisterUser, DeregisterUserSinks } from './DeregisterUser';
+import {
+  DeregisterUser,
+  DeregisterUserSinks,
+  DeregisterUserSources,
+} from './DeregisterUser';
 
 import { MockUserRepository } from '../MockUserRepository';
 import { User } from '../types';
@@ -26,7 +30,7 @@ describe('DeregisterUser', () => {
           user$: just(user),
         };
 
-      const sources = DeregisterUser(sinks);
+      const sources: DeregisterUserSources = DeregisterUser(sinks);
 
       assert.ok(sources.hasOwnProperty('unregistered$'));
       assert.ok(isStream(sources.unregistered$));
