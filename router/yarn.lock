@@ -9,24 +9,23 @@
     "@most/prelude" "^1.4.0"
 
 "@most/prelude@^1.4.0", "@most/prelude@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@most/prelude/-/prelude-1.4.1.tgz#b940b5563096f27637401618a5351f42466ea8f3"
-
-"@motorcycle/core@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@motorcycle/core/-/core-1.6.0.tgz#bf5dda5b0abac9d785efacf4f1dc84e1c55e59eb"
-  dependencies:
-    most "^1.1.0"
-    most-subject "^5.2.0"
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@most/prelude/-/prelude-1.5.0.tgz#0c8ce09f305039d4055d3deb59c9e44cd337854d"
 
 "@motorcycle/history@latest":
-  version "4.1.6"
-  resolved "https://registry.yarnpkg.com/@motorcycle/history/-/history-4.1.6.tgz#dd9cfa9549b1a3741cd1aea65bc9b1a7cf85fd0a"
+  version "4.1.7"
+  resolved "https://registry.yarnpkg.com/@motorcycle/history/-/history-4.1.7.tgz#a76472f2608236df45f57d243915de772e93b03b"
   dependencies:
-    "@motorcycle/core" "^1.6.0"
-    most "^1.1.0"
-    most-subject "^5.2.0"
+    most "^1.2.1"
+    most-subject "^5.3.0"
     prehistoric "^1.2.0"
+
+"@motorcycle/run@latest":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@motorcycle/run/-/run-1.2.5.tgz#bf59b4c003bad78d92eb9930e3f7a55b85439bcd"
+  dependencies:
+    most "^1.2.1"
+    most-subject "^5.3.0"
 
 most-subject@^5.2.0, most-subject@^5.3.0:
   version "5.3.0"
@@ -36,7 +35,7 @@ most-subject@^5.2.0, most-subject@^5.3.0:
     "@most/prelude" "^1.4.1"
     most "^1.1.0"
 
-most@^1.1.0, most@^1.1.1:
+most@^1.1.0, most@^1.1.1, most@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/most/-/most-1.2.1.tgz#6457a1a34ca6ef3004168a810fa025b3a56e8769"
   dependencies:
