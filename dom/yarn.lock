@@ -17,14 +17,14 @@
     "@most/prelude" "^1.4.0"
 
 "@most/prelude@^1.4.0", "@most/prelude@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@most/prelude/-/prelude-1.4.1.tgz#b940b5563096f27637401618a5351f42466ea8f3"
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@most/prelude/-/prelude-1.5.0.tgz#0c8ce09f305039d4055d3deb59c9e44cd337854d"
 
 "@motorcycle/run@latest":
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/@motorcycle/run/-/run-1.2.4.tgz#317a85858f0d3b5389ad41a4f14b6a9830bf68cc"
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@motorcycle/run/-/run-1.2.5.tgz#bf59b4c003bad78d92eb9930e3f7a55b85439bcd"
   dependencies:
-    most "^1.1.1"
+    most "^1.2.1"
     most-subject "^5.3.0"
 
 "@types/hyperscript@0.0.1":
@@ -67,7 +67,7 @@ most-subject@^5.3.0:
     "@most/prelude" "^1.4.1"
     most "^1.1.0"
 
-most@^1.1.0, most@^1.1.1, most@^1.2.1:
+most@^1.1.0, most@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/most/-/most-1.2.1.tgz#6457a1a34ca6ef3004168a810fa025b3a56e8769"
   dependencies:

@@ -17,6 +17,7 @@
   "dependencies": {
     "@most/prelude": "^1.4.1",
     "@motorcycle/history": "latest",
+    "@motorcycle/run": "latest",
     "most-subject": "^5.3.0",
     "switch-path": "^1.2.0"
   },
