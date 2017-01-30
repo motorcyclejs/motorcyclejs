@@ -18,7 +18,8 @@
     "run/**/*.ts",
     "history/**/*.ts",
     "router/**/*.ts",
-    "i18n/**/*.ts"
+    "i18n/**/*.ts",
+    "identity-access/**/*.ts"
   ],
   "exclude": [
     "node_modules/*",
