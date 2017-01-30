@@ -1,3 +1,10 @@
+# 4.1.7 (2017-01-30)
+---
+
+## Bug Fixes
+
+- fix(router): fix incorrect dependency [acbe52fa](https://github.com/motorcyclejs/router/commits/acbe52fa1c716bc72e2bf4bf3f2be41b494fe306)
+
 # 4.1.6 (2017-01-19)
 ---
 
