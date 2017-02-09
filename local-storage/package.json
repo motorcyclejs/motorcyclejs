@@ -1,0 +1,26 @@
+{
+  "name": "@motorcycle/local-storage",
+  "version": "1.1.1",
+  "description": "Save data to local storage",
+  "main": "lib/index.js",
+  "jsnext:main": "lib.es2015/index.js",
+  "module": "lib.es2015/index.js",
+  "typings": "lib.es2015/index.d.ts",
+  "files": [
+    "lib",
+    "lib.es2015"
+  ],
+  "scripts": {
+    "test": "nb tslint --only @motorcyle/localstorage && nb karma --only @motorcycle/localstorage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/motorcyclejs/motorcyclejs"
+  },
+  "author": "Tylor Steinberger <tlsteinberger167@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/motorcyclejs/motorcyclejs/issues"
+  },
+  "homepage": "https://github.com/motorcyclejs/motorcyclejs#readme"
+}
