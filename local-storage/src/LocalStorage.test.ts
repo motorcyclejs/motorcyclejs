@@ -1,3 +1,4 @@
+/* tslint:disable:max-file-line-count */
 import * as assert from 'assert';
 
 import {
@@ -195,7 +196,7 @@ describe(`LocalStorage`, () => {
           });
         });
 
-        it(`returns a stream of updated values`, () => {
+        it(`returns a stream of updated values`, (done) => {
           const localStorage$ = async<LocalStorageCommand>();
 
           const sinks: LocalStorageSinks =
@@ -207,21 +208,25 @@ describe(`LocalStorage`, () => {
 
           const { localStorage } = sources;
 
-          const promise = localStorage
+          const a$ = localStorage
             .getItem(`a`)
-            .take(4)
-            .reduce((a: Array<string>, b: string) => a.concat(b), []);
+            .take(4);
 
-          localStorage$.next(setItem('a', '1'));
+          const expected = [null, `1`, `2`, `3`];
+
+          a$.observe(value => {
+            assert.strictEqual(value, expected.shift());
+
+            if (expected.length === 0)
+              done();
+          });
+
+          localStorage$.next(setItem(`a`, `1`));
           localStorage$.next(setItem(`a`, `2`));
           localStorage$.next(setItem(`a`, `3`));
-
-          return promise.then((values: Array<string>) => {
-            assert.deepEqual(values, [null, `1`, `2`, `3`]);
-          });
         });
 
-        it(`returns a stream of updated values from other windows`, () => {
+        it(`returns a stream of updated values from other windows`, (done) => {
           const otherWindow = window.open();
 
           const sinks: LocalStorageSinks =
@@ -233,16 +238,24 @@ describe(`LocalStorage`, () => {
 
           const { localStorage } = sources;
 
-          const promise = localStorage
+          const a$ = localStorage
             .getItem(`a`)
-            .take(4)
-            .reduce((a: Array<string>, b: string) => a.concat(b), []);
+            .take(4);
+
+          const expected = [null, `1`, `2`, `3`];
+
+          a$.observe(value => {
+            assert.strictEqual(value, expected.shift());
+
+            if (expected.length === 0)
+              done();
+          });
 
           function setNextValue(value: number) {
             return new Promise((resolve) => {
               otherWindow.localStorage.setItem(`a`, String(value));
 
-              setTimeout(resolve, 0, value + 1);
+              setTimeout(resolve, 10, value + 1);
             });
           }
 
@@ -250,10 +263,6 @@ describe(`LocalStorage`, () => {
             .then(setNextValue)
             .then(setNextValue)
             .then(setNextValue);
-
-          return promise.then((values: Array<string>) => {
-            assert.deepEqual(values, [null, `1`, `2`, `3`]);
-          });
         });
       });
     });
