@@ -11,7 +11,7 @@
     "lib.es2015"
   ],
   "scripts": {
-    "test": "nb tslint --only @motorcyle/localstorage && nb karma --only @motorcycle/localstorage"
+    "test": "../node_modules/.bin/nb tslint --only @motorcycle/local-storage && ../node_modules/.bin/nb karma --only @motorcycle/local-storage"
   },
   "repository": {
     "type": "git",
@@ -22,5 +22,12 @@
   "bugs": {
     "url": "https://github.com/motorcyclejs/motorcyclejs/issues"
   },
-  "homepage": "https://github.com/motorcyclejs/motorcyclejs#readme"
+  "homepage": "https://github.com/motorcyclejs/motorcyclejs#readme",
+  "dependencies": {
+    "@most/hold": "^2.0.0",
+    "most": "^1.2.1"
+  },
+  "devDependencies": {
+    "most-subject": "^5.3.0"
+  }
 }
