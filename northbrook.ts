@@ -29,6 +29,7 @@ const config: NorthbrookConfig =
       exclude: [
         '@motorcycle/dom',
         '@motorcycle/local-storage',
+        '@motorcycle/session-storage',
       ],
     },
 
