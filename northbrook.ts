@@ -12,6 +12,7 @@ const config: NorthbrookConfig =
       'router',
       'run',
       'i18n',
+      'local-storage',
     ],
 
     plugins: [
@@ -24,7 +25,10 @@ const config: NorthbrookConfig =
     ],
 
     mocha: {
-      exclude: ['@motorcycle/dom'],
+      exclude: [
+        '@motorcycle/dom',
+        '@motorcycle/local-storage',
+      ],
     },
 
     tsc: {
