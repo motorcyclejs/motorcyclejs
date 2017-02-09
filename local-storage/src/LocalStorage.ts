@@ -14,7 +14,10 @@ import {
   fromEvent,
   map,
   merge,
+  multicast,
+  skipRepeats,
   startWith,
+  tap,
 } from 'most';
 
 import { hold } from '@most/hold';
@@ -34,10 +37,10 @@ export function LocalStorage(sinks: LocalStorageSinks): LocalStorageSources {
     filter(isLocalStorageEvent, fromEvent<StorageEvent>('storage', window, true));
 
   const storage$: Stream<Storage> =
-    merge(
-      hold(map(storageAction, localStorage$)),
-      hold(constant(window.localStorage, localStorageEvent$)),
-    );
+    multicast(merge(
+      constant(window.localStorage, tap(storageAction, localStorage$)),
+      constant(window.localStorage, localStorageEvent$),
+    ));
 
   drain(storage$);
 
@@ -67,7 +70,7 @@ export const setItem: CurriedFunction2<string, string, LocalStorageSetItemComman
   },
 );
 
-function storageAction(command: LocalStorageCommand): Storage {
+function storageAction(command: LocalStorageCommand) {
   if (command.method === 'clear')
     window.localStorage.clear();
 
@@ -76,19 +79,19 @@ function storageAction(command: LocalStorageCommand): Storage {
 
   if (command.method === 'setItem')
     window.localStorage.setItem(command.key, command.value);
-
-  return window.localStorage;
 }
 
 function createGetItem(storage$: Stream<Storage>) {
   return function getItem(key: string): Stream<string | null> {
-    return map(storage => storage.getItem(key), startWith(window.localStorage, storage$));
+    return hold(skipRepeats(
+      map(storage => storage.getItem(key), startWith(window.localStorage, storage$))));
   };
 }
 
 function createLength(storage$: Stream<Storage>) {
   return function length(): Stream<number> {
-    return map(storage => storage.length, startWith(window.localStorage, storage$));
+    return hold(skipRepeats(
+      map(storage => storage.length, startWith(window.localStorage, storage$))));
   };
 }
 
