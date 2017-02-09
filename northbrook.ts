@@ -13,6 +13,7 @@ const config: NorthbrookConfig =
       'run',
       'i18n',
       'local-storage',
+      'session-storage',
     ],
 
     plugins: [
