@@ -101,8 +101,6 @@ describe(`LocalStorage`, () => {
 
         LocalStorage(sinks);
 
-        assert.strictEqual(window.localStorage.getItem('a'), '1');
-
         localStorage$.next(removeItem(`a`));
 
         assert.strictEqual(window.localStorage.length, 1);
@@ -154,9 +152,6 @@ describe(`LocalStorage`, () => {
 
         LocalStorage(sinks);
 
-        assert.strictEqual(window.localStorage.length, 0);
-        assert.strictEqual(window.localStorage.getItem('a'), null);
-
         localStorage$.next(setItem(`a`, `1`));
 
         assert.strictEqual(window.localStorage.length, 1);
@@ -167,7 +162,7 @@ describe(`LocalStorage`, () => {
 
   describe(`LocalStorageSource`, () => {
     describe(`getItem`, () => {
-      describe(`given a string representing value`, () => {
+      describe(`given a string representing a key`, () => {
         beforeEach(() => {
           window.localStorage.clear();
         });
