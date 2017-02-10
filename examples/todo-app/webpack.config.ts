@@ -1,0 +1,48 @@
+import {
+  BabiliPlugin,
+  HtmlPlugin,
+  TsLoader,
+  devServer,
+  devtool,
+  distPath,
+  resolve,
+  srcPath,
+} from './.config/webpack';
+
+import { join } from 'path';
+
+const entry =
+  {
+    app: join(srcPath, 'todoApp.ts'),
+  };
+
+const output =
+  {
+    path: distPath,
+    filename: 'todoApp.js',
+  };
+
+const plugins =
+  [
+    BabiliPlugin,
+    HtmlPlugin,
+  ];
+
+const loaders =
+  [
+    TsLoader,
+  ];
+
+export =
+  {
+    entry,
+    output,
+    devServer,
+    devtool,
+    plugins,
+    resolve,
+    module:
+      {
+        loaders,
+      },
+  };
