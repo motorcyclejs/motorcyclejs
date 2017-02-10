@@ -13,6 +13,7 @@ const config: NorthbrookConfig =
       'run',
       'i18n',
       'local-storage',
+      'session-storage',
     ],
 
     plugins: [
@@ -28,6 +29,7 @@ const config: NorthbrookConfig =
       exclude: [
         '@motorcycle/dom',
         '@motorcycle/local-storage',
+        '@motorcycle/session-storage',
       ],
     },
 
