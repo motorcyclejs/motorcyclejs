@@ -1,5 +1,6 @@
 import {
   BabiliPlugin,
+  DEVELOPMENT,
   HtmlPlugin,
   TsLoader,
   devServer,
@@ -24,9 +25,11 @@ const output =
 
 const plugins =
   [
-    BabiliPlugin,
     HtmlPlugin,
   ];
+
+if (process.env.BUILD_ENV !== DEVELOPMENT)
+  plugins.push(BabiliPlugin);
 
 const loaders =
   [
