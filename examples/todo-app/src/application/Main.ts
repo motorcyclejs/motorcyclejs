@@ -1,7 +1,11 @@
 import { Sinks, Sources } from '../types';
-import { Stream, constant, just, map, never, startWith } from 'most';
-import { addItemService, findAllItemsService } from './';
-import { addItemStream, view } from '../ui/todoApp';
+import { Stream, map } from 'most';
+import { addItemStream, todoAppView } from '../ui/todoApp';
+
+import { Item } from '../domain/model/Item';
+import { addItemService } from './';
+import { itemView } from '../ui/item'
+import { map as rMap } from 'ramda';
 
 export function Main(sources: Sources): Sinks {
   const { dom, items$ } = sources;
@@ -10,7 +14,9 @@ export function Main(sources: Sources): Sinks {
 
   const addedItem$ = map(addItemService, addItem$);
 
-  const view$ = map(view, items$);
+  const itemViews$ = map(rMap(itemView), items$);
+
+  const view$ = map(todoAppView, itemViews$);
 
   return { view$, addItem$: addedItem$ };
 }

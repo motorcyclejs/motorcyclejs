@@ -5,6 +5,7 @@ import {
 } from '../../domain/model/Item';
 import { LocalStorage, setItem } from '@motorcycle/local-storage';
 import { Stream, map, never } from 'most';
+import { concat as rConcat, map as rMap } from 'ramda';
 
 import { Title } from '../../domain/model/Title';
 import { proxy } from 'most-proxy';
@@ -17,21 +18,21 @@ export function LocalStorageItemRepository(sinks: ItemRepositorySinks): ItemRepo
 
   const { addItem$ } = sinks;
 
-  const json$ = sample(toJson, addItem$, proxyItems$.tap(console.log));
+  const jsonItems$ = sample(toJson, addItem$, proxyItems$);
 
-  const setItemCommand$ = map(setItem(DB_NAME), json$);
+  const setItemCommand$ = map(setItem(DB_NAME), jsonItems$);
 
   const localStorage$ = setItemCommand$;
 
   const { localStorage: { getItem } } = LocalStorage({ localStorage$ });
 
-  const items$: Stream<Array<Item>> = attach(map(toItems, getItem(DB_NAME)));
+  const items$ = attach(map(toItems, getItem(DB_NAME)));
 
   return { items$ };
 }
 
 function toJson(item: Item, items: Array<Item>): string {
-  return JSON.stringify(items.concat(item).map(toObj));
+  return JSON.stringify(rMap(toObj, rConcat(items, [item])));
 }
 
 function toObj(item: Item): ItemObj {
@@ -48,9 +49,7 @@ function toItems(jsonItems: string | null): Array<Item> {
 
   const itemObjs: Array<ItemObj> = JSON.parse(jsonItems);
 
-  const items: Array<Item> = itemObjs.map(toItem);
-
-  return items;
+  return rMap(toItem, itemObjs);
 }
 
 interface ItemObj {

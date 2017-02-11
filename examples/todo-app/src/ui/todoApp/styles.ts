@@ -75,4 +75,13 @@ export namespace todoAppStyles {
       boxShadow: `inset 0 -2px 1px rgba(0, 0, 0, 0.03)`,
     }
   );
+
+  export const items = style(
+    { $debugName: `todo-app_items` },
+    {
+      margin: 0,
+      padding: 0,
+      listStyle: `none`,
+    }
+  );
 }

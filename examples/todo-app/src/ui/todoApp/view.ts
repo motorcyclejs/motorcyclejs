@@ -1,4 +1,4 @@
-import { VNode, div, h1, header, input, section } from '@motorcycle/dom';
+import { VNode, div, h1, header, input, section, ul } from '@motorcycle/dom';
 
 import { todoAppStyles } from './';
 
@@ -6,7 +6,7 @@ const HEADING = `todos`;
 
 const NEW_ITEM_PLACEHOLDER = `What needs to be done?`;
 
-export function view(): VNode {
+export function todoAppView(items: Array<VNode>): VNode {
   const host =
     div(
       {
@@ -29,10 +29,19 @@ export function view(): VNode {
                 update: (_, vNode) => { (vNode.element as HTMLInputElement).value = `` }
               },
             ),
-          ],
+          ]
         ),
-        section()
-      ],
+        section(
+          [
+            ul(
+              {
+                className: todoAppStyles.items,
+              },
+              items
+            ),
+          ]
+        )
+      ]
     );
 
   return host;

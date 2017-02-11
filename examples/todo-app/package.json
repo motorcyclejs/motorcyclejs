@@ -29,6 +29,7 @@
     "@motorcycle/run": "^1.2.5",
     "most": "^1.2.1",
     "most-proxy": "^3.2.0",
+    "ramda": "^0.23.0",
     "typestyle": "^0.26.1"
   },
   "devDependencies": {
