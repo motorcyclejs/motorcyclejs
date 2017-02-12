@@ -9,45 +9,32 @@
 </div>
 
 <div align='center'>
-  <table align='center'>
-    <tr>
-      <td>
-        <a href='#packages'>
-          Packages
-        </a>
-      </td>
-      <td>
-        <a href="https://gitter.im/motorcyclejs/motorcyclejs">
-          Chat With Us
-        </a>
-      </td>
-      <td>
-        <a href="https://github.com/motorcyclejs/motorcyclejs/issues?q=is%3Aopen+is%3Aissue+label%3A%22Status%3A+Help+Wanted%22">
-          Contribute
-        </a>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <a href='https://travis-ci.org/motorcyclejs/motorcyclejs'>
-          <img src="https://travis-ci.org/motorcyclejs/motorcyclejs.svg?branch=master" />
-        </a>
-      </td>
-      <td>
-        <a href='https://github.com/staltz/comver'>
-          <img src='https://img.shields.io/badge/ComVer-compliant-brightgreen.svg' />
-        </a>
-      </td>
-      <td>
-        <a href='https://opensource.org/licenses/MIT'>
-          <img src='https://img.shields.io/badge/License-MIT-brightgreen.svg' />
-        </a>
-      </td>
-    </tr>
-  </table>
+  <a href='#packages'>
+    Packages
+  </a>
+  <span> | </span>
+  <a href="https://gitter.im/motorcyclejs/motorcyclejs" target='_blank'>
+    Chat With Us
+  </a>
+  <span> | </span>
+  <a href="https://github.com/motorcyclejs/motorcyclejs/issues?q=is%3Aopen+is%3Aissue+label%3A%22Status%3A+Help+Wanted%22", target='_blank'>
+    Contribute
+  </a>
 </div>
 
 <hr style='margin-top: 50px'/>
+
+<div align='center'>
+  <a href='https://travis-ci.org/motorcyclejs/motorcyclejs'>
+    <img src="https://travis-ci.org/motorcyclejs/motorcyclejs.svg?branch=master" />
+  </a>
+  <a href='https://github.com/staltz/comver'>
+    <img src='https://img.shields.io/badge/ComVer-compliant-brightgreen.svg' />
+  </a>
+  <a href='https://opensource.org/licenses/MIT'>
+    <img src='https://img.shields.io/badge/License-MIT-brightgreen.svg' />
+  </a>
+</div>
 
 <a href='#packages'>
   <h2 class='title'>Packages</h2>
