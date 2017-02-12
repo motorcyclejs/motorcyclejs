@@ -17,6 +17,5 @@ export type Sources =
 
 export interface Model {
   key: string;
-  completed: boolean;
   todo: Todo;
 }

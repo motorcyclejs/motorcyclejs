@@ -1,9 +1,10 @@
 import { Model, Sinks, Sources, toggle, view } from './';
-import { combine, just, map } from 'most';
+import { just, map, merge } from 'most';
 
 import { combineObj } from 'most-combineobj';
 import { createKey } from '../helpers';
-import { toggleTodoCompletedService } from '../../application'
+import { sample } from '@most/sample';
+import { toggleTodoCompletedService } from '../../application';
 
 export function TodoItem(sources: Sources): Sinks {
   const { dom, todo$ } = sources;
@@ -13,13 +14,16 @@ export function TodoItem(sources: Sources): Sinks {
   const toggle$ = toggle(dom, key);
 
   const save$ =
-    combine(
-      (_, todo) => toggleTodoCompletedService(todo),
-      toggle$,
+    merge(
       todo$,
+      sample(
+        (_, todo) => toggleTodoCompletedService(todo),
+        toggle$,
+        todo$,
+      ),
     );
 
-  const model$ = combineObj<Model>({ key: just(key), toggle$, todo$ });
+  const model$ = combineObj<Model>({ key: just(key), todo$ });
 
   const view$ = map(view, model$);
 

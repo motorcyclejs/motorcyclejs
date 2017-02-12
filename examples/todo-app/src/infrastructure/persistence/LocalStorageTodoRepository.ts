@@ -4,7 +4,7 @@ import {
   TodoRepositorySinks,
   TodoRepositorySources,
 } from '../../domain/model/Todo';
-import { map, merge, skipRepeats } from 'most';
+import { map, merge } from 'most';
 import { concat as rConcat, map as rMap } from 'ramda';
 
 import { Title } from '../../domain/model/Title';
@@ -20,12 +20,11 @@ export function LocalStorageTodoRepository(
 
   const { add$, saveAll$ } = sinks;
 
-  // const jsonTodos$ = sample(toJson, add$, proxyTodos$);
-
-  const jsonTodos$ = skipRepeats(merge(
-    sample(toJson, add$, proxyTodos$),
-    map(JSON.stringify, map(rMap(toObj), saveAll$)),
-  ));
+  const jsonTodos$ =
+    merge(
+      sample(toJson, add$, proxyTodos$),
+      map(JSON.stringify, map(rMap(toObj), saveAll$)),
+    );
 
   const setItemCommand$ = map(setItem(DB_NAME), jsonTodos$);
 
