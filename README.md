@@ -21,7 +21,7 @@
 <h1 class='center title'>Motorcycle.js</h1>
 
 <div class='center'>
-  <img src='logo.svg' width='128' />
+  <img src='.assets/logo.png' width='128' />
 </div>
 
 <div class='center'>
