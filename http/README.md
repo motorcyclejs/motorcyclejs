@@ -3,7 +3,7 @@
 > Motorcycle Components and functions for dealing with HTTP
 
 This is a thin abstraction and helpful functions built on top of
-[`most-request`](https://github.com/TylorS/most-request) which uses
+[`most-request`](https://github.com/TylorS/most-request), which uses
 [`superagent`](https://github.com/visionmedia/superagent) under the hood.
 
 ## Let me have it!
@@ -16,7 +16,7 @@ npm install --save @motorcycle/http
 ## API
 
 - All functions of arity 2 or more are curried for you!
-- All types in the API section not described can be found in the [Types](#types) section.
+- Types not described in the API can be found in the [Types](#types) section.
 
 ### `Http(sinks: HttpSinks): HttpSources`
 
@@ -37,7 +37,7 @@ run(Main, Effects);
 
 ### `request(method: HTTPMethod, url: string): RequestOptions`
 
-Create simple RequestOptions objects for use with `Http` component.
+Create simple `RequestOptions` objects for use with `Http` component.
 
 ```typescript
 function Main(sources) {
@@ -52,7 +52,7 @@ function Main(sources) {
 ```
 
 There are also many functions similar to `request` that are for particular HTTP
-methods, all of which take a url string and return `RequestOptions`.
+methods, all of which take a URL string and return `RequestOptions`.
 
 - `get(url: string): RequestOptions`
 - `head(url: string): RequestOptions`
