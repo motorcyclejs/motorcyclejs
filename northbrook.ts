@@ -14,6 +14,7 @@ const config: NorthbrookConfig =
       'i18n',
       'local-storage',
       'session-storage',
+      'http',
     ],
 
     plugins: [
@@ -30,6 +31,7 @@ const config: NorthbrookConfig =
         '@motorcycle/dom',
         '@motorcycle/local-storage',
         '@motorcycle/session-storage',
+        '@motorcycle/http',
       ],
     },
 
