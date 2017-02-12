@@ -51,7 +51,6 @@ installation and usage.
       <th>Package name</th>
       <th>Version</th>
       <th>Dependencies</th>
-      <th>DevDependencies</th>
     </tr>
   </thead>
   <tbody>
@@ -62,13 +61,14 @@ installation and usage.
         </a>
       </td>
       <td>
-        <img src='https://img.shields.io/npm/v/@motorcycle/dom.svg'>
+        <a href="https://github.com/motorcyclejs/motorcyclejs/tree/master/dom/CHANGELOG.md">
+          <img src='https://img.shields.io/npm/v/@motorcycle/dom.svg'>
+        </a>
       </td>
       <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=dom' />
-      </td>
-      <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs/dev-status.svg?path=dom' />
+        <a href='https://david-dm.org/motorcyclejs/motorcyclejs?path=dom'>
+          <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=dom' />
+        </a>
       </td>
     </tr>
     <tr>
@@ -78,13 +78,14 @@ installation and usage.
         </a>
       </td>
       <td>
-        <img src='https://img.shields.io/npm/v/@motorcycle/history.svg'>
+        <a href="https://github.com/motorcyclejs/motorcyclejs/tree/master/history/CHANGELOG.md">
+          <img src='https://img.shields.io/npm/v/@motorcycle/history.svg'>
+        </a>
       </td>
       <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=history' />
-      </td>
-      <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs/dev-status.svg?path=history' />
+        <a href='https://david-dm.org/motorcyclejs/motorcyclejs?path=history'>
+          <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=history' />
+        </a>
       </td>
     </tr>
     <tr>
@@ -94,13 +95,14 @@ installation and usage.
         </a>
       </td>
       <td>
-        <img src='https://img.shields.io/npm/v/@motorcycle/http.svg'>
+        <a href="https://github.com/motorcyclejs/motorcyclejs/tree/master/http/CHANGELOG.md">
+          <img src='https://img.shields.io/npm/v/@motorcycle/http.svg'>
+        </a>
       </td>
       <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=http' />
-      </td>
-      <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs/dev-status.svg?path=http' />
+        <a href='https://david-dm.org/motorcyclejs/motorcyclejs?path=http'>
+          <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=http' />
+        </a>
       </td>
     </tr>
     <tr>
@@ -110,13 +112,14 @@ installation and usage.
         </a>
       </td>
       <td>
-        <img src='https://img.shields.io/npm/v/@motorcycle/i18n.svg'>
+        <a href="https://github.com/motorcyclejs/motorcyclejs/tree/master/i18n/CHANGELOG.md">
+          <img src='https://img.shields.io/npm/v/@motorcycle/i18n.svg'>
+        </a>
       </td>
       <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=i18n' />
-      </td>
-      <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs/dev-status.svg?path=i18n' />
+        <a href='https://david-dm.org/motorcyclejs/motorcyclejs?path=i18n'>
+          <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=i18n' />
+        </a>
       </td>
     </tr>
     <tr>
@@ -126,13 +129,14 @@ installation and usage.
         </a>
       </td>
       <td>
-        <img src='https://img.shields.io/npm/v/@motorcycle/local-storage.svg'>
+        <a href="https://github.com/motorcyclejs/motorcyclejs/tree/master/local-storage/CHANGELOG.md">
+          <img src='https://img.shields.io/npm/v/@motorcycle/local-storage.svg'>
+        </a>
       </td>
       <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=local-storage' />
-      </td>
-      <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs/dev-status.svg?path=local-storage' />
+        <a href='https://david-dm.org/motorcyclejs/motorcyclejs?path=local-storage'>
+          <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=local-storage' />
+        </a>
       </td>
     </tr>
     <tr>
@@ -142,13 +146,14 @@ installation and usage.
         </a>
       </td>
       <td>
-        <img src='https://img.shields.io/npm/v/@motorcycle/router.svg'>
+        <a href="https://github.com/motorcyclejs/motorcyclejs/tree/master/router/CHANGELOG.md">
+          <img src='https://img.shields.io/npm/v/@motorcycle/router.svg'>
+        </a>
       </td>
       <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=router' />
-      </td>
-      <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs/dev-status.svg?path=router' />
+        <a href='https://david-dm.org/motorcyclejs/motorcyclejs?path=router'>
+          <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=router' />
+        </a>
       </td>
     </tr>
     <tr>
@@ -158,13 +163,14 @@ installation and usage.
         </a>
       </td>
       <td>
-        <img src='https://img.shields.io/npm/v/@motorcycle/run.svg'>
+        <a href="https://github.com/motorcyclejs/motorcyclejs/tree/master/run/CHANGELOG.md">
+          <img src='https://img.shields.io/npm/v/@motorcycle/run.svg'>
+        </a>
       </td>
       <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=run' />
-      </td>
-      <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs/dev-status.svg?path=run' />
+        <a href='https://david-dm.org/motorcyclejs/motorcyclejs?path=run'>
+          <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=run' />
+        </a>
       </td>
     </tr>
     <tr>
@@ -174,13 +180,14 @@ installation and usage.
         </a>
       </td>
       <td>
-        <img src='https://img.shields.io/npm/v/@motorcycle/session-storage.svg'>
+        <a href="https://github.com/motorcyclejs/motorcyclejs/tree/master/session-storage/CHANGELOG.md">
+          <img src='https://img.shields.io/npm/v/@motorcycle/session-storage.svg'>
+        </a>
       </td>
       <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=session-storage' />
-      </td>
-      <td>
-        <img src='https://david-dm.org/motorcyclejs/motorcyclejs/dev-status.svg?path=session-storage' />
+        <a href='https://david-dm.org/motorcyclejs/motorcyclejs?path=session-storage'>
+          <img src='https://david-dm.org/motorcyclejs/motorcyclejs.svg?path=session-storage' />
+        </a>
       </td>
     </tr>
   </tbody>
