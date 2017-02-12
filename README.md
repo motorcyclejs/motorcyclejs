@@ -42,7 +42,8 @@
 
 Motorcycle.js is a collection of many packages that accomplished specific needs.
 This repository contains all of the packages maintained by the Motorcycle core
-contributors.
+contributors. Each package has a README for more detailed information about
+installation and usage.
 
 <table>
   <thead>
