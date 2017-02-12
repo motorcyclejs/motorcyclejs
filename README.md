@@ -1,34 +1,14 @@
-<style>
-  table.center {
-    margin-left: auto;
-    margin-right: auto;
-  }
+<h1 align='center'>Motorcycle.js</h1>
 
-  table.center td {
-    border: solid 1px inherit;
-  }
-
-  .center {
-    text-align: center;
-  }
-
-  .title {
-    font-weight: bolder;
-    font-size: 28px;
-  }
-</style>
-
-<h1 class='center title'>Motorcycle.js</h1>
-
-<div class='center'>
+<div align='center'>
   <img src='.assets/logo.png' width='128' />
 </div>
 
-<div class='center'>
+<div align='center'>
   <strong>A statically-typed, functional and reactive framework for modern browsers</strong>
 </div>
 
-<table class='center'>
+<table align='center'>
   <tr>
     <td>
       <a href='#packages'>
