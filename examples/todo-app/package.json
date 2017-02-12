@@ -28,6 +28,7 @@
     "@motorcycle/local-storage": "^2.0.0",
     "@motorcycle/run": "^1.2.5",
     "most": "^1.2.1",
+    "most-combineobj": "^1.0.0",
     "most-proxy": "^3.2.0",
     "ramda": "^0.23.0",
     "typestyle": "^0.26.1"
@@ -40,7 +41,6 @@
     "babili-webpack-plugin": "^0.0.9",
     "glob-expand": "^0.2.1",
     "html-webpack-plugin": "^2.28.0",
-    "husky": "^0.13.1",
     "mocha": "^3.2.0",
     "ts-loader": "^2.0.0",
     "ts-node": "^2.0.0",

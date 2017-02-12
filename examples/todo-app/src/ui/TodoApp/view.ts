@@ -6,42 +6,42 @@ const HEADING = `todos`;
 
 const NEW_ITEM_PLACEHOLDER = `What needs to be done?`;
 
-export function todoAppView(items: Array<VNode>): VNode {
+export function view(items: Array<VNode>): VNode {
   const host =
     div(
       {
-        className: todoAppStyles.host,
+        className: todoAppStyles.hostClass,
       },
       [
         header(
           [
             h1(
               {
-                className: todoAppStyles.heading,
+                className: todoAppStyles.headingClass,
               },
-              HEADING
+              HEADING,
             ),
             input(
               {
-                className: todoAppStyles.newItem,
+                className: todoAppStyles.newItemClass,
                 placeholder: NEW_ITEM_PLACEHOLDER,
                 autofocus: true,
-                update: (_, vNode) => { (vNode.element as HTMLInputElement).value = `` }
+                update: (_, vNode) => { (vNode.element as HTMLInputElement).value = ``; },
               },
             ),
-          ]
+          ],
         ),
         section(
           [
             ul(
               {
-                className: todoAppStyles.items,
+                className: todoAppStyles.itemsClass,
               },
-              items
+              items,
             ),
-          ]
-        )
-      ]
+          ],
+        ),
+      ],
     );
 
   return host;

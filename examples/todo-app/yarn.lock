@@ -2133,6 +2133,12 @@ mocha@^3.2.0:
     mkdirp "0.5.1"
     supports-color "3.1.2"
 
+most-combineobj@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/most-combineobj/-/most-combineobj-1.0.0.tgz#e7f85e9766daa76692452463f263d818743a3580"
+  dependencies:
+    most "^1.1.0"
+
 most-proxy@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/most-proxy/-/most-proxy-3.2.0.tgz#90ca13ca7d0869c4b0b376d8fd258b87b35e1553"

@@ -1,6 +1,4 @@
-import { cssRule, style } from 'typestyle';
-
-import { todoAppCssProperties } from './';
+import { cssRule, style, types } from 'typestyle';
 
 export namespace todoAppStyles {
   cssRule(
@@ -16,17 +14,43 @@ export namespace todoAppStyles {
       '-webkit-font-smoothing': `antialiased`,
       '-moz-osx-font-smoothing': `grayscale`,
       'fontWeight': 300,
-    }
+    },
   );
 
   cssRule(
     `:focus`,
     {
       outline: 0,
-    }
+    },
   );
 
-  export const host = style(
+  const inputPlaceholder: types.NestedCSSProperties =
+    {
+      $unique: true,
+      fontStyle: 'italic',
+      fontWeight: 300,
+      color: `#e6e6e6`,
+    };
+
+  const itemInput: types.NestedCSSProperties =
+    {
+      position: 'relative',
+      margin: 0,
+      width: `100%`,
+      fontSize: `24px`,
+      fontFamily: `inherit`,
+      fontWeight: 'inherit',
+      lineHeight: `1.4em`,
+      color: `inherit`,
+      padding: `6px`,
+      border: `1px solid #999`,
+      boxShadow: `inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2)`,
+      boxSizing: 'border-box',
+      '-webkit-font-smoothing': `antialiased`,
+      '-moz-osx-font-smoothing': `grayscale`,
+    };
+
+  export const hostClass = style(
     { $debugName: `todo-app` },
     {
       background: `#fff`,
@@ -37,16 +61,16 @@ export namespace todoAppStyles {
       $nest: {
         '& input': {
           $nest: {
-            '&::-webkit-input-placeholder': todoAppCssProperties.inputPlaceholder,
-            '&::-moz-placeholder': todoAppCssProperties.inputPlaceholder,
-            '&::input-placeholder': todoAppCssProperties.inputPlaceholder,
-          }
-        }
+            '&::-webkit-input-placeholder': inputPlaceholder,
+            '&::-moz-placeholder': inputPlaceholder,
+            '&::input-placeholder': inputPlaceholder,
+          },
+        },
       },
     },
   );
 
-  export const heading = style(
+  export const headingClass = style(
     { $debugName: `todo-app_heading` },
     {
       position: 'absolute',
@@ -56,32 +80,32 @@ export namespace todoAppStyles {
       fontWeight: 100,
       textAlign: 'center',
       color: `rgba(175, 47, 47, 0.15)`,
-	    textRendering: 'optimizeLegibility',
+      textRendering: 'optimizeLegibility',
     },
   );
 
-  export const edit = style(
+  export const editClass = style(
     { $debugName: `todo-app_edit` },
-    todoAppCssProperties.itemInput,
+    itemInput,
   );
 
-  export const newItem = style(
+  export const newItemClass = style(
     { $debugName: `todo-app_new-item` },
-    todoAppCssProperties.itemInput,
+    itemInput,
     {
       padding: `16px 16px 16px 60px`,
       border: `none`,
       background: `rgba(0, 0, 0, 0.003)`,
       boxShadow: `inset 0 -2px 1px rgba(0, 0, 0, 0.03)`,
-    }
+    },
   );
 
-  export const items = style(
+  export const itemsClass = style(
     { $debugName: `todo-app_items` },
     {
       margin: 0,
       padding: 0,
       listStyle: `none`,
-    }
+    },
   );
 }

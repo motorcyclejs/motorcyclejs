@@ -1,12 +1,12 @@
 import { DomSource, events, query } from '@motorcycle/dom';
-import { Stream, filter, map, multicast } from 'most';
+import { Stream, filter, map } from 'most';
 
 import { todoAppStyles } from './';
 
-export function addItemStream(dom: DomSource): Stream<string> {
-  const newItemInput = query(`.${todoAppStyles.newItem}`, dom);
+export function newTodoStream(dom: DomSource): Stream<string> {
+  const newItem = query(`.${todoAppStyles.newItemClass}`, dom);
 
-  const keyDown$ = events('keydown', newItemInput);
+  const keyDown$ = events('keydown', newItem);
 
   const enterKey$ = filter(isEnterKey, keyDown$);
 

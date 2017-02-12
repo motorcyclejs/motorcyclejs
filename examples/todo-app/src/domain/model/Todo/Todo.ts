@@ -1,7 +1,7 @@
 import { Entity } from '../Entity';
 import { Title } from '../Title';
 
-export class Item extends Entity {
+export class Todo extends Entity {
   private _completed: boolean;
 
   private _title: Title;

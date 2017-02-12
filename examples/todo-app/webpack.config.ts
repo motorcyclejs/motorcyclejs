@@ -14,7 +14,7 @@ import { join } from 'path';
 
 const entry =
   {
-    app: join(srcPath, 'todoApp.ts'),
+    app: join(srcPath, 'bootstrap.ts'),
   };
 
 const output =
