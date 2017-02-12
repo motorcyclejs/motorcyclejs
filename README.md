@@ -13,12 +13,16 @@
     Packages
   </a>
   <span> | </span>
-  <a href="https://gitter.im/motorcyclejs/motorcyclejs" target='_blank'>
-    Chat With Us
-  </a>
-  <span> | </span>
   <a href="#contributing", target='_blank'>
     Contribute
+  </a>
+  <span> | </span>
+  <a href='#most'>
+    Most
+  </a>
+  <span> | </span>
+  <a href="https://gitter.im/motorcyclejs/motorcyclejs" target='_blank'>
+    Chat With Us
   </a>
 </div>
 
