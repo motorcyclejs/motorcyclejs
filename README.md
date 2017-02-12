@@ -17,7 +17,7 @@
     Chat With Us
   </a>
   <span> | </span>
-  <a href="https://github.com/motorcyclejs/motorcyclejs/issues?q=is%3Aopen+is%3Aissue+label%3A%22Status%3A+Help+Wanted%22", target='_blank'>
+  <a href="#contributing", target='_blank'>
     Contribute
   </a>
 </div>
@@ -208,3 +208,14 @@ get started with Most:
 - [Most.js core maintained packages](https://github.com/mostjs)
 - [Most.js community managed packages](https://github.com/mostjs-community)
 - [Most.js' Wiki](https://github.com/cujojs/most/wiki)
+
+<a href='#contributing'>
+  <h2>Contributing</h2>
+</a>
+
+For those who are interested in contributing here are some helpful links
+for getting started
+
+- [Help Wanted Issues](https://github.com/motorcyclejs/motorcyclejs/issues?q=is%3Aopen+is%3Aissue+label%3A%22Status%3A+Help+Wanted%22)
+- [Contribution Guidelines](https://github.com/motorcyclejs/motorcyclejs/tree/master/CONTRIBUTING.md)
+- [Style Guide](https://github.com/motorcyclejs/motorcyclejs/tree/master/STYLE_GUIDE.md)
