@@ -4,3 +4,4 @@ export * from './styles';
 export * from './toggleCompleted';
 export * from './types';
 export * from './view';
+export * from './edit';

@@ -18,4 +18,5 @@ export type Sources =
 
 export interface Model {
   todo: Todo;
+  editing: boolean;
 }

@@ -1,4 +1,4 @@
-import { cssRaw, style } from 'typestyle';
+import { cssRaw, style, types } from 'typestyle';
 
 export namespace TodoItemStyles {
 
@@ -102,4 +102,51 @@ export namespace TodoItemStyles {
     `<path fill="#5dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>\')`;
 
   cssRaw(`.${toggleClass}:checked::after { content: ${toggleCheckedSvg} }`);
+
+  const displayNone: types.NestedCSSProperties =
+    {
+      display: `none`,
+    };
+
+  export const editingClass = style(
+    { $debugName: `todo-app_item-editing` },
+    {
+      borderBottom: `none`,
+      padding: 0,
+      $nest: {
+        [`& .${labelClass}`]: displayNone,
+        [`& .${destroyClass}`]: displayNone,
+        [`& .${toggleClass}`]: displayNone,
+      },
+    },
+  );
+
+  const itemInput: types.NestedCSSProperties =
+    {
+      position: 'relative',
+      margin: 0,
+      width: `100%`,
+      fontSize: `24px`,
+      fontFamily: `inherit`,
+      fontWeight: 'inherit',
+      lineHeight: `1.4em`,
+      color: `inherit`,
+      padding: `6px`,
+      border: `1px solid #999`,
+      boxShadow: `inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2)`,
+      boxSizing: 'border-box',
+      '-webkit-font-smoothing': `antialiased`,
+      '-moz-osx-font-smoothing': `grayscale`,
+    };
+
+  export const editClass = style(
+    { $debugName: `todo-app_item-edit` },
+    itemInput,
+    {
+      display: `block`,
+      width: `506px`,
+      padding: `12px 16px`,
+      margin: `0 0 0 43px`,
+    },
+  );
 }
