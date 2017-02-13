@@ -2,16 +2,14 @@ import { Model, Sinks, Sources, toggle, view } from './';
 import { just, map, merge } from 'most';
 
 import { combineObj } from 'most-combineobj';
-import { createKey } from '../helpers';
+import { isolateDom } from '../helpers';
 import { sample } from '@most/sample';
 import { toggleTodoCompletedService } from '../../application';
 
-export function TodoItem(sources: Sources): Sinks {
+function TodoItemFn(sources: Sources): Sinks {
   const { dom, todo$ } = sources;
 
-  const key = createKey();
-
-  const toggle$ = toggle(dom, key);
+  const toggle$ = toggle(dom);
 
   const save$ =
     merge(
@@ -23,9 +21,11 @@ export function TodoItem(sources: Sources): Sinks {
       ),
     );
 
-  const model$ = combineObj<Model>({ key: just(key), todo$ });
+  const model$ = combineObj<Model>({ todo$ });
 
   const view$ = map(view, model$);
 
   return { view$, save$ };
 }
+
+export const TodoItem = isolateDom(TodoItemFn);

@@ -3,8 +3,8 @@ import { Stream, scan } from 'most';
 
 import { TodoItemStyles } from './';
 
-export function toggle(dom: DomSource, key: string): Stream<boolean> {
-  const toggle = query(`.${key} .${TodoItemStyles.toggleClass}`, dom);
+export function toggle(dom: DomSource): Stream<boolean> {
+  const toggle = query(`.${TodoItemStyles.toggleClass}`, dom);
 
   const click$ = events('click', toggle);
 

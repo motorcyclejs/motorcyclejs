@@ -16,6 +16,5 @@ export type Sources =
   };
 
 export interface Model {
-  key: string;
   todo: Todo;
 }
