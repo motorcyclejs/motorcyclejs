@@ -40,12 +40,12 @@ export function view(model: Model): VNode {
         input(
           {
             className: TodoItemStyles.editClass,
-            value: todo.title().value(),
             update(_, vNode: ElementVirtualNode<HTMLInputElement>) {
               const element = vNode.element;
 
               if (editing) {
                 element.style.display = `block`;
+                element.value = todo.title().value();
                 element.focus();
                 element.selectionStart = element.value.length;
               } else {

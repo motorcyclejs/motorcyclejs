@@ -4,9 +4,9 @@
   "description": "Todo app example",
   "main": "index.js",
   "scripts": {
-    "test:lint": "tslint src/**/*.ts",
+    "test:lint": "tslint 'src/**/*.ts'",
     "test:unit": "ts-node .scripts/ts-mocha",
-    "test": "npm run test:lint && npm run test:unit",
+    "test": "npm run test:lint --silent && npm run test:unit --silent",
     "build": "webpack",
     "start": "webpack-dev-server"
   },
