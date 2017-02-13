@@ -18,6 +18,25 @@ export namespace todoAppStyles {
   );
 
   cssRule(
+    `button`,
+    {
+      margin: 0,
+      padding: 0,
+      border: 0,
+      background: `none`,
+      fontSize: `100%`,
+      verticalAlign: `baseline`,
+      fontFamily: `inherit`,
+      fontWeight: 'inherit',
+      color: `inherit`,
+      '-webkit-appearance': `none`,
+      appearance: 'none',
+      '-webkit-font-smoothing': `antialiased`,
+      '-moz-osx-font-smoothing': `grayscale`,
+    },
+  );
+
+  cssRule(
     `:focus`,
     {
       outline: 0,

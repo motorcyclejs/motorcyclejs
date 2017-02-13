@@ -1,12 +1,68 @@
 import { cssRaw, style } from 'typestyle';
 
 export namespace TodoItemStyles {
+
+  export const destroyClass = style(
+    { $debugName: `todo-app_item-destroy` },
+    {
+      display: `none`,
+      position: 'absolute',
+      top: 0,
+      right: `10px`,
+      bottom: 0,
+      width: `40px`,
+      height: `40px`,
+      margin: `auto 0`,
+      fontSize: `30px`,
+      color: `#cc9a9a`,
+      marginBottom: `11px`,
+      transition: `color 0.2s ease-out`,
+      $nest: {
+        '&:hover': {
+          color: `#af5b5e`,
+        },
+        '&::after': {
+          content: `'×'`,
+        },
+      },
+    },
+  );
+
+  const itemClassHover = `&:hover .${destroyClass}`;
+
+  export const labelClass = style(
+    { $debugName: `todo-app_item-label` },
+    {
+      wordBreak: 'break-all',
+      padding: `15px 60px 15px 15px`,
+      marginLeft: `45px`,
+      display: `block`,
+      lineHeight: 1.2,
+      transition: `color 0.4s`,
+    },
+  );
+
+  export const completedClass = style(
+    { $debugName: `todo-app_item-completed` },
+  );
+
+  const itemClassCompleted = `&.${completedClass} .${labelClass}`;
+
   export const itemClass = style(
     { $debugName: `todo-app_item` },
     {
       position: 'relative',
       fontSize: `24px`,
       borderBottom: `1px solid #ededed`,
+      $nest: {
+        [itemClassHover]: {
+          display: `block`,
+        },
+        [itemClassCompleted]: {
+          color: `#d9d9d9`,
+          textDecoration: `line-through`,
+        },
+      },
     },
   );
 
@@ -25,6 +81,7 @@ export namespace TodoItemStyles {
       appearance: 'none',
       $nest: {
         '@media screen and (-webkit-min-device-pixel-ratio: 0)': {
+          background: 0,
           height: `40px`,
         },
       },
@@ -38,23 +95,11 @@ export namespace TodoItemStyles {
 
   cssRaw(`.${toggleClass}::after { content: ${toggleSvg} }`);
 
-  export const labelClass = style(
-    { $debugName: `todo-app_item-label`},
-    {
-      wordBreak: 'break-all',
-      padding: `15px 60px 15px 15px`,
-      marginLeft: `45px`,
-      display: `block`,
-      lineHeight: 1.2,
-      transition: `color 0.4s`,
-    },
-  );
+  const toggleCheckedSvg = `url(\'data:image/svg+xml;utf8,` +
+    `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" ` +
+    `viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" ` +
+    `stroke="#bddad5" stroke-width="3"/>` +
+    `<path fill="#5dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>\')`;
 
-  export const labelCompletedClass = style(
-    { $debugName: `todo-app_item-label-completed` },
-    {
-      color: `#d9d9d9`,
-      textDecoration: `line-through`,
-    },
-  );
+  cssRaw(`.${toggleClass}:checked::after { content: ${toggleCheckedSvg} }`);
 }

@@ -7,6 +7,7 @@ export type Sinks =
   DomSinks &
   {
     save$: Stream<Todo>;
+    remove$: Stream<number>;
   };
 
 export type Sources =

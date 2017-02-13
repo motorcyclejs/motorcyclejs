@@ -1,5 +1,5 @@
 import { Model, TodoItemStyles } from './';
-import { VNode, input, label, li } from '@motorcycle/dom';
+import { VNode, button, input, label, li } from '@motorcycle/dom';
 
 import { classes } from 'typestyle';
 
@@ -9,7 +9,10 @@ export function view(model: Model): VNode {
   const host =
     li(
       {
-        className: TodoItemStyles.itemClass,
+        className: classes(
+          TodoItemStyles.itemClass,
+          todo.completed() && TodoItemStyles.completedClass,
+        ),
         attrs: {
           'data-id': todo.id(),
         },
@@ -19,16 +22,19 @@ export function view(model: Model): VNode {
           {
             className: TodoItemStyles.toggleClass,
             type: `checkbox`,
+            checked: todo.completed(),
           },
         ),
         label(
           {
-            className: classes(
-              TodoItemStyles.labelClass,
-              todo.completed() && TodoItemStyles.labelCompletedClass,
-            ),
+            className: TodoItemStyles.labelClass,
           },
           todo.title().value(),
+        ),
+        button(
+          {
+            className: TodoItemStyles.destroyClass,
+          }
         ),
       ],
     );

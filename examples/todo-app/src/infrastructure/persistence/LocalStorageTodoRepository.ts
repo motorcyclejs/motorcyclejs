@@ -5,7 +5,13 @@ import {
   TodoRepositorySources,
 } from '../../domain/model/Todo';
 import { map, merge } from 'most';
-import { concat as rConcat, map as rMap } from 'ramda';
+import {
+  concat as rConcat,
+  findIndex as rFindIndex,
+  map as rMap,
+  pipe as rPipe,
+  remove as rRemove,
+} from 'ramda';
 
 import { Title } from '../../domain/model/Title';
 import { proxy } from 'most-proxy';
@@ -18,12 +24,16 @@ export function LocalStorageTodoRepository(
 ): TodoRepositorySources {
   const { attach, stream: proxyTodos$ } = proxy<Array<Todo>>();
 
-  const { add$, saveAll$ } = sinks;
+  const { add$, saveAll$, remove$ } = sinks;
 
   const jsonTodos$ =
     merge(
       sample(toJson, add$, proxyTodos$),
       map(JSON.stringify, map(rMap(toObj), saveAll$)),
+      map(
+        rPipe(rMap(toObj), JSON.stringify),
+        sample(removeTodo, remove$, proxyTodos$)
+      ),
     );
 
   const setItemCommand$ = map(setItem(DB_NAME), jsonTodos$);
@@ -47,6 +57,12 @@ function toObj(todo: Todo): TodoObj {
     completed: todo.completed(),
     title: todo.title().value(),
   };
+}
+
+function removeTodo(id: number, todos: Array<Todo>): Array<Todo> {
+  const index = rFindIndex((todo: Todo) => id === todo.id(), todos);
+
+  return rRemove(index, 1, todos);
 }
 
 function toTodos(jsonTodos: string | null): Array<Todo> {
