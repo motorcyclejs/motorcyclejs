@@ -1,5 +1,5 @@
 import { Sinks, Sources, newTodoStream, view } from './';
-import { Stream, just, map, startWith } from 'most';
+import { Stream, just, map, multicast, startWith } from 'most';
 import { TodoItem, Sinks as TodoItemSinks } from '../TodoItem';
 import { mapProp, switchCombine, switchMerge } from '../helpers';
 import { filter as rFilter, map as rMap } from 'ramda';
