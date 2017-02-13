@@ -7,6 +7,7 @@ export function edit(dom: DomSource) {
   const label = query(`.${TodoItemStyles.labelClass}`, dom);
   const input = query(`.${TodoItemStyles.editClass}`, dom);
 
+  const blur$ = events('blur', input);
   const dblClick$ = events('dblclick', label);
 
   const keyDown$ = events('keydown', input);
@@ -17,6 +18,7 @@ export function edit(dom: DomSource) {
     startWith(false, merge(
       constant(false, enterKey$),
       constant(true, dblClick$),
+      constant(false, blur$),
     ));
 
   const value$ = map(trimmedValue, filter(isItemFilled, keyDown$));

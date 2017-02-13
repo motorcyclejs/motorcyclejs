@@ -1,5 +1,5 @@
+import { ElementVNode, VNode, button, input, label, li } from '@motorcycle/dom';
 import { Model, TodoItemStyles } from './';
-import { VNode, button, input, label, li } from '@motorcycle/dom';
 
 import { classes } from 'typestyle';
 
@@ -42,6 +42,12 @@ export function view(model: Model): VNode {
           {
             className: TodoItemStyles.editClass,
             value: todo.title().value(),
+            insert(vNode: ElementVNode) {
+              const element = vNode.element as HTMLInputElement;
+
+              element.focus();
+              element.selectionStart = element.value.length;
+            },
           },
         ),
       ],
