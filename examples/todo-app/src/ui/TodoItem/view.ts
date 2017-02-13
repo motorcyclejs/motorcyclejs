@@ -44,11 +44,13 @@ export function view(model: Model): VNode {
             update(_, vNode: ElementVirtualNode<HTMLInputElement>) {
               const element = vNode.element;
 
-              element.focus();
-              element.selectionStart = element.value.length;
-            },
-            style: {
-              display: editing ? `block` : `none`,
+              if (editing) {
+                element.style.display = `block`;
+                element.focus();
+                element.selectionStart = element.value.length;
+              } else {
+                element.style.display = `none`;
+              }
             },
           },
         ),

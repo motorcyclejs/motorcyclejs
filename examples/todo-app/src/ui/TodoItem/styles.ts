@@ -143,6 +143,7 @@ export namespace TodoItemStyles {
     { $debugName: `todo-app_item-edit` },
     itemInput,
     {
+      display: `none`,
       width: `506px`,
       padding: `12px 16px`,
       margin: `0 0 0 43px`,
