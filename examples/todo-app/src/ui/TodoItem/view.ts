@@ -37,16 +37,20 @@ export function view(model: Model): VNode {
             className: TodoItemStyles.destroyClass,
           },
         ),
-        !editing ? null :
         input(
           {
             className: TodoItemStyles.editClass,
             value: todo.title().value(),
-            insert(vNode: ElementVNode) {
+            update(_, vNode: ElementVNode) {
               const element = vNode.element as HTMLInputElement;
 
-              element.focus();
-              element.selectionStart = element.value.length;
+              if (editing) {
+                element.style.display = `block`;
+                element.focus();
+                element.selectionStart = element.value.length;
+              } else {
+                element.style.display = `none`;
+              }
             },
           },
         ),

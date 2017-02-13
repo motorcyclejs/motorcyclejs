@@ -21,7 +21,8 @@ export function edit(dom: DomSource) {
       constant(false, blur$),
     ));
 
-  const value$ = map(trimmedValue, filter(isItemFilled, keyDown$));
+  const value$ =
+    map(trimmedValue, filter(isItemFilled, merge(enterKey$, blur$)));
 
   return { editing$, value$ };
 }
