@@ -1,4 +1,4 @@
-import { DomSinks, DomSources } from '../';
+import { DomSinks, DomSources, RouterSinks, RouterSources } from '../';
 import {
   TodoRepositorySinks,
   TodoRepositorySources,
@@ -6,8 +6,10 @@ import {
 
 export type Sinks =
   TodoRepositorySinks &
-  DomSinks;
+  DomSinks &
+  RouterSinks;
 
 export type Sources =
   TodoRepositorySources &
-  DomSources;
+  DomSources &
+  RouterSources;

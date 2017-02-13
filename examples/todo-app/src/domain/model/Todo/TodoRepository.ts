@@ -5,7 +5,7 @@ export type TodoRepository = (_: TodoRepositorySinks) => TodoRepositorySources;
 
 export interface TodoRepositorySinks {
   add$: Stream<Todo>;
-  saveAll$: Stream<Array<Todo>>;
+  saveAll$: Stream<Todo>;
   remove$: Stream<number>;
 }
 

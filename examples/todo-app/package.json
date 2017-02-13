@@ -26,6 +26,7 @@
     "@most/sample": "^1.1.0",
     "@motorcycle/dom": "^7.0.6",
     "@motorcycle/local-storage": "^2.0.0",
+    "@motorcycle/router": "^4.1.7",
     "@motorcycle/run": "^1.2.5",
     "most": "^1.2.1",
     "most-combineobj": "^1.0.0",

@@ -4,6 +4,7 @@ import {
   LocalStorageTodoRepository,
 } from './infrastructure/persistence/LocalStorageTodoRepository';
 import { makeDomDriver } from '@motorcycle/dom';
+import { routerDriver } from '@motorcycle/router';
 import { run } from '@motorcycle/run';
 
 const rootElement: HTMLDivElement =
@@ -16,7 +17,9 @@ function Effects(sinks: Sinks): Sources {
 
   const { todos$ } = LocalStorageTodoRepository(sinks);
 
-  return { dom, todos$ };
+  const router = routerDriver(sinks.route$);
+
+  return { dom, router, todos$ };
 }
 
 run(TodoApp, Effects);

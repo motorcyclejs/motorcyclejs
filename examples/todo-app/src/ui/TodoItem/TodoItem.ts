@@ -14,7 +14,6 @@ function TodoItemFn(sources: Sources): Sinks {
 
   const save$ =
     merge(
-      todo$,
       sample<boolean, Todo, Todo>(
         (_, todo) => toggleTodoCompletedService(todo),
         toggleCompleted(dom),

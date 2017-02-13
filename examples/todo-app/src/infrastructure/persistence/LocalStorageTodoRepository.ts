@@ -8,6 +8,7 @@ import { map, merge } from 'most';
 import {
   concat as rConcat,
   findIndex as rFindIndex,
+  insert as rInsert,
   map as rMap,
   pipe as rPipe,
   remove as rRemove,
@@ -29,7 +30,7 @@ export function LocalStorageTodoRepository(
   const jsonTodos$ =
     merge(
       sample(toJson, add$, proxyTodos$),
-      map(JSON.stringify, map(rMap(toObj), saveAll$)),
+      sample(editTodo, saveAll$, proxyTodos$),
       map(
         rPipe(rMap(toObj), JSON.stringify),
         sample(removeTodo, remove$, proxyTodos$),
@@ -63,6 +64,12 @@ function removeTodo(id: number, todos: Array<Todo>): Array<Todo> {
   const index = rFindIndex((todo: Todo) => id === todo.id(), todos);
 
   return rRemove(index, 1, todos);
+}
+
+function editTodo(todo: Todo, todos: Array<Todo>): string {
+  const index = rFindIndex((t: Todo) => t.id() === todo.id(), todos);
+
+  return JSON.stringify(rMap(toObj, rInsert(index, todo, rRemove(index, 1, todos))));
 }
 
 function toTodos(jsonTodos: string | null): Array<Todo> {
