@@ -20,7 +20,10 @@ function TodoItemFn(sources: Sources): Sinks {
         toggleCompleted(dom),
         todo$,
       ),
-      sampleWith(filter(x => !x, editing$), combine(editTodoService, value$, todo$)),
+      sampleWith(
+        filter(x => !x, editing$),
+        combine(editTodoService, value$, todo$),
+      ),
     );
 
   const remove$ = map(todo => todo.id(), sampleWith(remove(dom), todo$));
