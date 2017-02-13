@@ -1,4 +1,4 @@
-import { ElementVNode, VNode, button, input, label, li } from '@motorcycle/dom';
+import { ElementVirtualNode, VNode, button, input, label, li } from '@motorcycle/dom';
 import { Model, TodoItemStyles } from './';
 
 import { classes } from 'typestyle';
@@ -37,16 +37,18 @@ export function view(model: Model): VNode {
             className: TodoItemStyles.destroyClass,
           },
         ),
-        !editing ? null :
         input(
           {
             className: TodoItemStyles.editClass,
             value: todo.title().value(),
-            insert(vNode: ElementVNode) {
-              const element = vNode.element as HTMLInputElement;
+            update(_, vNode: ElementVirtualNode<HTMLInputElement>) {
+              const element = vNode.element;
 
               element.focus();
               element.selectionStart = element.value.length;
+            },
+            style: {
+              display: editing ? `block` : `none`,
             },
           },
         ),

@@ -32,7 +32,7 @@ export function LocalStorageTodoRepository(
       map(JSON.stringify, map(rMap(toObj), saveAll$)),
       map(
         rPipe(rMap(toObj), JSON.stringify),
-        sample(removeTodo, remove$, proxyTodos$)
+        sample(removeTodo, remove$, proxyTodos$),
       ),
     );
 
