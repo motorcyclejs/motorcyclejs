@@ -4,6 +4,8 @@ import {
   TodoRepositorySources,
 } from '../../domain/model/Todo';
 
+import { VNode } from '@motorcycle/dom';
+
 export type Sinks =
   TodoRepositorySinks &
   DomSinks &
@@ -13,3 +15,10 @@ export type Sources =
   TodoRepositorySources &
   DomSources &
   RouterSources;
+
+export interface Model {
+  todoItems: Array<VNode>;
+  activeTodoItemCount: number;
+  completedTodoItemCount: number;
+  todoItemCount: number;
+}

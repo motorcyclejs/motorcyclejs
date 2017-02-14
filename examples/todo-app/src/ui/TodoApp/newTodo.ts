@@ -3,8 +3,8 @@ import { Stream, filter, map } from 'most';
 
 import { todoAppStyles } from './';
 
-export function newTodoStream(dom: DomSource): Stream<string> {
-  const newItem = query(`.${todoAppStyles.newItemClass}`, dom);
+export function newTodo(dom: DomSource): Stream<string> {
+  const newItem = query(`.${todoAppStyles.newTodoClass}`, dom);
 
   const keyDown$ = events('keydown', newItem);
 

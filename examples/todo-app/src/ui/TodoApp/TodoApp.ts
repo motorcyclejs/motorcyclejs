@@ -1,4 +1,4 @@
-import { Sinks, Sources, newTodoStream, view } from './';
+import { Model, Sinks, Sources, newTodo, view } from './';
 import { Stream, just, map, never, startWith, switchLatest } from 'most';
 import { TodoItem, Sinks as TodoItemSinks } from '../TodoItem';
 import { mapProp, switchCombine, switchMerge } from '../helpers';
@@ -8,20 +8,21 @@ import { DefineReturn } from '@motorcycle/router';
 import { Todo } from '../../domain/model/Todo';
 import { VNode } from '@motorcycle/dom';
 import { addTodoService } from '../../application';
+import { combineObj } from 'most-combineobj';
 import { hold } from '@most/hold';
 
 export function TodoApp(sources: Sources): Sinks {
   const { dom, todos$, router } = sources;
 
-  const title$ = newTodoStream(dom);
+  const title$ = newTodo(dom);
 
-  const active$ = map(rFilter((todo: Todo) => !todo.completed()), todos$);
-  const completed$ = map(rFilter((todo: Todo) => todo.completed()), todos$);
+  const activeTodos$ = map(rFilter((todo: Todo) => !todo.completed()), todos$);
+  const completedTodos$ = map(rFilter((todo: Todo) => todo.completed()), todos$);
 
-  const currentTodos$: Stream<Array<Todo>> =
+  const filteredTodos$: Stream<Array<Todo>> =
     switchLatest(map<DefineReturn, Stream<Array<Todo>>>(rProp('value'), router.define({
-      '/active': active$,
-      '/completed': completed$,
+      '/active': activeTodos$,
+      '/completed': completedTodos$,
       '*': todos$,
     })));
 
@@ -35,13 +36,13 @@ export function TodoApp(sources: Sources): Sinks {
 
         return rMap(toTodoItemViewStream, todos);
       },
-      currentTodos$,
+      filteredTodos$,
     ));
 
   const todoItemView$s$ =
     streamMapProp<TodoItemSinks, VNode>(`view$`, todoItemSinksList$);
 
-  const todoItemViews$ = switchCombine<VNode>(todoItemView$s$);
+  const todoItemViews$ = startWith([], switchCombine<VNode>(todoItemView$s$));
 
   const todoItemSave$s$ =
     streamMapProp<TodoItemSinks, Todo>(`save$`, todoItemSinksList$);
@@ -53,7 +54,23 @@ export function TodoApp(sources: Sources): Sinks {
 
   const remove$ = switchMerge<number>(todoItemRemove$s$);
 
-  const view$ = map(view, startWith([], todoItemViews$));
+  const activeTodoItemCount$ = map(activeTodos => activeTodos.length, activeTodos$);
+
+  const completedTodoItemCount$ = map(completedTodos => completedTodos.length, completedTodos$);
+
+  const todoItemCount$ = map(todos => todos.length, todos$);
+
+  const model$ =
+    combineObj<Model>(
+      {
+        todoItems: todoItemViews$,
+        activeTodoItemCount$,
+        completedTodoItemCount$,
+        todoItemCount$,
+      },
+    );
+
+  const view$ = map(view, model$);
 
   return { view$, add$, saveAll$, remove$, route$: never() };
 }

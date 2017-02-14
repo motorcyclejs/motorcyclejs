@@ -28,8 +28,6 @@ export namespace TodoItemStyles {
     },
   );
 
-  const itemClassHover = `&:hover .${destroyClass}`;
-
   export const labelClass = style(
     { $debugName: `todo-app_item-label` },
     {
@@ -46,8 +44,6 @@ export namespace TodoItemStyles {
     { $debugName: `todo-app_item-completed` },
   );
 
-  const itemClassCompleted = `&.${completedClass} .${labelClass}`;
-
   export const itemClass = style(
     { $debugName: `todo-app_item` },
     {
@@ -55,10 +51,10 @@ export namespace TodoItemStyles {
       fontSize: `24px`,
       borderBottom: `1px solid #ededed`,
       $nest: {
-        [itemClassHover]: {
+        [`&:hover .${destroyClass}`]: {
           display: `block`,
         },
-        [itemClassCompleted]: {
+        [`&.${completedClass} .${labelClass}`]: {
           color: `#d9d9d9`,
           textDecoration: `line-through`,
         },
@@ -143,10 +139,17 @@ export namespace TodoItemStyles {
     { $debugName: `todo-app_item-edit` },
     itemInput,
     {
-      display: `none`,
+      display: `block`,
       width: `506px`,
       padding: `12px 16px`,
       margin: `0 0 0 43px`,
+    },
+  );
+
+  export const hideClass = style(
+    { $debugName: `todo-app_hide` },
+    {
+      display: `none`,
     },
   );
 }

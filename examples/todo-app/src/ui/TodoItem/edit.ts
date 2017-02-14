@@ -12,7 +12,11 @@ export function edit(dom: DomSource) {
 
   const keyDown$ = events('keydown', input);
 
-  const enterKey$ = filter(isEnterKey, keyDown$);
+  const enterKey$ =
+    map(
+      event => { event.preventDefault(); return event; },
+      filter(isEnterKey, keyDown$)
+    );
 
   const editing$ =
     startWith(false, merge(

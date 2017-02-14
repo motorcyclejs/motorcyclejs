@@ -108,8 +108,8 @@ export namespace todoAppStyles {
     itemInput,
   );
 
-  export const newItemClass = style(
-    { $debugName: `todo-app_new-item` },
+  export const newTodoClass = style(
+    { $debugName: `todo-app_new-todo` },
     itemInput,
     {
       padding: `16px 16px 16px 60px`,
@@ -119,12 +119,161 @@ export namespace todoAppStyles {
     },
   );
 
-  export const itemsClass = style(
-    { $debugName: `todo-app_items` },
+  export const mainClass = style(
+    { $debugName: `todo-app_main` },
+    {
+      position: 'relative',
+      zIndex: 2,
+      borderTop: `1px solid #e6e6e6`,
+    },
+  );
+
+  cssRule(
+    `label[for='toggle-all']`,
+    {
+      display: `none`,
+    },
+  );
+
+  export const toggleAllClass = style(
+    { $debugName: `todo-app_toggle-all` },
+    {
+      position: 'absolute',
+      top: `-55px`,
+      left: `-12px`,
+      width: `60px`,
+      height: `34px`,
+      textAlign: 'center',
+      border: `none`,
+      $nest: {
+        '&::before': {
+          content: `'❯'`,
+          fontSize: `22px`,
+          color: `#e6e6e6`,
+          padding: `10px 27px 10px 27px`,
+        },
+        '&:checked::before': {
+          color: `#737373`,
+        },
+        '@media screen and (-webkit-min-device-pixel-ratio: 0)': {
+          background: `none`,
+          '-webkit-transform': `rotate(90deg)`,
+          transform: `rotate(90deg)`,
+          '-webkit-appearance': `none`,
+          appearance: 'none',
+        },
+      },
+    },
+  );
+
+  export const todoListClass = style(
+    { $debugName: `todo-app_todo-list` },
     {
       margin: 0,
       padding: 0,
       listStyle: `none`,
+    },
+  );
+
+  export const footerClass = style(
+    { $debugName: `todo-app_footer` },
+    {
+      color: `#777`,
+      padding: `10px 15px`,
+      height: `20px`,
+      textAlign: 'center',
+      borderTop: `1px solid #e6e6e6`,
+      $nest: {
+        '&::before': {
+          content: `''`,
+          position: 'absolute',
+          right: 0,
+          bottom: 0,
+          left: 0,
+          height: `50px`,
+          overflow: 'hidden',
+          boxShadow: `0 1px 1px rgba(0, 0, 0, 0.2),
+                      0 8px 0 -3px #f6f6f6,
+                      0 9px 1px -3px rgba(0, 0, 0, 0.2),
+                      0 16px 0 -6px #f6f6f6,
+                      0 17px 2px -6px rgba(0, 0, 0, 0.2)`,
+        },
+      },
+    },
+  );
+
+  export const todoCountClass = style(
+    { $debugName: `todo-app_todo-count` },
+    {
+      float: 'left',
+      textAlign: 'left',
+      $nest: {
+        '& strong': {
+          fontWeight: 300,
+        },
+      },
+    },
+  );
+
+  export const selectedClass = style(
+    { $debugName: `todo-app_selected` },
+  );
+
+  export const filtersClass = style(
+    { $debugName: `todo-app_filters` },
+    {
+      margin: 0,
+      padding: 0,
+      listStyle: `none`,
+      position: 'absolute',
+      right: 0,
+      left: 0,
+      $nest: {
+        '& li': {
+          display: `inline`,
+          $nest: {
+            '& a': {
+              color: `inherit`,
+              margin: `3px`,
+              padding: `3px 7px`,
+              textDecoration: `none`,
+              border: `1px solid transparent`,
+              borderRadius: `3px`,
+              $nest: {
+                '&:hover': {
+                  borderColor: `rgba(175, 47, 47, 0.1)`,
+                },
+                [`&.${selectedClass}`]: {
+                  borderColor: `rgba(175, 47, 47, 0.2)`,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  );
+
+  export const clearCompletedClass = style(
+    { $debugName: `todo-app_clear-completed` },
+    {
+      float: 'right',
+      position: 'relative',
+      lineHeight: `20px`,
+      textDecoration: `none`,
+      cursor: `pointer`,
+      $nest: {
+        '&:hover': {
+          textDecoration: `underline`,
+        },
+      },
+    },
+  );
+
+  export const hideClass = style(
+    { $debugName: `todo-app_hide` },
+    {
+      display: `none`,
     },
   );
 }

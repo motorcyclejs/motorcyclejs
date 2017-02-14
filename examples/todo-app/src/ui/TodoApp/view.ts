@@ -1,14 +1,35 @@
-import { VNode, div, h1, header, input, section, ul } from '@motorcycle/dom';
+import {
+  ElementVirtualNode,
+  VNode,
+  a,
+  button,
+  footer,
+  h1,
+  header,
+  input,
+  label,
+  li,
+  section,
+  span,
+  ul,
+} from '@motorcycle/dom';
+import { Model, todoAppStyles } from './';
 
-import { todoAppStyles } from './';
+import { classes } from 'typestyle';
 
 const HEADING = `todos`;
 
 const NEW_ITEM_PLACEHOLDER = `What needs to be done?`;
 
-export function view(items: Array<VNode>): VNode {
+export function view(model: Model): VNode {
+  const {
+    todoItems,
+    activeTodoItemCount,
+    completedTodoItemCount,
+    todoItemCount } = model;
+
   const host =
-    div(
+    section(
       {
         className: todoAppStyles.hostClass,
       },
@@ -23,7 +44,7 @@ export function view(items: Array<VNode>): VNode {
             ),
             input(
               {
-                className: todoAppStyles.newItemClass,
+                className: todoAppStyles.newTodoClass,
                 placeholder: NEW_ITEM_PLACEHOLDER,
                 autofocus: true,
                 update: (_, vNode) => { (vNode.element as HTMLInputElement).value = ``; },
@@ -32,12 +53,95 @@ export function view(items: Array<VNode>): VNode {
           ],
         ),
         section(
+          {
+            className: classes(
+              todoAppStyles.mainClass,
+              !todoItemCount && todoAppStyles.hideClass,
+            ),
+          },
           [
+            input(
+              {
+                id: `toggle-all`,
+                className: todoAppStyles.toggleAllClass,
+                type: `checkbox`,
+              },
+            ),
+            label(
+              {
+                attrs: {
+                  for: `toggle-all`,
+                },
+              },
+            ),
             ul(
               {
-                className: todoAppStyles.itemsClass,
+                className: todoAppStyles.todoListClass,
               },
-              items,
+              todoItems,
+            ),
+            footer(
+              {
+                className: todoAppStyles.footerClass,
+              },
+              [
+                span(
+                  {
+                    className: todoAppStyles.todoCountClass,
+                  },
+                  [
+                    `${activeTodoItemCount} item${activeTodoItemCount > 1 ? 's' : ''} left`,
+                  ],
+                ),
+                ul(
+                  {
+                    className: todoAppStyles.filtersClass,
+                  },
+                  [
+                    li(
+                      [
+                        a(
+                          {
+                            href: `/`,
+                          },
+                          [`All`],
+                        ),
+                      ],
+                    ),
+                    li(
+                      [
+                        a(
+                          {
+                            href: `/active`,
+                          },
+                          [`Active`],
+                        ),
+                      ],
+                    ),
+                    li(
+                      [
+                        a(
+                          {
+                            href: `/completed`,
+                          },
+                          [`Completed`],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                button(
+                  {
+                    className: classes(
+                      todoAppStyles.clearCompletedClass,
+                      !completedTodoItemCount && todoAppStyles.hideClass
+                    ),
+                  },
+                  [
+                    `Clear completed`,
+                  ],
+                ),
+              ],
             ),
           ],
         ),

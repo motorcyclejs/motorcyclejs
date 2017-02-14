@@ -39,17 +39,16 @@ export function view(model: Model): VNode {
         ),
         input(
           {
-            className: TodoItemStyles.editClass,
+            className: classes(
+              TodoItemStyles.editClass,
+              !editing && TodoItemStyles.hideClass),
             update(_, vNode: ElementVirtualNode<HTMLInputElement>) {
               const element = vNode.element;
 
               if (editing) {
-                element.style.display = `block`;
                 element.value = todo.title().value();
                 element.focus();
                 element.selectionStart = element.value.length;
-              } else {
-                element.style.display = `none`;
               }
             },
           },
