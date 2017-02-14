@@ -1,3 +1,4 @@
+import { Component, Sinks, Sources } from '@motorcycle/run';
 import { ElementVNode, Module, VNode, elementToVNode, init } from 'mostly-dom';
 import { Stream, map, scan } from 'most';
 
@@ -6,13 +7,15 @@ import { MotorcycleDomSource } from './DomSources';
 import { hold } from 'most-subject';
 import { vNodeWrapper } from './vNodeWrapper';
 
-export interface DomSinks {
+export interface DomSinks extends Sinks {
   view$: Stream<VNode>;
 }
 
-export interface DomSources {
+export interface DomSources extends Sources {
   dom: DomSource;
 }
+
+export interface DomComponent extends Component<DomSources, DomSinks> {}
 
 export function makeDomComponent(
   rootElement: HTMLElement,
