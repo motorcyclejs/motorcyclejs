@@ -1,24 +1,16 @@
-import { run } from '@motorcycle/run';
-import { makeDomDriver, button, div } from '../../src';
-import { just } from 'most';
-import isolate from '@cycle/isolate';
 import * as assert from 'assert';
 
-function effects (drivers: any) {
-  return function (sinks: any) {
-    return Object.keys(drivers).reduce((sources: any, driverKey: string) => {
-      sources[driverKey] = drivers[driverKey](sinks[driverKey]);
-      return sources;
-    }, {});
-  };
-}
+import { button, div, makeDomComponent } from '../../src';
+
+import isolate from '@cycle/isolate';
+import { just } from 'most';
+import { run } from '@motorcycle/run';
 
 // TESTS
 describe('issue 105', () => {
   it('should only emit a single event with useCapture false', (done) => {
-    const { sources, sinks }: any = run<any, any>(withUseCaptureFalse, effects({
-      dom: makeDomDriver(document.createElement('div')),
-    }));
+    const { sources, sinks }: any =
+      run<any, any>(withUseCaptureFalse, makeDomComponent(document.createElement('div')));
 
     sources.dom.elements().skip(1).take(1).observe(([root]: Element[]) => {
       const button = root.querySelector('button');
@@ -36,9 +28,8 @@ describe('issue 105', () => {
   });
 
   it('should only emit a single event with useCapture true', (done) => {
-    const { sources, sinks }: any = run<any, any>(withUseCaptureTrue, effects({
-      dom: makeDomDriver(document.createElement('div')),
-    }));
+    const { sources, sinks }: any =
+      run<any, any>(withUseCaptureTrue, makeDomComponent(document.createElement('div')));
 
     sources.dom.elements().skip(1).take(1).observe(([root]: Element[]) => {
       const button = root.querySelector('button');
@@ -78,7 +69,7 @@ function withUseCaptureFalse (sources: any) {
   const aHeader = augmentComponent(Header, { aButtonToggle$ })(aHeaderSources);
 
   return {
-    dom: aHeader.dom,
+    view$: aHeader.dom,
     toggle$: aButtonToggle$,
   };
 }
@@ -105,7 +96,7 @@ function withUseCaptureTrue (sources: any) {
   const aHeader = augmentComponent(Header, { aButtonToggle$ })(aHeaderSources);
 
   return {
-    dom: aHeader.dom,
+    view$: aHeader.dom,
     toggle$: aButtonToggle$,
   };
 }

@@ -1,11 +1,20 @@
+import { ElementVNode, Module, VNode, elementToVNode, init } from 'mostly-dom';
 import { Stream, map, scan } from 'most';
-import { hold } from 'most-subject';
-import { init, elementToVNode, ElementVNode, VNode, Module } from 'mostly-dom';
-import { vNodeWrapper } from './vNodeWrapper';
-import { MotorcycleDomSource } from './DomSources';
-import { DomSource } from './types';
 
-export function makeDomDriver(
+import { DomSource } from './types';
+import { MotorcycleDomSource } from './DomSources';
+import { hold } from 'most-subject';
+import { vNodeWrapper } from './vNodeWrapper';
+
+export interface DomSinks {
+  view$: Stream<VNode>;
+}
+
+export interface DomSources {
+  dom: DomSource;
+}
+
+export function makeDomComponent(
   rootElement: HTMLElement,
   options: DomDriverOptions = { modules: [] })
 {
@@ -14,18 +23,22 @@ export function makeDomDriver(
   const rootVNode = elementToVNode(rootElement);
   const wrapVNodeInRootElement = vNodeWrapper(rootElement);
 
-  return function DomDriver(vNode$: Stream<VNode>): DomSource {
+  return function Dom(sinks: DomSinks): DomSources {
+    const { view$ } = sinks;
+
     const rootVNode$: Stream<VNode> =
-      scan<VNode, ElementVNode>(patch, rootVNode, map(wrapVNodeInRootElement, vNode$));
+      scan<VNode, ElementVNode>(patch, rootVNode, map(wrapVNodeInRootElement, view$));
 
     const rootElement$: Stream<HTMLElement> =
       map(vNodeToElement, rootVNode$).thru(hold(1));
 
     rootElement$.drain()
-      .catch(err => console.error(err))
-      .then(() => console.log('Dom Driver has terminated'));
+      .catch(err => console.error('Error in DomComponent:', err))
+      .then(() => console.log('Dom Component has terminated'));
 
-    return new MotorcycleDomSource(rootElement$, []);
+    const dom = new MotorcycleDomSource(rootElement$, []);
+
+    return { dom };
   };
 }
 
