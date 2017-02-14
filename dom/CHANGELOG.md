@@ -1,3 +1,11 @@
+# 8.0.0 (2017-02-14)
+---
+
+## Breaking Changes
+
+1. replace driver function with component function
+  - feat(dom): move from driver function to component function [3efeff45](https://github.com/motorcyclejs/dom/commits/3efeff45759019c2b13c62e482a8b88bb973935f)
+
 # 7.0.6 (2017-01-19)
 ---
 
