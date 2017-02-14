@@ -17,15 +17,15 @@ used.
 
 # API
 
-- [`makeDomDriver`](#makeDomDriver)
+- [`makeDomComponent`](#makeDomComponent)
 - [`mockDomSource`](#mockDomSource)
 - [`h`](#h)
 - [`hasCssSelector`](#hasCssSelector)
 - [`API Wrappers`](#api-wrappers)
 
-### <a id="makeDomDriver"></a> `makeDomDriver(container, options)`
+### <a id="makeDomDriver"></a> `makeDomComponent(container, options): DomComponent`
 
-A factory for the DOM driver function.
+A factory for the DOM component function.
 
 Takes a `container` to define the target on the existing DOM which this
 driver will operate on, and an `options` object as the second argument. The
@@ -61,7 +61,8 @@ the app on the DOM.
 
 #### Return:
 
-*(Function)* the DOM driver function. The function expects a stream of VNode as input, and outputs the DOMSource object.
+*(Function)* the DOM component function. The function expects an object `DomSinks`
+and returns an object `DomSources`
 
 - - -
 
@@ -211,5 +212,20 @@ export interface DomSource {
   namespace(): Array<string>;
   isolateSource(source: DomSource, scope: string): DomSource;
   isolateSink(sink: Stream<VNode>, scope: string): Stream<VNode>;
+}
+```
+
+### `DomSinks`
+
+```typescript
+export interface DomSinks extends Sinks {
+  view$: Stream<VNode>;
+}
+```
+
+### `DomSources`
+```typescript
+export interface DomSources extends Sources {
+  dom: DomSource;
 }
 ```

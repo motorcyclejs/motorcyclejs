@@ -1,19 +1,20 @@
-import * as assert from 'assert';
 import * as Motorcycle from '@motorcycle/run';
-import { h, svg, div, span, h2, h3, h4, button, makeDomDriver, VNode, DomSource } from '../../src';
-import isolate from '@cycle/isolate';
+import * as assert from 'assert';
 import * as most from 'most';
-import { sync, hold } from 'most-subject';
+
+import { DomSource, VNode, button, div, h, h2, h3, h4, makeDomComponent, span, svg } from '../../src';
+import { hold, sync } from 'most-subject';
+
 import { createRenderTarget } from '../helpers/createRenderTarget';
 import { interval } from '../helpers/interval';
+import isolate from '@cycle/isolate';
 
-function effects (drivers: any) {
-  return function (sinks: any) {
-    return Object.keys(drivers).reduce((sources: any, driverKey: string) => {
-      sources[driverKey] = drivers[driverKey](sinks[driverKey]);
-      return sources;
-    }, {});
-  };
+function effects (sinks) {
+  const view$ = sinks.DOM || sinks.view$;
+
+  const { dom } = makeDomComponent(createRenderTarget())({ view$ });
+
+  return { DOM: dom };
 }
 
 describe('isolateSource', function () {
@@ -31,9 +32,7 @@ describe('isolateSource', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, effects({
-      DOM: makeDomDriver(createRenderTarget()),
-    }));
+    const { sources, dispose } = Motorcycle.run<any, any>(app, effects);
 
     const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'foo');
 
@@ -60,9 +59,8 @@ describe('isolateSource', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, effects({
-      DOM: makeDomDriver(createRenderTarget()),
-    }));
+    const { sources, dispose } = Motorcycle.run<any, any>(app, effects);
+
     const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'top-most');
     // Make assertions
     assert.strictEqual(typeof isolatedDOMSource.isolateSource, 'function');
@@ -84,9 +82,7 @@ describe('isolateSink', function () {
       };
     }
 
-    const { sinks, dispose } = Motorcycle.run<any, any>(app, effects({
-      DOM: makeDomDriver(createRenderTarget()),
-    }));
+    const { sinks, dispose } = Motorcycle.run<any, any>(app, effects);
 
     // Make assertions
     sinks.DOM.take(1).observe(function (vtree: VNode) {
@@ -130,9 +126,7 @@ describe('isolateSink', function () {
       };
     }
 
-    const { sinks, dispose } = Motorcycle.run<any, any>(app, effects({
-      DOM: makeDomDriver(createRenderTarget()),
-    }));
+    const { sinks, dispose } = Motorcycle.run<any, any>(app, effects);
 
     // Make assertions
     sinks.DOM.skip(2).take(1).observe(function (vtree: VNode) {
@@ -170,9 +164,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, effects({
-      DOM: makeDomDriver(createRenderTarget()),
-    }));
+    const { sources, dispose } = Motorcycle.run<any, any>(app, effects);
 
     sources.DOM.select('.bar').elements().skip(1).take(1).observe(function (elements: HTMLElement[]) {
       assert.strictEqual(Array.isArray(elements), true);
@@ -220,9 +212,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sinks } = Motorcycle.run<any, any>(app, effects({
-      DOM: makeDomDriver(createRenderTarget()),
-    }));
+    const { sinks } = Motorcycle.run<any, any>(app, effects);
 
     sinks.island.skip(1).take(1).observe(function (elements: HTMLElement[]) {
       assert.strictEqual(Array.isArray(elements), true);
@@ -255,9 +245,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(app, effects({
-      DOM: makeDomDriver(createRenderTarget()),
-    }));
+    const { sources, dispose } = Motorcycle.run<any, any>(app, effects);
 
     const {isolateSource} = sources.DOM;
 
@@ -312,9 +300,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sinks } = Motorcycle.run<any, any>(IsolatedApp, effects({
-      DOM: makeDomDriver(createRenderTarget()),
-    }));
+    const { sinks } = Motorcycle.run<any, any>(IsolatedApp, effects);
 
     // Make assertions
     sinks.triangleElement.skip(1).take(1).observe((elements: HTMLElement[]) => {
@@ -351,9 +337,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sources } = Motorcycle.run<any, any>(app, effects({
-      DOM: makeDomDriver(createRenderTarget()),
-    }));
+    const { sources } = Motorcycle.run<any, any>(app, effects);
 
     const {isolateSource} = sources.DOM;
 
@@ -396,9 +380,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sources } = Motorcycle.run<any, any>(app, effects({
-      DOM: makeDomDriver(createRenderTarget()),
-    }));
+    const { sources } = Motorcycle.run<any, any>(app, effects);
 
     const {isolateSource} = sources.DOM;
 
@@ -426,9 +408,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sources } = Motorcycle.run<any, any>(app, effects({
-      DOM: makeDomDriver(createRenderTarget()),
-    }));
+    const { sources } = Motorcycle.run<any, any>(app, effects);
     const isolatedDOMSource = sources.DOM.isolateSource(sources.DOM, 'foo');
 
     // Make assertions
@@ -468,9 +448,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(main, effects({
-      DOM: makeDomDriver(createRenderTarget()),
-    }));
+    const { sources, dispose } = Motorcycle.run<any, any>(main, effects);
 
     const topDOMSource = sources.DOM.isolateSource(sources.DOM, 'top');
     const fooDOMSource = sources.DOM.isolateSource(sources.DOM, 'foo');
@@ -548,9 +526,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(main, effects({
-      DOM: makeDomDriver(createRenderTarget()),
-    }));
+    const { sources, dispose } = Motorcycle.run<any, any>(main, effects);
 
     sources.DOM.select(':root').elements().skip(2).take(1).observe(function ([root]: HTMLElement[]) {
       const parentEl = root.querySelector('.parent') as HTMLElement;
@@ -595,9 +571,7 @@ describe('isolation', function () {
       };
     }
 
-    const { sources, dispose } = Motorcycle.run<any, any>(main, effects({
-      DOM: makeDomDriver(createRenderTarget()),
-    }));
+    const { sources, dispose } = Motorcycle.run<any, any>(main, effects);
 
     sources.DOM.select(':root').elements().skip(1).observe(function ([root]: HTMLElement[]) {
       setTimeout(() => {
@@ -646,9 +620,7 @@ describe('isolation', function () {
         return isolate(main)(sources);
       }
 
-      const { sources, dispose } = Motorcycle.run<any, any>(app, effects({
-        DOM: makeDomDriver(createRenderTarget()),
-      }));
+      const { sources, dispose } = Motorcycle.run<any, any>(app, effects);
 
       sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
         const element: any = root.querySelector('.btn');
@@ -690,9 +662,7 @@ describe('isolation', function () {
         return isolate(main)(sources);
       }
 
-      const { sources, dispose } = Motorcycle.run<any, any>(app, effects({
-        DOM: makeDomDriver(createRenderTarget()),
-      }));
+      const { sources, dispose } = Motorcycle.run<any, any>(app, effects);
 
       sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
         const element: any = root.querySelector('.btn');
@@ -735,9 +705,7 @@ describe('isolation', function () {
         return isolate(main, 'foo')(sources);
       }
 
-      const { sources, dispose } = Motorcycle.run<any, any>(app, effects({
-        DOM: makeDomDriver(createRenderTarget()),
-      }));
+      const { sources, dispose } = Motorcycle.run<any, any>(app, effects);
 
       sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
         const element: any = root.querySelector('.btn');
@@ -780,9 +748,7 @@ describe('isolation', function () {
         return isolate(main, 'foo')(sources);
       }
 
-      const { sources, dispose } = Motorcycle.run<any, any>(app, effects({
-        DOM: makeDomDriver(createRenderTarget()),
-      }));
+      const { sources, dispose } = Motorcycle.run<any, any>(app, effects);
 
       sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
         const element: any = root.querySelector('.btn');
@@ -833,9 +799,7 @@ describe('isolation', function () {
         return { DOM: vdom$ };
       }
 
-      const { sources, dispose } = Motorcycle.run<any, any>(main, effects({
-        DOM: makeDomDriver(createRenderTarget()),
-      }));
+      const { sources, dispose } = Motorcycle.run<any, any>(main, effects);
 
       sources.DOM.elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
         const components = root.querySelectorAll('.btn');

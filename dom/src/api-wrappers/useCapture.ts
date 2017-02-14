@@ -1,6 +1,7 @@
+import { DomSource, EventsFnOptions, StandardEvents } from '../types';
+
 import { Stream } from 'most';
 import { VNode } from 'mostly-dom';
-import { DomSource, EventsFnOptions, StandardEvents } from '../types';
 
 export function useCapture(domSource: DomSource): DomSource {
   return {
@@ -8,8 +9,8 @@ export function useCapture(domSource: DomSource): DomSource {
       return domSource.select(cssSelector);
     },
 
-    elements() {
-      return domSource.elements();
+    elements<T extends Element>() {
+      return domSource.elements<T>();
     },
 
     events(eventType: StandardEvents) {

@@ -42,6 +42,6 @@
     "url": "git+https://github.com/motorcyclejs/dom.git"
   },
   "scripts": {
-    "test": "nb tslint -o @motorcycle/dom && nb karma -o @motorcycle/dom"
+    "test": "../node_modules/.bin/nb tslint -o @motorcycle/dom && ../node_modules/.bin/nb karma -o @motorcycle/dom"
   }
 }
