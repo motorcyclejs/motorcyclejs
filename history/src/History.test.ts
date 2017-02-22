@@ -1,8 +1,10 @@
 import * as assert from 'assert';
-import { sync } from 'most-subject';
-import { historyDriver, Location, HistoryInput } from '../src';
 
-describe(`historyDriver`, () => {
+import { History, Location } from './';
+
+import { sync } from 'most-subject';
+
+describe(`History`, () => {
   beforeEach(() => {
     try {
       window.history.replaceState(null, '', '/');
@@ -151,12 +153,10 @@ describe(`historyDriver`, () => {
 function buildTest (done: Function) {
   const stream = sync<any>();
 
-  const send = (x: HistoryInput | string) => stream.next(x);
-
-  const history$ = historyDriver(stream.continueWith(() => {
+  const history$ = History({ history$: stream.continueWith(() => {
     done();
     return stream;
-  }));
+  }) }).history$;
 
   function listen (next: (location: Location) => any) {
     const observer = {
