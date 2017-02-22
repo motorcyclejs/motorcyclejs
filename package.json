@@ -11,7 +11,7 @@
     "prerelease": "npm run build",
     "preversion": "northbrook tsc --changed",
     "release": "northbrook release --comver",
-    "postinstall": "northbrook exec -- yarn && northbrook tsc && northbrook link"
+    "postinstall": "northbrook exec -- yarn && northbrook link && northbrook tsc"
   },
   "repository": {
     "type": "git",
