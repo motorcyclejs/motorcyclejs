@@ -1,3 +1,10 @@
+# 8.1.0 (2017-02-22)
+---
+
+## Bug Fixes
+
+- fix(dom): update mostly-dom [9be9a128](https://github.com/motorcyclejs/dom/commits/9be9a128797b9101b0f75bf440def5e3e0e5bfb1)
+
 # 8.0.0 (2017-02-14)
 ---
 
