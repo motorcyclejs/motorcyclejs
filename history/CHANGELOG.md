@@ -1,3 +1,11 @@
+# 5.0.0 (2017-02-22)
+---
+
+## Breaking Changes
+
+1. Component function
+  - feat(history): use component functions for History [01f15191](https://github.com/motorcyclejs/history/commits/01f151918e5daccc4437c2e6cc0aa27df7e6fa69)
+
 # 4.1.7 (2017-01-19)
 ---
 
