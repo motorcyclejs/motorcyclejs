@@ -1,3 +1,15 @@
+# 5.0.0 (2017-02-22)
+---
+
+## Breaking Changes
+
+1. use component function
+  - feat(router): use Component function [c92aba22](https://github.com/motorcyclejs/router/commits/c92aba229ca8cff16cbdf4d3b33ad8cbb548561f)
+
+## Features
+
+- feat(router): add api wrappers for RouterSource [29c75b71](https://github.com/motorcyclejs/router/commits/29c75b71ad78ebb2f1f48cdb68e40dc3cd449965)
+
 # 4.1.7 (2017-01-30)
 ---
 
