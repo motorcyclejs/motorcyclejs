@@ -14,12 +14,13 @@ npm install --save @motorcycle/router
 ## Basic Usage
 
 ```typescript
-import { run } from '@motorcycle/core';
-import { makeDOMDriver, div, h1 } from '@motorcycle/dom';
-import { routerDriver } from '@motorcycle/router';
+import { run } from '@motorcycle/run';
+import { makeDomComponent, div, h1 } from '@motorcycle/dom';
+import { History } from '@motorcycle/history';
+import { Router } from '@motorcycle/router';
 import { of } from 'most';
 
-function main(sources) {
+function Main(sources) {
   const match$ = sources.router.define({
     '/': HomeComponent,
     '/other': OtherComponent
@@ -30,25 +31,33 @@ function main(sources) {
   });
 
   return {
-    DOM: page$.map(c => c.DOM).switch(),
-    router: of('/other')
+    dom: page$.map(c => c.dom).switch(),
+    router: page$.map(c => c.route$).switch().startWith('/'),
   };
 }
 
-run(main, {
-  DOM: makeDOMDriver('#app'),
-  router: routerDriver,
-})
+const Dom = makeDomComponent(document.querySelector('#app')));
+
+function Effects(sinks) {
+  const { dom } = Dom(sinks);
+  const { router } = Router(History(sinks));
+}
+
+run(main, Effects)
 
 function HomeComponent() {
+  const route$ = ... // left as a user exercise
   return {
-    DOM: of(div([h1('home')]))
+    dom: of(div([h1('home')])),
+    route$,
   }
 }
 
 function OtherComponent() {
+  const route$ = ... // left as a user exercise
   return {
-    DOM: of(div([h1('other')]))
+    dom: of(div([h1('other')])),
+    route$
   }
 }
 ```
@@ -58,12 +67,12 @@ function OtherComponent() {
 For all types not defined here, please refer to `@motorcycle/history`'s type
 documentation [here](https://github.com/motorcyclejs/history#types)
 
-#### `routerDriver(sink$: Stream<HistoryInput | Path>): RouterSource`
+#### `Router(sinks: HistorySources): RouterSources`
 
 This is the main API of this driver. This function simply wraps `@motorcycle/history`
 and returns a source object containing methods instead of a stream.
 
-#### `Router: RouterHOC`
+#### `RouterComponent: RouterHOC`
 
 A convenience function, to more declaratively define your routes to
 *Components*. It returns a stream of your currently matched Component.
@@ -82,8 +91,8 @@ function main(sources: Sources): Sinks {
     }, sources);
 
   return {
-    DOM: sinks$.map(sinks => sinks.DOM).switch(),
-    router: sinks$.map(sinks => sinks.router.switch())
+    DOM: sinks$.map(sinks => sinks.dom).switch(),
+    router: sinks$.map(sinks => sinks.route$).switch()
   };
 }
 ```

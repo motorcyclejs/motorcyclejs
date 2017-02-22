@@ -1,9 +1,10 @@
-import { Stream, of, never } from 'most';
-import { curry2 } from '@most/prelude';
+import { DefineReturn, RouterSource } from './RouterSource';
+import { Stream, never, of } from 'most';
+
 import { Component } from '@motorcycle/run';
-import { hold } from 'most-subject';
-import { RouterSource, DefineReturn } from './RouterSource';
 import { RouterInput } from './types';
+import { curry2 } from '@most/prelude';
+import { hold } from 'most-subject';
 
 export interface RouterDefinitions<Sources, Sinks> {
   [key: string]:
@@ -11,23 +12,23 @@ export interface RouterDefinitions<Sources, Sinks> {
   RouterDefinitions<Sources, Sinks>;
 }
 
-export type RouterSources<Sources> = Sources & { router: RouterSource };
+export type RouterComponentSources<Sources> = Sources & { router: RouterSource };
 
 export interface RouterHOC {
-  (definitions: RouterDefinitions<any, any>, sources: RouterSources<any>): Stream<any>;
+  (definitions: RouterDefinitions<any, any>, sources: RouterComponentSources<any>): Stream<any>;
 
   <Sources, Sinks>(definitions: RouterDefinitions<Sources, Sinks>,
-    sources: RouterSources<Sources>): Stream<Sinks>;
+    sources: RouterComponentSources<Sources>): Stream<Sinks>;
 
-  (definitions: RouterDefinitions<any, any>): (sources: RouterSources<any>) => Stream<any>;
+  (definitions: RouterDefinitions<any, any>): (sources: RouterComponentSources<any>) => Stream<any>;
 
   <Sources, Sinks>(definitions: RouterDefinitions<Sources, Sinks>):
-    (sources: RouterSources<Sources>) => Stream<Sinks>;
+    (sources: RouterComponentSources<Sources>) => Stream<Sinks>;
 }
 
-export const Router: RouterHOC = curry2<any, any, any>(function Router<Sources, Sinks>(
+export const RouterComponent: RouterHOC = curry2<any, any, any>(function Router<Sources, Sinks>(
   definitions: RouterDefinitions<Sources, Sinks>,
-  sources: RouterSources<any>,
+  sources: RouterComponentSources<any>,
 ): Stream<Sinks & { router: RouterInput }> {
   const match$: Stream<DefineReturn> =
     sources.router.define(definitions).thru(hold(1));
