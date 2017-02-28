@@ -1,16 +1,17 @@
+import { DomSource, EventsFnOptions, StandardEvents } from '../types';
+import { EventDelegator, EventListenerInput } from './EventDelegator';
+import { SCOPE_ATTRIBUTE, VNode, VNodeProps, h } from 'mostly-dom';
+import { generateScope, generateSelector } from './namespaceParsers';
+
+import { ElementDomSource } from './ElementDomSource';
+import { SCOPE_PREFIX } from './common';
 import { Stream } from 'most';
 import { copy } from '@most/prelude';
+import { createEventStream } from './createEventStream';
 import { domEvent } from '@most/dom-event';
-import { VNode, VNodeProps, SCOPE_ATTRIBUTE, h } from 'mostly-dom';
-import { EventDelegator, EventListenerInput } from './EventDelegator';
-import { DomSource, EventsFnOptions, StandardEvents } from '../types';
-import { shouldUseCapture } from './shouldUseCapture';
-import { ElementDomSource } from './ElementDomSource';
 import { elementMap } from './elementMap';
 import { isInScope } from './isInScope';
-import { generateScope, generateSelector } from './namespaceParsers';
-import { createEventStream } from './createEventStream';
-import { SCOPE_PREFIX } from './common';
+import { shouldUseCapture } from './shouldUseCapture';
 
 const SCOPE_SEPARATOR = `~`;
 
@@ -199,7 +200,9 @@ function scopeEventStream(
 function ensureMatches(selector: string, element: Element, ev: Event) {
   if (!selector) return true;
 
-  for (let target = ev.target as Element; target !== element; target = target.parentElement as Element)
+  let target = ev.target as Element;
+
+  for (; target && target !== element; target = target.parentElement as Element)
     if (target.matches(selector))
       return true;
 
