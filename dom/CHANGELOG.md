@@ -1,3 +1,10 @@
+# 8.2.0 (2017-02-28)
+---
+
+## Bug Fixes
+
+- fix(dom): ensure target exists [d6cd75e8](https://github.com/motorcyclejs/dom/commits/d6cd75e8c2272689f0c85b1958327456f9b90cf8)
+
 # 8.1.0 (2017-02-22)
 ---
 
