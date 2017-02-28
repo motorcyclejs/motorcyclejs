@@ -10,8 +10,8 @@
     "test:ci": "northbrook tslint --changed && northbrook mocha --changed && northbrook karma --changed",
     "prerelease": "npm run build",
     "preversion": "northbrook tsc --changed",
-    "release": "northbrook release",
-    "postinstall": "northbrook exec -- yarn && northbrook tsc && northbrook link"
+    "release": "northbrook release --comver",
+    "postinstall": "northbrook exec -- yarn && northbrook link && northbrook tsc"
   },
   "repository": {
     "type": "git",

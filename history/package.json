@@ -1,6 +1,6 @@
 {
   "name": "@motorcycle/history",
-  "version": "4.1.7",
+  "version": "5.0.0",
   "description": "Standard History driver for Motorcycle.js",
   "main": "lib/index.js",
   "jsnext:main": "lib.es2015/index.js",
@@ -11,7 +11,7 @@
     "lib.es2015"
   ],
   "scripts": {
-    "test": "nb tslint -o @motorcycle/history && nb mocha -o @motorcycle/history && nb karma -o @motorcycle/history"
+    "test": "../node_modules/.bin/nb tslint -o @motorcycle/history && ../node_modules/.bin/nb mocha -o @motorcycle/history && ../node_modules/.bin/nb karma -o @motorcycle/history"
   },
   "repository": {
     "type": "git",

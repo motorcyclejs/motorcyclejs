@@ -1,20 +1,21 @@
 import * as assert from 'assert';
+
+import { DomSource, VNode, a, div, h2, makeDomComponent, p } from '../../src';
+import { Object, run } from '@motorcycle/run';
 import { Stream, just } from 'most';
-import { makeDomDriver, div, h2, a, p, DomSource, VNode } from '../../src';
-import { run, Object } from '@motorcycle/run';
 
 interface DomSources {
   dom: DomSource;
 }
 
 interface DomSinks extends Object<any> {
-  dom: Stream<VNode>;
+  view$: Stream<VNode>;
 }
 
 describe('rendering', () => {
   it('patches text nodes initially present on rootElement', (done) => {
     function main() {
-      const dom = just(
+      const view$ = just(
         div('#page', {}, [
           h2('Home'),
           div({}, [
@@ -26,12 +27,10 @@ describe('rendering', () => {
         ]),
       );
 
-      return { dom };
+      return { view$ };
     }
 
-    const { sources, dispose } = run<DomSources, DomSinks>(main, (sinks: DomSinks) => ({
-      dom: makeDomDriver(createInitialRenderTarget())(sinks.dom),
-    }));
+    const { sources, dispose } = run<DomSources, DomSinks>(main, makeDomComponent(createInitialRenderTarget()));
 
     sources.dom.elements().skip(1).take(1)
       .observe(elements => {

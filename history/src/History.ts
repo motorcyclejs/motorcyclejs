@@ -1,11 +1,14 @@
-import { Stream } from 'most';
 import { Location, Path, createHistory } from 'prehistoric';
-import { HistoryInput } from './types';
 
-export function historyDriver(sink$: Stream<HistoryInput | Path>): Stream<Location> {
+import { HistoryInput } from './types';
+import { Stream } from 'most';
+
+export function History(sinks: HistorySinks): HistorySources {
+  const { history$ } = sinks;
+
   const { push, replace, go, history } = createHistory();
 
-  sink$.observe(function (input: HistoryInput | Path) {
+  history$.observe(function (input: HistoryInput | Path) {
     if (typeof input === 'string')
       return push(input);
 
@@ -25,5 +28,13 @@ export function historyDriver(sink$: Stream<HistoryInput | Path>): Stream<Locati
       return go(1);
   });
 
-  return history;
+  return { history$: history };
+}
+
+export interface HistorySinks {
+  history$: Stream<HistoryInput | Path>;
+}
+
+export interface HistorySources {
+  history$: Stream<Location>;
 }

@@ -14,16 +14,14 @@ npm install --save @motorcycle/history
 
 ## API
 
-### Driver Functions
-
-#### `historyDriver(sink$: Stream<HistoryInput | Path>): Stream<Location>`
+#### `History(sinks: HistorySinks): HistorySources`
 
 This is the only function you'll be needing :smile:
 
 ```typescript
-import { run } from '@motorcycle/core';
-import { makeDOMDriver, VNode, div, h2 } from '@motorcycle/dom';
-import { historyDriver, Location, Path } from '@motorcycle/history';
+import { run } from '@motorcycle/run';
+import { makeDomComponent, VNode, div, h2 } from '@motorcycle/dom';
+import { History, Location, Path } from '@motorcycle/history';
 
 function main (sources) {
   const click$: Stream<Event> =
@@ -48,15 +46,19 @@ function view (location: Location): VNode {
   ])
 }
 
-run(main, {
-  DOM: makeDOMDriver('#app'),
-  history: historyDriver,
+const Dom = makeDomComponent(document.querySelector('#app'));
+
+run(main, sinks => {
+  const { dom } = Dom(sinks);
+  const { history$ } = History(sinks);
+
+  return { dom, history$ };
 })
 ```
 
-### Higher Order Drivers
+### Higher Order Component
 
-#### `captureClicks(historyDriver: HistoryDriver<any>): HistoryDriver<any>`
+#### `CaptureClicks(historySinks: HistorySinks): HistorySources`
 
 WARNING: Magic ensues - Proceed with caution :smiley:
 
@@ -66,16 +68,32 @@ anchor elements so your application doesn't have to be explicit about listening 
 clicks.
 
 ```typescript
-import { captureClicks, historyDriver } from '@motorcycle/history';
+import { CaptureClicks, History } from '@motorcycle/history';
 
 // other stuff :)
 
-run(main, {
-  history: captureClicks(historyDriver),
+run(main, (sinks) => {
+  const { history$ } = CaptureClicks(History(sinks))
+
+  return { history$ }
 })
 ```
 
 ### Types
+
+####`HistorySinks`
+```typescript
+export interface HistorySinks {
+  history$: Stream<HistoryInput | Path>;
+}
+```
+
+#### `HistorySources`
+```typescript
+export interface HistorySources {
+  history$: Stream<Location>;
+}
+```
 
 #### `HistoryDriver<T>`
 ```typescript

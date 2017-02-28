@@ -1,7 +1,7 @@
 {
   "name": "@motorcycle/dom",
   "description": "Standard DOM Driver for Motorcycle.js",
-  "version": "7.0.6",
+  "version": "8.2.0",
   "author": "Tylor Steinberger <tlsteinberger167@gmail.com>",
   "main": "lib/index.js",
   "module": "lib.es2015/index.js",
@@ -19,7 +19,7 @@
     "@most/prelude": "^1.4.1",
     "most": "^1.2.1",
     "most-subject": "^5.3.0",
-    "mostly-dom": "^1.2.1"
+    "mostly-dom": "^1.4.1"
   },
   "devDependencies": {
     "@cycle/isolate": "^1.4.0",
@@ -42,6 +42,6 @@
     "url": "git+https://github.com/motorcyclejs/dom.git"
   },
   "scripts": {
-    "test": "nb tslint -o @motorcycle/dom && nb karma -o @motorcycle/dom"
+    "test": "../node_modules/.bin/nb tslint -o @motorcycle/dom && ../node_modules/.bin/nb karma -o @motorcycle/dom"
   }
 }

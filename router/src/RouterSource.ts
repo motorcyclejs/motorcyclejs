@@ -1,9 +1,9 @@
+import { Location, Path, RouteDefinitions } from './types';
+import { getFilteredPath, isStrictlyInScope, pathJoin, splitPath } from './helpers';
+
 import { Stream } from 'most';
 import { hold } from 'most-subject';
-import switchPath from 'switch-path';
-
-import { Location, Path, RouteDefinitions } from './types';
-import { splitPath, pathJoin, isStrictlyInScope, getFilteredPath } from './helpers';
+import { default as switchPath } from 'switch-path';
 
 export class RouterSource {
   constructor(

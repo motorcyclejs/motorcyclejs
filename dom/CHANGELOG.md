@@ -1,3 +1,25 @@
+# 8.2.0 (2017-02-28)
+---
+
+## Bug Fixes
+
+- fix(dom): ensure target exists [d6cd75e8](https://github.com/motorcyclejs/dom/commits/d6cd75e8c2272689f0c85b1958327456f9b90cf8)
+
+# 8.1.0 (2017-02-22)
+---
+
+## Bug Fixes
+
+- fix(dom): update mostly-dom [9be9a128](https://github.com/motorcyclejs/dom/commits/9be9a128797b9101b0f75bf440def5e3e0e5bfb1)
+
+# 8.0.0 (2017-02-14)
+---
+
+## Breaking Changes
+
+1. replace driver function with component function
+  - feat(dom): move from driver function to component function [3efeff45](https://github.com/motorcyclejs/dom/commits/3efeff45759019c2b13c62e482a8b88bb973935f)
+
 # 7.0.6 (2017-01-19)
 ---
 

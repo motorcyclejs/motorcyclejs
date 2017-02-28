@@ -1,7 +1,7 @@
-import { Stream } from 'most';
+import { HistoryInput, HistorySinks, HistorySources, Path } from './';
 import { Subject, sync } from 'most-subject';
-import { Location } from 'prehistoric';
-import { HistoryInput } from './types';
+
+import { Stream } from 'most';
 
 const clickEvent = 'undefined' !== typeof document && document.ontouchstart ?
   'touchstart' : 'click';
@@ -71,18 +71,18 @@ function captureAnchorClicks(push: Function) {
     document.addEventListener(clickEvent, listener, false);
 }
 
-export function captureClicks(
-  historyDriver: (sink$: Stream<HistoryInput>) => Stream<Location>)
+export function CaptureClicks(
+  History: (sinks: HistorySinks) => HistorySources)
 {
-  return function historyDriverWithClickCapture(sink$: Stream<HistoryInput>): any {
-    const subject: Subject<HistoryInput> = sync<HistoryInput>();
+  return function historyDriverWithClickCapture(sinks: HistorySinks): HistorySources {
+    const subject: Subject<HistoryInput | Path> = sync<HistoryInput>();
 
     captureAnchorClicks((path: string) => {
       subject.next({ type: 'push', path });
     });
 
-    const stream = subject.merge(sink$);
+    const stream: Stream<HistoryInput | Path> = subject.merge(sinks.history$);
 
-    return historyDriver(stream);
+    return History({ history$: stream });
   };
 }

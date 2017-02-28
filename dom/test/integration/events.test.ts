@@ -1,29 +1,31 @@
-import * as assert from 'assert';
 import * as Motorcycle from '@motorcycle/run';
-import { div, h4, h3, h2, input, makeDomDriver } from '../../src';
+import * as assert from 'assert';
 import * as most from 'most';
+
+import { div, h2, h3, h4, input, makeDomComponent } from '../../src';
+
 import { createRenderTarget } from '../helpers/createRenderTarget';
 
 describe('DOMSource.events()', function () {
   it('should catch a basic click interaction Observable', function (done) {
     function app() {
       return {
-        DOM: most.of(h3('.myelementclass', 'Foobar')),
+        view$: most.of(h3('.myelementclass', 'Foobar')),
       };
     }
 
     const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
-      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+      dom: makeDomComponent(createRenderTarget())(sinks).dom,
     }));
 
-    sources.DOM.select('.myelementclass').events('click').observe((ev: Event) => {
+    sources.dom.select('.myelementclass').events('click').observe((ev: Event) => {
       assert.strictEqual(ev.type, 'click');
       assert.strictEqual((ev.target as HTMLHeadElement).textContent, 'Foobar');
       dispose();
       done();
     });
     // Make assertions
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
+    sources.dom.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       const myElement: any = root.querySelector('.myelementclass');
       assert.notStrictEqual(myElement, null);
       assert.notStrictEqual(typeof myElement, 'undefined');
@@ -38,15 +40,15 @@ describe('DOMSource.events()', function () {
   it('should setup click detection with events() after run() occurs', function (done) {
     function app() {
       return {
-        DOM: most.of(h3('.test2.myelementclass', 'Foobar')),
+        view$: most.of(h3('.test2.myelementclass', 'Foobar')),
       };
     }
 
     const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
-      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+      dom: makeDomComponent(createRenderTarget())(sinks).dom,
     }));
 
-    sources.DOM.select('.myelementclass').events('click').observe((ev: Event) => {
+    sources.dom.select('.myelementclass').events('click').observe((ev: Event) => {
       assert.strictEqual(ev.type, 'click');
       assert.strictEqual((ev.target as HTMLHeadElement).textContent, 'Foobar');
       dispose();
@@ -64,10 +66,10 @@ describe('DOMSource.events()', function () {
     }, 200);
   });
 
-  it('should setup click detection on a ready DOM element (e.g. from server)', function (done) {
+  it('should setup click detection on a ready dom element (e.g. from server)', function (done) {
     function app() {
       return {
-        DOM: most.never(),
+        view$: most.never(),
       };
     }
 
@@ -78,10 +80,10 @@ describe('DOMSource.events()', function () {
     containerElement.appendChild(headerElement);
 
     const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
-      DOM: makeDomDriver(containerElement)(sinks.DOM),
+      dom: makeDomComponent(containerElement)(sinks).dom,
     }));
 
-    sources.DOM.select('.myelementclass').events('click').observe((ev: Event) => {
+    sources.dom.select('.myelementclass').events('click').observe((ev: Event) => {
       assert.strictEqual(ev.type, 'click');
       assert.strictEqual((ev.target as HTMLHeadElement).textContent, 'Foobar');
       dispose();
@@ -99,26 +101,26 @@ describe('DOMSource.events()', function () {
     }, 200);
   });
 
-  it('should catch events using id of root element in DOM.select', function (done) {
+  it('should catch events using id of root element in dom.select', function (done) {
     function app() {
       return {
-        DOM: most.of(h3('.myelementclass', 'Foobar')),
+        view$: most.of(h3('.myelementclass', 'Foobar')),
       };
     }
 
     const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
-      DOM: makeDomDriver(createRenderTarget('parent-001'))(sinks.DOM),
+      dom: makeDomComponent(createRenderTarget('parent-001'))(sinks).dom,
     }));
 
     // Make assertions
-    sources.DOM.select('#parent-001').events('click').observe((ev: Event) => {
+    sources.dom.select('#parent-001').events('click').observe((ev: Event) => {
       assert.strictEqual(ev.type, 'click');
       assert.strictEqual((ev.target as HTMLHeadElement).textContent, 'Foobar');
       dispose();
       done();
     });
 
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
+    sources.dom.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       const myElement: any = root.querySelector('.myelementclass');
       assert.notStrictEqual(myElement, null);
       assert.notStrictEqual(typeof myElement, 'undefined');
@@ -130,26 +132,26 @@ describe('DOMSource.events()', function () {
 
   });
 
-  it('should catch events using id of top element in DOM.select', function (done) {
+  it('should catch events using id of top element in dom.select', function (done) {
     function app() {
       return {
-        DOM: most.of(h3('#myElementId', 'Foobar')),
+        view$: most.of(h3('#myElementId', 'Foobar')),
       };
     }
 
     const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
-      DOM: makeDomDriver(createRenderTarget('parent-002'))(sinks.DOM),
+      dom: makeDomComponent(createRenderTarget('parent-002'))(sinks).dom,
     }));
 
     // Make assertions
-    sources.DOM.select('#myElementId').events('click').observe((ev: Event) => {
+    sources.dom.select('#myElementId').events('click').observe((ev: Event) => {
       assert.strictEqual(ev.type, 'click');
       assert.strictEqual((ev.target as HTMLHeadElement).textContent, 'Foobar');
       dispose();
       done();
     });
 
-    sources.DOM.select(':root').elements().skip(1).take(1)
+    sources.dom.select(':root').elements().skip(1).take(1)
       .observe(function ([root]: HTMLElement[]) {
         const myElement: any = root.querySelector('#myElementId');
         assert.notStrictEqual(myElement, null);
@@ -165,25 +167,25 @@ describe('DOMSource.events()', function () {
   it('should catch interaction events without prior select()', function (done) {
     function app() {
       return {
-        DOM: most.of(div('.parent', [
+        view$: most.of(div('.parent', [
           h3('.myelementclass', 'Foobar'),
         ])),
       };
     }
 
     const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
-      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+      dom: makeDomComponent(createRenderTarget())(sinks).dom,
     }));
 
     // Make assertions
-    sources.DOM.events('click').observe((ev: Event) => {
+    sources.dom.events('click').observe((ev: Event) => {
       assert.strictEqual(ev.type, 'click');
       assert.strictEqual((ev.target as HTMLHeadElement).textContent, 'Foobar');
       dispose();
       done();
     });
 
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
+    sources.dom.select(':root').elements().skip(1).take(1).observe(function ([root]: HTMLElement[]) {
       const myElement: any = root.querySelector('.myelementclass');
       assert.notStrictEqual(myElement, null);
       assert.notStrictEqual(typeof myElement, 'undefined');
@@ -195,10 +197,10 @@ describe('DOMSource.events()', function () {
 
   });
 
-  it('should catch user events using DOM.select().select().events()', function (done) {
+  it('should catch user events using dom.select().select().events()', function (done) {
     function app() {
       return {
-        DOM: most.of(
+        view$: most.of(
           h3('.top-most', [
             h2('.bar', 'Wrong'),
             div('.foo', [
@@ -210,18 +212,18 @@ describe('DOMSource.events()', function () {
     }
 
     const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
-      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+      dom: makeDomComponent(createRenderTarget())(sinks).dom,
     }));
 
     // Make assertions
-    sources.DOM.select('.foo').select('.bar').events('click').observe((ev: Event) => {
+    sources.dom.select('.foo').select('.bar').events('click').observe((ev: Event) => {
       assert.strictEqual(ev.type, 'click');
       assert.strictEqual((ev.target as HTMLHeadElement).textContent, 'Correct');
       dispose();
       done();
     });
 
-    sources.DOM.select(':root').elements().skip(1).take(1)
+    sources.dom.select(':root').elements().skip(1).take(1)
       .observe(function ([root]: HTMLElement[]) {
         const wrongElement: any = root.querySelector('.bar');
         const correctElement: any = root.querySelector('.foo .bar');
@@ -239,10 +241,10 @@ describe('DOMSource.events()', function () {
 
   });
 
-  it('should catch events from many elements using DOM.select().events()', function (done) {
+  it('should catch events from many elements using dom.select().events()', function (done) {
     function app() {
       return {
-        DOM: most.of(div('.parent', [
+        view$: most.of(div('.parent', [
           h4('.clickable.first', 'First'),
           h4('.clickable.second', 'Second'),
         ])),
@@ -250,17 +252,17 @@ describe('DOMSource.events()', function () {
     }
 
     const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
-      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+      dom: makeDomComponent(createRenderTarget())(sinks).dom,
     }));
 
     // Make assertions
-    sources.DOM.select('.clickable').events('click').take(1)
+    sources.dom.select('.clickable').events('click').take(1)
       .observe((ev: Event) => {
         assert.strictEqual(ev.type, 'click');
         assert.strictEqual((ev.target as HTMLHeadElement).textContent, 'First');
       });
 
-    sources.DOM.select('.clickable').events('click').skip(1).take(1)
+    sources.dom.select('.clickable').events('click').skip(1).take(1)
       .observe((ev: Event) => {
         assert.strictEqual(ev.type, 'click');
         assert.strictEqual((ev.target as HTMLHeadElement).textContent, 'Second');
@@ -268,7 +270,7 @@ describe('DOMSource.events()', function () {
         done();
       });
 
-    sources.DOM.select(':root').elements().skip(1).take(1)
+    sources.dom.select(':root').elements().skip(1).take(1)
       .observe(function ([root]: HTMLElement[]) {
         const firstElem: any = root.querySelector('.first');
         const secondElem: any = root.querySelector('.second');
@@ -287,7 +289,7 @@ describe('DOMSource.events()', function () {
   it('should catch interaction events from future elements', function (done) {
     function app() {
       return {
-        DOM: most.concat(
+        view$: most.concat(
           most.of(h2('.blesh', 'Blesh')),
           most.of(h3('.blish', 'Blish')).delay(100),
         ).concat(most.of(h4('.blosh', 'Blosh')).delay(100)),
@@ -295,11 +297,11 @@ describe('DOMSource.events()', function () {
     }
 
     const { sources, dispose } = Motorcycle.run<any, any>(app, (sinks: any) => ({
-      DOM: makeDomDriver(createRenderTarget('parent-002'))(sinks.DOM),
+      dom: makeDomComponent(createRenderTarget('parent-002'))(sinks).dom,
     }));
 
     // Make assertions
-    sources.DOM.select('.blosh').events('click').observe((ev: Event) => {
+    sources.dom.select('.blosh').events('click').observe((ev: Event) => {
       assert.strictEqual(ev.type, 'click');
       assert.strictEqual((ev.target as HTMLHeadElement).textContent, 'Blosh');
       dispose();
@@ -307,7 +309,7 @@ describe('DOMSource.events()', function () {
     })
     .catch(done);
 
-    sources.DOM.select(':root').elements().skip(3).take(1)
+    sources.dom.select(':root').elements().skip(3).take(1)
       .observe(function ([root]: HTMLElement[]) {
         const myElement: any = root.querySelector('.blosh');
         assert.notStrictEqual(myElement, null);
@@ -325,7 +327,7 @@ describe('DOMSource.events()', function () {
   it('should catch a non-bubbling click event with useCapture', function (done) {
     function app() {
       return {
-        DOM: most.of(div('.parent', [
+        view$: most.of(div('.parent', [
           div('.clickable', 'Hello'),
         ])),
       };
@@ -345,10 +347,10 @@ describe('DOMSource.events()', function () {
     }
 
     const { sources } = Motorcycle.run<any, any>(app, (sinks: any) => ({
-      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+      dom: makeDomComponent(createRenderTarget())(sinks).dom,
     }));
 
-    sources.DOM.select('.clickable').events('click', {useCapture: true})
+    sources.dom.select('.clickable').events('click', {useCapture: true})
       .observe((ev: Event) => {
         assert.strictEqual(ev.type, 'click');
         assert.strictEqual((ev.target as HTMLElement).tagName, 'DIV');
@@ -357,10 +359,10 @@ describe('DOMSource.events()', function () {
         done();
       });
 
-    sources.DOM.select('.clickable').events('click', {useCapture: false})
+    sources.dom.select('.clickable').events('click', {useCapture: false})
       .observe(assert.fail);
 
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
+    sources.dom.select(':root').elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
       const clickable: any = root.querySelector('.clickable');
       setTimeout(() => click(clickable));
     });
@@ -372,7 +374,7 @@ describe('DOMSource.events()', function () {
 
     function app() {
       return {
-        DOM: most.of(div('.parent', [
+        view$: most.of(div('.parent', [
           input('.correct', { type: 'text' }, []),
           input('.wrong', { type: 'text' }, []),
           input('.dummy', { type: 'text' }),
@@ -381,17 +383,17 @@ describe('DOMSource.events()', function () {
     }
 
     const { sources } = Motorcycle.run<any, any>(app, (sinks: any) => ({
-      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+      dom: makeDomComponent(createRenderTarget())(sinks).dom,
     }));
 
-    sources.DOM.select('.correct').events('blur', {useCapture: true})
+    sources.dom.select('.correct').events('blur', {useCapture: true})
       .observe((ev: Event) => {
         assert.strictEqual(ev.type, 'blur');
         assert.strictEqual((ev.target as HTMLElement).className, 'correct');
         done();
       });
 
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
+    sources.dom.select(':root').elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
       const correct: any = root.querySelector('.correct');
       const wrong: any = root.querySelector('.wrong');
       const dummy: any = root.querySelector('.dummy');
@@ -408,7 +410,7 @@ describe('DOMSource.events()', function () {
 
     function app() {
       return {
-        DOM: most.of(div('.parent', [
+        view$: most.of(div('.parent', [
           input('.correct', { type: 'text' }, []),
           input('.wrong', { type: 'text' }, []),
           input('.dummy', { type: 'text' }),
@@ -417,17 +419,17 @@ describe('DOMSource.events()', function () {
     }
 
     const { sources } = Motorcycle.run<any, any>(app, (sinks: any) => ({
-      DOM: makeDomDriver(createRenderTarget())(sinks.DOM),
+      dom: makeDomComponent(createRenderTarget())(sinks).dom,
     }));
 
-    sources.DOM.select('.correct').events('blur')
+    sources.dom.select('.correct').events('blur')
       .observe((ev: Event) => {
         assert.strictEqual(ev.type, 'blur');
         assert.strictEqual((ev.target as HTMLElement).className, 'correct');
         done();
       });
 
-    sources.DOM.select(':root').elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
+    sources.dom.select(':root').elements().skip(1).take(1).observe(([root]: HTMLElement[]) => {
       const correct: any = root.querySelector('.correct');
       const wrong: any = root.querySelector('.wrong');
       const dummy: any = root.querySelector('.dummy');

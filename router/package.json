@@ -1,7 +1,7 @@
 {
   "name": "@motorcycle/router",
   "description": "Standard Router Driver for Motorcycle.js",
-  "version": "4.1.7",
+  "version": "5.0.0",
   "author": "Tylor Steinberger <tlsteinberger167@gmail.com>",
   "main": "lib/index.js",
   "module": "lib.es2015/index.js",
@@ -15,7 +15,7 @@
     "url": "https://github.com/motorcyclejs/router/issues"
   },
   "dependencies": {
-    "@most/prelude": "^1.4.1",
+    "@most/prelude": "^1.5.0",
     "@motorcycle/history": "latest",
     "@motorcycle/run": "latest",
     "most-subject": "^5.3.0",
@@ -35,6 +35,6 @@
     "url": "git+https://github.com/motorcyclejs/router.git"
   },
   "scripts": {
-    "test": "nb tslint -o @motorcycle/router && nb mocha -o @motorcycle/router"
+    "test": "../node_modules/.bin/nb tslint -o @motorcycle/router && ../node_modules/.bin/nb mocha -o @motorcycle/router"
   }
 }

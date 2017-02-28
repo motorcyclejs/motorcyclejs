@@ -1,6 +1,11 @@
 import * as assert from 'assert';
-import { Stream, periodic, of } from 'most';
-import { routerDriver, Router, HistoryInput, Location } from '../src';
+
+import { HistoryInput, Location, Router, RouterComponent, RouterInput } from '../src';
+import { Stream, of, periodic } from 'most';
+
+import { History } from '@motorcycle/history';
+
+const routerDriver = (route$: RouterInput) => Router(History({ history$: route$ })).router;
 
 describe('@motorcycle/router', function () {
   it('changes the route', (done: Function) => {
@@ -186,7 +191,7 @@ describe('Router', () => {
 
     const router = routerDriver(from(routes));
 
-    const sinks$ = Router(definitions)({ router });
+    const sinks$ = RouterComponent(definitions)({ router });
 
     const router$ = sinks$.map(sinks => sinks.router).switch();
 
@@ -197,7 +202,7 @@ describe('Router', () => {
 
   it('should match nested Routers', () => {
     const definitions = {
-      '/home': Router({
+      '/home': RouterComponent({
         '/': () => ({ router: of('/hello') }),
       }),
       '/other': () => ({ router: of('/home') }),
@@ -213,7 +218,7 @@ describe('Router', () => {
 
     const router = routerDriver(from(routes));
 
-    const sinks$ = Router(definitions)({ router });
+    const sinks$ = RouterComponent(definitions)({ router });
 
     const router$ = sinks$.map(sinks => sinks.router).switch();
 

@@ -1,6 +1,6 @@
-import { Stream } from 'most';
 import { DomSource } from '../types';
+import { Stream } from 'most';
 
-export function elements(domSource: DomSource): Stream<Array<Element>> {
-  return domSource.elements();
+export function elements<T extends Element>(domSource: DomSource): Stream<Array<T>> {
+  return domSource.elements<T>();
 }
