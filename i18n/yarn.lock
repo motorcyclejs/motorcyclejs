@@ -59,8 +59,8 @@ most-subject@^5.3.0:
     most "^1.1.0"
 
 most@^1.1.0, most@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/most/-/most-1.2.1.tgz#6457a1a34ca6ef3004168a810fa025b3a56e8769"
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/most/-/most-1.2.2.tgz#8f12e434ad6195ed2e1efb3ec217e0cbcf3e1de8"
   dependencies:
     "@most/multicast" "^1.2.5"
     "@most/prelude" "^1.4.0"
