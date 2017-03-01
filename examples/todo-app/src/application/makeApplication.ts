@@ -27,10 +27,6 @@ export function makeApplication(infrastructure: Infrastructure) {
 
     const { attach, stream: proxyTodos$ } = proxy<Array<Todo>>();
 
-    showActiveTodos$.observe(x => console.log(`showActiveTodos$ ${x}`));
-    showCompletedTodos$.observe(x => console.log(`showCompletedTodos$ ${x}`));
-    showAllTodos$.observe(x => console.log(`showAllTodos$ ${x}`));
-
     const { todos$ } = TodoRepository(mergeObjects(
       AddTodo({ addTodo$, todos$: proxyTodos$ }),
       RemoveTodo({ removeTodo$, todos$: proxyTodos$ }),
