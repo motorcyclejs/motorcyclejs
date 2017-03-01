@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/motorcyclejs/motorcyclejs/tree/master/examples/todo-app#readme",
   "dependencies": {
+    "@most/hold": "^2.0.0",
     "@most/sample": "^1.1.0",
     "cuid": "^1.3.8",
     "most": "^1.2.2",
