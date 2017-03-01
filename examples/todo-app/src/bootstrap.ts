@@ -1,20 +1,19 @@
+import { Infrastructure, makeApplication } from './application';
 import { Sinks, Sources, TodoApp } from './ui/TodoApp';
 
-import { makeDomDriver } from '@motorcycle/dom';
-import { routerDriver } from '@motorcycle/router';
+import { LocalStorageTodoRepository } from './infrastructure';
+import { makeDomComponent } from '@motorcycle/dom';
 import { run } from '@motorcycle/run';
 
-const rootElement: HTMLDivElement =
-  document.querySelector('#app-container') as HTMLDivElement;
+const rootElement = document.querySelector('#app-container') as HTMLDivElement;
 
-const domDriver = makeDomDriver(rootElement);
+const Dom = makeDomComponent(rootElement);
 
-function Effects(sinks: Sinks): Sources {
-  const dom = domDriver(sinks.view$);
+const infrastructure: Infrastructure =
+  {
+    TodoRepository: LocalStorageTodoRepository,
+  };
 
-  const router = routerDriver(sinks.route$);
+const Application = makeApplication(infrastructure);
 
-  return { dom, router };
-}
-
-run(TodoApp, Effects);
+run<Sources, Sinks>(TodoApp, sinks => ({ ...Dom(sinks), ...Application(sinks) }));
