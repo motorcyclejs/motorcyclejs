@@ -1,4 +1,4 @@
-import { VNode, button, input, label, li } from '../../../../../dom/src';
+import { ElementVirtualNode, VNode, button, input, label, li } from '../../../../../dom/src';
 
 import { Model } from './types';
 import { TodoItemStyles } from './styles';
@@ -43,14 +43,9 @@ export function view(model: Model): VNode {
             className: classes(
               TodoItemStyles.editClass,
               !editing && TodoItemStyles.hideClass),
-            focus: editing,
             value: todo.title,
-            // update(_, vNode: ElementVirtualNode<HTMLInputElement>) {
-            //   const element = vNode.element;
-
-            //   if (editing)
-            //     element.value = todo.title;
-            // },
+            selectionStart: todo.title.length,
+            focus: editing,
           },
         ),
       ],
