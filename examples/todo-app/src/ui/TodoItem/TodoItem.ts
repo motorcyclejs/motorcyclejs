@@ -1,6 +1,6 @@
 import { Model, TodoItemSinks, TodoItemSources } from './types';
-import { combine, filter, map, merge, sampleWith } from 'most';
 import { editTodoTitle, toggleTodoCompletion } from '../../domain/services';
+import { filter, map, merge, sampleWith } from 'most';
 
 import { combineObj } from 'most-combineobj';
 import { edit } from './edit';

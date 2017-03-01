@@ -1,4 +1,4 @@
-import { DomSource, events, query } from '@motorcycle/dom';
+import { DomSource, events, query } from '../../../../../dom/src';
 import { Stream, scan, skip } from 'most';
 
 import { TodoItemStyles } from './styles';

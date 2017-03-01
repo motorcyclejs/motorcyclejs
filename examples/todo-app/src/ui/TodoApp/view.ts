@@ -11,7 +11,7 @@ import {
   section,
   span,
   ul,
-} from '@motorcycle/dom';
+} from '../../../../../dom/src';
 
 import { Model } from './';
 import { classes } from 'typestyle';

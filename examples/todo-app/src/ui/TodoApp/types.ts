@@ -1,5 +1,5 @@
 import { ApplicationSinks, ApplicationSources } from '../../application';
-import { DomSinks, DomSources, VNode } from '@motorcycle/dom';
+import { DomSinks, DomSources, VNode } from '../../../../../dom/src';
 
 export type Sinks =
   DomSinks &

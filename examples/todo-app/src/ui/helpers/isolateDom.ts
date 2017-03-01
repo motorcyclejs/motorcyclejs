@@ -1,6 +1,6 @@
-import { DomSinks, DomSources } from '@motorcycle/dom';
+import { DomSinks, DomSources } from '../../../../../dom/src';
 
-import { Component } from '@motorcycle/run';
+import { Component } from '../../../../../run/src';
 
 export function isolateDom<Sources extends DomSources, Sinks extends DomSinks>(
   ComponentFn: Component<Sources, Sinks>,

@@ -1,4 +1,4 @@
-import { DomSource, events, query } from '@motorcycle/dom';
+import { DomSource, events, query } from '../../../../../dom/src';
 import { Stream, filter, map } from 'most';
 
 import { todoAppStyles } from './styles';
@@ -9,8 +9,6 @@ export function newTodo(dom: DomSource): Stream<string> {
   const keyDown$ = events('keydown', newItem);
 
   const enterKey$ = filter(isEnterKey, keyDown$);
-
-  const filledItem$ = filter(isItemFilled, enterKey$);
 
   const trimmedValue$ = map(trimmedValue, enterKey$);
 

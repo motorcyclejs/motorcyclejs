@@ -2,8 +2,8 @@ import { Infrastructure, makeApplication } from './application';
 import { Sinks, Sources, TodoApp } from './ui/TodoApp';
 
 import { LocalStorageTodoRepository } from './infrastructure';
-import { makeDomComponent } from '@motorcycle/dom';
-import { run } from '@motorcycle/run';
+import { makeDomComponent } from '../../../dom/src';
+import { run } from '../../../run/src';
 
 const rootElement = document.querySelector('#app-container') as HTMLDivElement;
 

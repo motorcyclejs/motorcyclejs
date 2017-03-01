@@ -1,4 +1,4 @@
-import { VNode, button, input, label, li } from '@motorcycle/dom';
+import { VNode, button, input, label, li } from '../../../../../dom/src';
 
 import { Model } from './types';
 import { TodoItemStyles } from './styles';

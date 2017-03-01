@@ -1,4 +1,4 @@
-import { DomSource, VNode } from '@motorcycle/dom';
+import { DomSource, VNode } from '../../../../../dom/src';
 import { Model, Sinks, Sources } from './types';
 import { Stream, just, map, never, startWith } from 'most';
 import { Todo, Uid } from '../../domain/model';

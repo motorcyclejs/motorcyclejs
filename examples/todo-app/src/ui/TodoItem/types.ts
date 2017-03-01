@@ -1,4 +1,4 @@
-import { DomSinks, DomSources } from '@motorcycle/dom';
+import { DomSinks, DomSources } from '../../../../../dom/src';
 import { Todo, Uid } from '../../domain/model';
 
 import { Stream } from 'most';

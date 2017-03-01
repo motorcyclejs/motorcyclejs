@@ -1,4 +1,4 @@
-import { LocalStorage, setItem } from '@motorcycle/local-storage';
+import { LocalStorage, setItem } from '../../../../../local-storage/src';
 import { Stream, map, skipRepeats } from 'most';
 import {
   Todo,

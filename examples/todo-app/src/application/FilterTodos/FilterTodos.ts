@@ -1,5 +1,5 @@
-import { CaptureClicks, History } from '@motorcycle/history';
-import { DefineReturn, Router, define } from '@motorcycle/router';
+import { CaptureClicks, History } from '../../../../../history/src';
+import { DefineReturn, Router, define } from '../../../../../router/src';
 import { Sinks, Sources } from './types';
 import { Stream, constant, map, merge, switchLatest } from 'most';
 
