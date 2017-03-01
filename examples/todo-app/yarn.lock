@@ -28,9 +28,9 @@
   dependencies:
     "@most/prelude" "^1.2.0"
 
-"@motorcycle/dom@^8.2.0":
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/@motorcycle/dom/-/dom-8.2.0.tgz#3a5799c66a55870e44ce65cabe5889a3114a7609"
+"@motorcycle/dom@^8.3.0":
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/@motorcycle/dom/-/dom-8.3.0.tgz#cc64d502b8a9d50b259ceed2ba6eacba12e62d53"
   dependencies:
     "@most/dom-event" "^1.3.2"
     "@most/prelude" "^1.4.1"
@@ -38,9 +38,9 @@
     most-subject "^5.3.0"
     mostly-dom "^1.4.1"
 
-"@motorcycle/history@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@motorcycle/history/-/history-5.0.0.tgz#ece48cb288925176f46e194446a5ea8eb28fb724"
+"@motorcycle/history@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@motorcycle/history/-/history-5.1.0.tgz#c7bb99366c3a31ec215625f2887cc889e56312de"
   dependencies:
     most "^1.2.1"
     most-subject "^5.3.0"
@@ -54,16 +54,16 @@
     most-subject "^5.3.0"
     prehistoric "^1.2.0"
 
-"@motorcycle/local-storage@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@motorcycle/local-storage/-/local-storage-2.0.0.tgz#791c0f7f438f9a79e1d9f3f5f5b33d72b953ae37"
+"@motorcycle/local-storage@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@motorcycle/local-storage/-/local-storage-2.1.0.tgz#e8739d8365c0164372c21ff1394f382dd4a32a20"
   dependencies:
     "@most/hold" "^2.0.0"
     most "^1.2.1"
 
-"@motorcycle/router@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/@motorcycle/router/-/router-5.0.0.tgz#76264ee1bd2f4ee9157f9fc1c7bb4cb8cc25b558"
+"@motorcycle/router@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@motorcycle/router/-/router-5.1.0.tgz#9c5a6bd562c57bcf17fc20711db9a1ffd55e4742"
   dependencies:
     "@most/prelude" "^1.5.0"
     "@motorcycle/history" latest
@@ -71,7 +71,14 @@
     most-subject "^5.3.0"
     switch-path "^1.2.0"
 
-"@motorcycle/run@^1.2.5", "@motorcycle/run@latest":
+"@motorcycle/run@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@motorcycle/run/-/run-1.3.0.tgz#88a3dd85b94a7db525d7f0dfac0fa8d858a3b723"
+  dependencies:
+    most "^1.2.1"
+    most-subject "^5.3.0"
+
+"@motorcycle/run@latest":
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/@motorcycle/run/-/run-1.2.5.tgz#bf59b4c003bad78d92eb9930e3f7a55b85439bcd"
   dependencies:
