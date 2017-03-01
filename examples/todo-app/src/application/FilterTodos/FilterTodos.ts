@@ -28,7 +28,7 @@ export function FilterTodos(sinks: Sinks): Sources {
   const defineReturn$ = define(routes, router);
 
   const filteredTodos$ =
-    switchLatest(map<DefineReturn, Stream<Array<Todo>>>(x => x.value, defineReturn$))
+    switchLatest(map<DefineReturn, Stream<Array<Todo>>>(x => x.value, defineReturn$));
 
   return { todos$: filteredTodos$ };
 }
@@ -40,4 +40,3 @@ function filterCompleted(todos: Array<Todo>): Array<Todo> {
 function filterActive(todos: Array<Todo>): Array<Todo> {
   return filter(todo => todo.completed, todos);
 }
-

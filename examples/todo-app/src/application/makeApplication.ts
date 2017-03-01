@@ -41,7 +41,7 @@ export function makeApplication(infrastructure: Infrastructure) {
 
     return {
       ...FilterTodos({ todos$, showActiveTodos$, showAllTodos$, showCompletedTodos$ }),
-      ...itemCounts(todos$)
+      ...itemCounts(todos$),
     };
   };
 }
@@ -81,5 +81,5 @@ function itemCounts(todos$: Stream<Array<Todo>>) {
     activeTodoItemCount$,
     completedTodoItemCount$,
     todoItemCount$,
-  }
+  };
 }

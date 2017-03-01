@@ -21,10 +21,6 @@ function isEnterKey(event: KeyboardEvent): boolean {
   return event.keyCode === ENTER_KEY;
 }
 
-function isItemFilled(event: KeyboardEvent): boolean {
-  return !!trimmedValue(event);
-}
-
 function trimmedValue(event: KeyboardEvent): string {
   return String((event.target as HTMLInputElement).value).trim();
 }

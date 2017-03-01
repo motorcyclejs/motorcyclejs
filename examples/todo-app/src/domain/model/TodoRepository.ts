@@ -22,4 +22,4 @@ export type TodoRepositorySinks =
 export type TodoRepositorySources =
   {
     todos$: Stream<Array<Todo>>;
-  }
+  };
