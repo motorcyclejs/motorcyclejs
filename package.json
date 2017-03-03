@@ -58,7 +58,6 @@
     "ts-node": "^2.0.0",
     "tslint": "^4.4.2",
     "typed-prompts": "^1.5.0",
-    "typescript": "^2.1.5",
-    "yarn": "^0.19.1"
+    "typescript": "2.1.6"
   }
 }
