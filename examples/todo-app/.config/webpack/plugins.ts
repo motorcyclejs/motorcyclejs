@@ -7,7 +7,7 @@ const BabiliWebpackPlugin = require('babili-webpack-plugin');
 const HtmlOptions =
   {
     title: `Todo App`,
-    filename: `index.html`,
+    filename: `todoApp.html`,
     inject: `body`,
     template: join(srcPath, 'index.ejs'),
   };
