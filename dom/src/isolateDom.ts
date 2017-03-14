@@ -15,7 +15,7 @@ export function isolateDom<Sources extends DomSources, Sinks extends DomSinks>(
     const sinks: Sinks =
       ComponentFn(Object.assign({}, sources, { dom: isolatedDom }));
 
-    return Object.assign({}, sinks, { dom: dom.isolateSink(sinks.view$, key) });
+    return Object.assign({}, sinks, { view$: dom.isolateSink(sinks.view$, key) });
   };
 }
 
