@@ -1,3 +1,10 @@
+# 9.1.0 (2017-03-14)
+---
+
+## Bug Fixes
+
+- fix(dom): fix isolateDom key error [40235d07](https://github.com/motorcyclejs/dom/commits/40235d07955475d073bd21a24d8e77432d99e007)
+
 # 9.0.0 (2017-03-14)
 ---
 
