@@ -1,3 +1,13 @@
+# 9.0.0 (2017-03-14)
+---
+
+## Features
+
+- feat(dom): add isolateDom helper function [074a52f9](https://github.com/motorcyclejs/dom/commits/074a52f9ade73e132c0a6ccafd87e15768a5f45d)
+- feat(types): remove type restrictions on Sources and Sinks [2429a4ca](https://github.com/motorcyclejs/dom/commits/2429a4ca4329631085f53c4f03e629387b8339e5)
+- feat(dom): remove mockDomSource [e59d778b](https://github.com/motorcyclejs/dom/commits/e59d778ba108312a7662b89cd86f342937c3cf83)
+- feat(META): upgrade to latest devdependencies [42d7ae52](https://github.com/motorcyclejs/dom/commits/42d7ae5276d8e585748f07532c0ab92c99160eee)
+
 # 8.4.0 (2017-03-03)
 ---
 
