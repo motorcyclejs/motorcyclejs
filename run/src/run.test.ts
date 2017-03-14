@@ -1,8 +1,8 @@
+import * as Motorcycle from '../src';
 import * as assert from 'assert';
 import * as most from 'most';
-import { sync } from 'most-subject';
 
-import * as Motorcycle from '../src';
+import { sync } from 'most-subject';
 
 describe('Motorcycle Core', () => {
   it('has a method `run`', () => {

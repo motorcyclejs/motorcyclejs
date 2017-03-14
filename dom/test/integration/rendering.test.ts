@@ -1,14 +1,15 @@
 import * as assert from 'assert';
 
 import { DomSource, VNode, a, div, h2, makeDomComponent, p } from '../../src';
-import { Object, run } from '@motorcycle/run';
 import { Stream, just } from 'most';
+
+import { run } from '@motorcycle/run';
 
 interface DomSources {
   dom: DomSource;
 }
 
-interface DomSinks extends Object<any> {
+interface DomSinks {
   view$: Stream<VNode>;
 }
 

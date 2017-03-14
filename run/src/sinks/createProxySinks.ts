@@ -1,16 +1,16 @@
 import { Subject, sync } from 'most-subject';
-import { Object, Sink } from '../types';
+import { get, set } from '../helpers';
 
-export function createProxySinks<Sinks extends Object<Sink<any>>>(
+export function createProxySinks<Sinks>(
   sinks: Sinks = {} as Sinks,
   disposableSubject: Subject<void> = sync<void>()): Sinks
 {
   return new Proxy<Sinks>(sinks, {
     get(target: Sinks, property: string) {
-      if (!target[property])
-        target[property] = sync<any>();
+      if (!get(target, property))
+        set(target, property, sync<any>());
 
-      return target[property].until(disposableSubject);
+      return get(target, property).until(disposableSubject);
     },
 
     has() {

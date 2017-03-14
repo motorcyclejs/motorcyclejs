@@ -1,17 +1,17 @@
-import { Subscription, Subscriber } from 'most';
+import { Subscriber, Subscription } from 'most';
+
 import { Subject } from 'most-subject';
-import { Object, Sink } from '../types';
 import { get } from '../helpers';
 
-export function replicateSinks<Sinks extends Object<Sink<any>>> (
+export function replicateSinks<Sinks> (
   sinks: Sinks,
   sinkProxies: Sinks): Array<Subscription<any>>
 {
   return Object.keys(sinks)
     .filter(sinkName => get(sinkProxies, sinkName))
     .map(function createSubscription (sinkName: string): Subscription<any> {
-      const sink: Sink<any> = get(sinks, sinkName);
-      const sinkProxy: Subject<any> = get(sinkProxies, sinkName) as Subject<any>;
+      const sink = get(sinks, sinkName);
+      const sinkProxy = get(sinkProxies, sinkName);
 
       return sink.subscribe(createSubscriber(sinkProxy, sinkName));
     });

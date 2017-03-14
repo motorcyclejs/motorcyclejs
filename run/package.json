@@ -11,7 +11,7 @@
     "lib.es2015"
   ],
   "scripts": {
-    "test": "nb tslint -o @motorcycle/run && nb mocha -o @motorcycle/run"
+    "test": "../node_modules/.bin/nb tslint -o @motorcycle/run && ../node_modules/.bin/nb mocha -o @motorcycle/run"
   },
   "repository": {
     "type": "git",
