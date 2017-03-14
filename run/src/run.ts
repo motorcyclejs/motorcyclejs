@@ -1,13 +1,13 @@
-import { Component, Object, RunReturn, Sink } from './types';
+import { Component, EffectfulComponent, Object, RunReturn, Sink } from './types';
 import { createDisposableSinks, createProxySinks, replicateSinks } from './sinks';
 
 import { Subscription } from 'most';
 import { createDispose } from './dispose';
 import { sync } from 'most-subject';
 
-export function run<Sources extends Object<any>, Sinks extends Object<Sink<any>>>(
+export function run<Sources extends Object<object>, Sinks extends Object<Sink<any>>>(
   main: Component<Sources, Sinks>,
-  effects: Component<Sinks, Sources>): RunReturn<Sources, Sinks>
+  effects: EffectfulComponent<Sinks, Sources>): RunReturn<Sources, Sinks>
 {
   const disposableSubject = sync<void>();
   const sinkProxies: Sinks = {} as Sinks;
