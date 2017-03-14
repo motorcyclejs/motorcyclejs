@@ -1,7 +1,7 @@
 import { Stream } from 'most';
 import { Subject } from 'most-subject';
 
-export type Source = any;
+export type Source = object;
 export type Sink<T> = Stream<T>;
 
 export type Sources = Object<Source>;
@@ -16,6 +16,11 @@ export interface Object<T> {
 
 export interface Component<Sources extends Object<Source>, Sinks extends Object<Sink<any>>> {
   (sources: Sources): Sinks;
+}
+
+export interface EffectfulComponent<Sinks extends Object<Sink<any>>, Sources extends Object<Source>>
+{
+  (sinks: Sinks): Sources;
 }
 
 export interface RunReturn<Sources extends Object<Source>, Sinks extends Object<Sink<any>>> {
