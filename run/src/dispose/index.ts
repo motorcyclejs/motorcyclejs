@@ -1,11 +1,9 @@
-import { Object, Sink } from '../types';
-import { Subscription } from 'most';
 import { Subject } from 'most-subject';
-
+import { Subscription } from 'most';
 import { disposeSources } from './disposeSources';
 import { unsubscribeSubscriptions } from './unsubscribeSubscriptions';
 
-export function createDispose<Sources extends Object<any>, Sinks extends Object<Sink<any>>>(
+export function createDispose<Sources, Sinks>(
   disposableSubject: Subject<void>,
   sources: Sources,
   subscriptions: Array<Subscription<any>>)

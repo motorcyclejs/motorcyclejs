@@ -144,8 +144,8 @@ qs@^6.1.0:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
 
 readable-stream@^2.0.5:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.2.4.tgz#1a8da72653a38450ba275eca1f3c602027afda0a"
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.2.5.tgz#a0b187304e05bab01a4ce2b4cc9c607d5aa1d606"
   dependencies:
     buffer-shims "^1.0.0"
     core-util-is "~1.0.0"

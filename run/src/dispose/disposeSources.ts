@@ -1,10 +1,9 @@
-import { Object, DisposableSource } from '../types';
 import { get } from '../helpers';
 
-export function disposeSources<Sources extends Object<any>> (sources: Sources) {
+export function disposeSources<Sources> (sources: Sources) {
   Object.keys(sources)
     .forEach(function disposeSource (sourceName: string) {
-      const source: DisposableSource = get(sources, sourceName);
+      const source = get(sources, sourceName);
 
       return source.dispose && source.dispose();
     });

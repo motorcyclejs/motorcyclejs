@@ -1,34 +1,34 @@
-import { Component, Object } from '@motorcycle/run';
 import { DefineReturn, RouterSource } from './RouterSource';
 import { Stream, never, of } from 'most';
 
+import { Component } from '@motorcycle/run';
 import { RouterInput } from './types';
 import { curry2 } from '@most/prelude';
 import { hold } from 'most-subject';
 
-export interface RouterDefinitions<Sources extends Object<object>, Sinks> {
+export interface RouterDefinitions<Sources, Sinks> {
   [key: string]:
   Component<Sources, Sinks & { router: RouterInput }> |
   RouterDefinitions<Sources, Sinks>;
 }
 
-export type RouterComponentSources<Sources extends Object<object>> =
+export type RouterComponentSources<Sources> =
   Sources & { router: RouterSource };
 
 export interface RouterHOC {
   (definitions: RouterDefinitions<any, any>, sources: RouterComponentSources<any>): Stream<any>;
 
-  <Sources extends Object<object>, Sinks>(definitions: RouterDefinitions<Sources, Sinks>,
+  <Sources, Sinks>(definitions: RouterDefinitions<Sources, Sinks>,
     sources: RouterComponentSources<Sources>): Stream<Sinks>;
 
   (definitions: RouterDefinitions<any, any>): (sources: RouterComponentSources<any>) => Stream<any>;
 
-  <Sources extends Object<object>, Sinks>(definitions: RouterDefinitions<Sources, Sinks>):
+  <Sources, Sinks>(definitions: RouterDefinitions<Sources, Sinks>):
     (sources: RouterComponentSources<Sources>) => Stream<Sinks>;
 }
 
 export const RouterComponent: RouterHOC = curry2<any, any, any>(
-  function Router<Sources extends Object<object>, Sinks>(
+  function Router<Sources, Sinks>(
     definitions: RouterDefinitions<Sources, Sinks>,
     sources: RouterComponentSources<any>,
   ): Stream<Sinks & { router: RouterInput }> {

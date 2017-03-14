@@ -1,10 +1,8 @@
-import { Object } from './types';
-
-export function get <T, K extends keyof T>(object: T, key: K): T[K] {
+export function get(object: any, key: string ): any {
   return object[key];
 }
 
-export function set<T> (object: Object<T>, key: string, value: T): Object<T> {
+export function set<T> (object: any, key: string, value: T): any {
   object[key] = value;
   return object;
 }

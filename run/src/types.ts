@@ -1,29 +1,12 @@
-import { Stream } from 'most';
-import { Subject } from 'most-subject';
-
-export type Source = object;
-export type Sink<T> = Stream<T>;
-
-export type Sources = Object<Source>;
-export type Sinks = Object<Sink<any>>;
-
-export type DisposableSource = { dispose?: () => void };
-export type ProxySinks = Object<Subject<any>>;
-
-export interface Object<T> {
-  [key: string]: T;
-}
-
-export interface Component<Sources extends Object<Source>, Sinks extends Object<Sink<any>>> {
+export interface Component<Sources, Sinks> {
   (sources: Sources): Sinks;
 }
 
-export interface EffectfulComponent<Sinks extends Object<Sink<any>>, Sources extends Object<Source>>
-{
+export interface EffectfulComponent<Sinks, Sources> {
   (sinks: Sinks): Sources;
 }
 
-export interface RunReturn<Sources extends Object<Source>, Sinks extends Object<Sink<any>>> {
+export interface RunReturn<Sources, Sinks> {
   sources: Sources;
   sinks: Sinks;
   dispose: Function;
