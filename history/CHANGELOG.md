@@ -1,3 +1,10 @@
+# 6.0.0 (2017-03-14)
+---
+
+## Features
+
+- feat(META): upgrade to latest devdependencies [42d7ae52](https://github.com/motorcyclejs/history/commits/42d7ae5276d8e585748f07532c0ab92c99160eee)
+
 # 5.1.0 (2017-03-01)
 ---
 
