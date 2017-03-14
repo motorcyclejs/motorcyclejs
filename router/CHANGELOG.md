@@ -1,3 +1,15 @@
+# 6.0.0 (2017-03-14)
+---
+
+## Features
+
+- feat(types): remove type restrictions on Sources and Sinks [2429a4ca](https://github.com/motorcyclejs/router/commits/2429a4ca4329631085f53c4f03e629387b8339e5)
+- feat(META): upgrade to latest devdependencies [42d7ae52](https://github.com/motorcyclejs/router/commits/42d7ae5276d8e585748f07532c0ab92c99160eee)
+
+## Bug Fixes
+
+- fix(RouterHOC): fix type errors [a85ef7ad](https://github.com/motorcyclejs/router/commits/a85ef7adb13bce591a3e325dfb0bf2ce082b217e)
+
 # 5.1.0 (2017-03-01)
 ---
 
