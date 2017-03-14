@@ -1,3 +1,16 @@
+# 2.0.0 (2017-03-14)
+---
+
+## Features
+
+- feat(types): remove type restrictions on Sources and Sinks [2429a4ca](https://github.com/motorcyclejs/run/commits/2429a4ca4329631085f53c4f03e629387b8339e5)
+- feat(run): use object type for better typings [7b7f019d](https://github.com/motorcyclejs/run/commits/7b7f019df89085ee293fb5b2ccb68bf35e3b28a3)
+- feat(META): upgrade to latest devdependencies [42d7ae52](https://github.com/motorcyclejs/run/commits/42d7ae5276d8e585748f07532c0ab92c99160eee)
+
+## Bug Fixes
+
+- fix(run): fix run type signature [90637c6b](https://github.com/motorcyclejs/run/commits/90637c6b9bdcb85c753512a114ace6f0ef5eeb58)
+
 # 1.3.0 (2017-03-01)
 ---
 
