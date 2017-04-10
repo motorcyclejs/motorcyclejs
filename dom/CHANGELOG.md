@@ -1,3 +1,10 @@
+# 9.2.0 (2017-04-10)
+---
+
+## Bug Fixes
+
+- fix(MotorcycleDomSource): useCapture should capture *all* child events [c2d0831f](https://github.com/motorcyclejs/dom/commits/c2d0831f4c865705e22d4543412a2cdc6ce11cde)
+
 # 9.1.0 (2017-03-14)
 ---
 
