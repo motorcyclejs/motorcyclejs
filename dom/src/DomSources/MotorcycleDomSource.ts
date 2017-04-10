@@ -107,7 +107,7 @@ export class MotorcycleDomSource implements DomSource {
       .map(function createScopedEventStream(element: Element) {
         const event$ = delegator.addEventListener(element, eventListenerInput);
 
-        return scopeEventStream(event$, checkElementIsInScope, selector, element);
+        return scopeEventStream(event$, checkElementIsInScope, selector, useCapture, element);
       })
       .switch()
       .multicast();
@@ -189,10 +189,16 @@ function scopeEventStream(
   eventStream: Stream<Event>,
   checkElementIsInScope: (element: Element) => boolean,
   selector: string,
+  useCapture: boolean,
   element: Element,
 ): Stream<Event> {
   return eventStream
-    .filter(ev => checkElementIsInScope(ev.target as HTMLElement))
+    .filter((ev: Event) => {
+      if (useCapture)
+        return element.contains(ev.target as HTMLElement);
+
+      return checkElementIsInScope(ev.target as HTMLElement);
+    })
     .filter(ev => ensureMatches(selector, element, ev))
     .multicast();
 }
