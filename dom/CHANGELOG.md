@@ -1,3 +1,11 @@
+# 10.0.0 (2017-04-12)
+---
+
+## Breaking Changes
+
+1. generate scope when calling isolateDom
+  - fix(isolateDom): generate scope key before calling component [102437e4](https://github.com/motorcyclejs/dom/commits/102437e47ea3f6ff9f6064f9baf77bd83bb972d0)
+
 # 9.2.0 (2017-04-10)
 ---
 
