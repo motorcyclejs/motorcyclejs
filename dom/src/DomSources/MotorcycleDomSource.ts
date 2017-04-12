@@ -210,8 +210,6 @@ function scopeEventStream(
 }
 
 function findCurrentTarget(selector: string, element: Element, ev: Event): Element {
-  let currentTarget: Element | void = void 0;
-
   if (!selector || element.matches(selector))
     return element;
 
@@ -229,10 +227,7 @@ function findCurrentTarget(selector: string, element: Element, ev: Event): Eleme
 function cloneEvent(event: Event, currentTarget: Element): Event {
   return new Proxy(event, {
     get(target: Event, property: string) {
-      if (property === 'currentTarget')
-        return currentTarget;
-
-      return target[property];
+      return property === 'currentTarget' ? currentTarget : target[property];
     },
   });
 }
