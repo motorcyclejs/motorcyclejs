@@ -3,12 +3,11 @@ import { DomSinks, DomSource, DomSources } from './';
 import { Component } from '@motorcycle/run';
 
 export function isolateDom<Sources extends DomSources, Sinks extends DomSinks>(
-  ComponentFn: Component<Sources, Sinks>): Component<Sources, Sinks>
+  ComponentFn: Component<Sources, Sinks>,
+  key = createKey()): Component<Sources, Sinks>
 {
   return function (sources: Sources): Sinks {
     const { dom } = sources;
-
-    const key: string = createKey();
 
     const isolatedDom: DomSource = dom.isolateSource(dom, key);
 
