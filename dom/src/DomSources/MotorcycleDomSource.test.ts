@@ -1,11 +1,13 @@
 // tslint:disable:max-file-line-count
 import * as assert from 'assert';
-import { empty, just } from 'most';
-import { SCOPE_ATTRIBUTE } from 'mostly-dom';
-import { MotorcycleDomSource } from './';
-import { DomSource, div, button } from '../';
-import { SCOPE_PREFIX } from './common';
 import * as h from 'hyperscript';
+
+import { DomSource, button, div } from '../';
+import { empty, just } from 'most';
+
+import { MotorcycleDomSource } from './';
+import { SCOPE_ATTRIBUTE } from 'mostly-dom';
+import { SCOPE_PREFIX } from './common';
 
 describe('MotorcycleDomSource', () => {
   it('implements DomSource interface', () => {
@@ -271,6 +273,24 @@ describe('MotorcycleDomSource', () => {
 
       return domSource.events('reset').take(1).observe(ev => {
         assert.strictEqual(ev.type, 'reset');
+      });
+    });
+
+    it('sets correct currentTarget when capturing non-bubbling events', () => {
+      const form = h('form.form', [
+        h('input', { type: 'text' }),
+      ]);
+
+      const element = h('div', {}, [form]);
+
+      const domSource = new MotorcycleDomSource(just(element), ['.form']);
+
+      setTimeout(() => {
+        form.dispatchEvent(new Event('reset', { bubbles: false }));
+      });
+
+      return domSource.events('reset').take(1).observe(ev => {
+        assert.strictEqual(ev.currentTarget, form);
       });
     });
   });
