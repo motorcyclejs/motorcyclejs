@@ -1,3 +1,10 @@
+# 10.1.0 (2017-04-12)
+---
+
+## Bug Fixes
+
+- fix(MotorcycleDomSource): set correct currentTarget when using useCapture [2ae6a1be](https://github.com/motorcyclejs/dom/commits/2ae6a1bebf203ec6a404e2fcb0b5274434e7c749)
+
 # 10.0.0 (2017-04-12)
 ---
 
