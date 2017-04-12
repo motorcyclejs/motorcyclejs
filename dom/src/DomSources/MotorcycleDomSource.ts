@@ -168,7 +168,7 @@ function addScopeToChildren(children: VNode[] | void, scope: string) {
 }
 
 function findMostSpecificElement(scope: string) {
-  return function queryForElement (rootElement: Element): Element {
+  return function queryForElement(rootElement: Element): Element {
     return rootElement.querySelector(`[${SCOPE_ATTRIBUTE}='${scope}']`) || rootElement;
   };
 };
@@ -200,7 +200,41 @@ function scopeEventStream(
       return checkElementIsInScope(ev.target as HTMLElement);
     })
     .filter(ev => ensureMatches(selector, element, ev))
+    .map((ev: Event) => {
+      if (useCapture)
+        return cloneEvent(ev, findCurrentTarget(selector, element, ev));
+
+      return ev;
+    })
     .multicast();
+}
+
+function findCurrentTarget(selector: string, element: Element, ev: Event): Element {
+  let currentTarget: Element | void = void 0;
+
+  if (!selector || element.matches(selector))
+    return element;
+
+  const matchedNodes = element.querySelectorAll(selector);
+
+  for (let i = 0; i < matchedNodes.length; ++i) {
+    if (matchedNodes[i].contains(ev.target as Element)) {
+      return matchedNodes[i];
+    }
+  }
+
+  return ev.currentTarget as Element;
+}
+
+function cloneEvent(event: Event, currentTarget: Element): Event {
+  return new Proxy(event, {
+    get(target: Event, property: string) {
+      if (property === 'currentTarget')
+        return currentTarget;
+
+      return target[property];
+    },
+  });
 }
 
 function ensureMatches(selector: string, element: Element, ev: Event) {
