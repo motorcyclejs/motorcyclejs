@@ -8,6 +8,7 @@
     "variable-name": [
       false
     ],
-    "prefer-for-of": false
+    "prefer-for-of": false,
+    "array-bracket-spacing": false
   }
 }
