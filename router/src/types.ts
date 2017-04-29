@@ -1,11 +1,11 @@
-import { HistoryInput, Path } from '@motorcycle/history';
+import { HistoryInput, Path } from '@motorcycle/history'
 
-import { Stream } from 'most';
+import { Stream } from 'most'
 
 export interface RouteDefinitions {
-  [sourcePath: string]: any;
+  [sourcePath: string]: any
 }
 
-export type RouterInput = Stream<HistoryInput | Path>;
+export type RouterInput = Stream<HistoryInput | Path>
 
-export { HistoryInput, Path, Location, Queries, Hash, State } from '@motorcycle/history';
+export { HistoryInput, Path, Location, Queries, Hash, State } from '@motorcycle/history'
