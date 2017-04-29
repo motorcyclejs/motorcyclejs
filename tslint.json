@@ -9,6 +9,7 @@
       false
     ],
     "prefer-for-of": false,
-    "array-bracket-spacing": false
+    "array-bracket-spacing": false,
+    "readonly-indexer": false
   }
 }
