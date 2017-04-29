@@ -1,10 +1,10 @@
-import { get } from '../helpers';
+import { get } from '../helpers'
 
-export function disposeSources<Sources> (sources: Sources) {
+export function disposeSources<Sources>(sources: Sources) {
   Object.keys(sources)
-    .forEach(function disposeSource (sourceName: string) {
-      const source = get(sources, sourceName);
+    .forEach(function disposeSource(sourceName: string) {
+      const source = get(sources, sourceName)
 
-      return source.dispose && source.dispose();
-    });
+      return source.dispose && source.dispose()
+    })
 }
