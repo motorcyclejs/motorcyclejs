@@ -1,1 +1,1 @@
-export * from './makeI18nDriver';
+export * from './makeI18nDriver'

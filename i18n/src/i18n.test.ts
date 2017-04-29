@@ -1,29 +1,31 @@
-import * as assert from 'assert';
+import * as assert from 'assert'
 
-import { concat, delay, empty, just } from 'most';
+import { concat, delay, empty, just } from 'most'
 
-import { join } from 'path';
-import { makeI18nDriver } from './makeI18nDriver';
-const fsBackend = require('i18next-node-fs-backend');
+import { join } from 'path'
+import { makeI18nDriver } from './makeI18nDriver'
+
+// tslint:disable-next-line
+const fsBackend = require('i18next-node-fs-backend')
 
 describe('makeI18nDriver', () => {
   it('returns a driver function', () => {
-    assert.strictEqual(typeof makeI18nDriver(), 'function');
-  });
+    assert.strictEqual(typeof makeI18nDriver(), 'function')
+  })
 
   describe('driver function', () => {
     describe('given a stream of languages', () => {
       it('returns a source function', () => {
-        assert.strictEqual(typeof makeI18nDriver()(empty()), 'function');
-      });
-    });
+        assert.strictEqual(typeof makeI18nDriver()(empty()), 'function')
+      })
+    })
 
     describe('source function', () => {
       it('returns a stream', () => {
-        const stream = makeI18nDriver()(empty())('');
+        const stream = makeI18nDriver()(empty())('')
 
-        assert.strictEqual(typeof stream.observe, 'function');
-      });
+        assert.strictEqual(typeof stream.observe, 'function')
+      })
 
       describe('source stream', () => {
         describe('given a key of type string as input', () => {
@@ -31,7 +33,7 @@ describe('makeI18nDriver', () => {
             const languages$ = concat(
               just(`da-DK`),
               delay(100, just(`es-ES`)),
-            );
+            )
 
             const options: any =
               {
@@ -40,24 +42,24 @@ describe('makeI18nDriver', () => {
                 backend: {
                   loadPath: join(__dirname, '__test__/locales/{{lng}}/{{ns}}.json'),
                 },
-              };
+              }
 
-            const stream = makeI18nDriver([fsBackend], options)(languages$)('hello');
+            const stream = makeI18nDriver([fsBackend], options)(languages$)('hello')
 
-            const expected = ['hej', 'hola'];
+            const expected = ['hej', 'hola']
 
             stream
-              .observe(str => {
-                assert.strictEqual(str, expected.shift());
+              .observe((str) => {
+                assert.strictEqual(str, expected.shift())
 
                 if (expected.length === 0)
-                  done();
+                  done()
               })
-              .catch(done);
-          });
+              .catch(done)
+          })
 
           it('returns a stream of translations to late subscribers', (done: any) => {
-            const languages$ = just(`da-DK`);
+            const languages$ = just(`da-DK`)
 
             const options: any =
               {
@@ -66,25 +68,25 @@ describe('makeI18nDriver', () => {
                 backend: {
                   loadPath: join(__dirname, '__test__/locales/{{lng}}/{{ns}}.json'),
                 },
-              };
+              }
 
-            const stream = makeI18nDriver([fsBackend], options)(languages$)('hello');
+            const stream = makeI18nDriver([fsBackend], options)(languages$)('hello')
 
-            stream.observe(str => {
-              assert.strictEqual(`hej`, str);
+            stream.observe((str) => {
+              assert.strictEqual(`hej`, str)
             })
-            .catch(done);
+            .catch(done)
 
             setTimeout(() => {
-              stream.observe(str => {
-                assert.strictEqual(`hej`, str);
-                done();
+              stream.observe((str) => {
+                assert.strictEqual(`hej`, str)
+                done()
               })
-              .catch(done);
-            }, 10);
-          });
-        });
-      });
-    });
-  });
-});
+              .catch(done)
+            }, 10)
+          })
+        })
+      })
+    })
+  })
+})
