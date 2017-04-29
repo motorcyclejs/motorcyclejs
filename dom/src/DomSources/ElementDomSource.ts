@@ -61,8 +61,8 @@ export class ElementDomSource implements DomSource {
     const useCapture: boolean =
       shouldUseCapture(eventType, options.useCapture || false)
 
-    const event$: Stream<Event> =
-      domEvent(eventType, this._element, useCapture)
+    const event$: Stream<T> =
+      domEvent(eventType, this._element, useCapture) as Stream<T>
 
     return this._rootElement$
       .constant(event$)
