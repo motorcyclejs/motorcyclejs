@@ -1,3 +1,14 @@
+# 10.2.0 (2017-04-29)
+---
+
+## Features
+
+- feat(dom): upgrade to TS 2.3.x [a8a9b6b0](https://github.com/motorcyclejs/dom/commits/a8a9b6b0f526269315aae91edd02e7b67a2cca7d)
+
+## Bug Fixes
+
+- fix(dom): fix compilation error [9bf645aa](https://github.com/motorcyclejs/dom/commits/9bf645aa58da3892112a74290778e13aa7a1cabb)
+
 # 10.1.0 (2017-04-12)
 ---
 
