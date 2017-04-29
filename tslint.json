@@ -1,5 +1,13 @@
 {
   "extends": [
     "@motorcycle/tslint"
-  ]
+  ],
+  "rules": {
+    "prefer-function-over-method": false,
+    "readonly-interface": false,
+    "variable-name": [
+      false
+    ],
+    "prefer-for-of": false
+  }
 }
