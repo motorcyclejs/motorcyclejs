@@ -1,3 +1,10 @@
+# 6.1.0 (2017-04-29)
+---
+
+## Features
+
+- feat(router): upgrade to TS 2.3.x [a0013cfa](https://github.com/motorcyclejs/router/commits/a0013cfa560d154a2adf5f33530de88645cc7b04)
+
 # 6.0.0 (2017-03-14)
 ---
 
