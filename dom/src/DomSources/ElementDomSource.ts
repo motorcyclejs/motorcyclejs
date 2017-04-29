@@ -1,18 +1,19 @@
-import { Stream } from 'most';
-import { domEvent } from '@most/dom-event';
-import { VNode } from 'mostly-dom';
-import { EventDelegator } from './EventDelegator';
-import { DomSource, EventsFnOptions, StandardEvents } from '../types';
-import { shouldUseCapture } from './shouldUseCapture';
-import { MotorcycleDomSource } from './MotorcycleDomSource';
-import { elementMap } from './elementMap';
-import { SCOPE_PREFIX } from './common';
+import { DomSource, EventsFnOptions, StandardEvents } from '../types'
+
+import { EventDelegator } from './EventDelegator'
+import { MotorcycleDomSource } from './MotorcycleDomSource'
+import { SCOPE_PREFIX } from './common'
+import { Stream } from 'most'
+import { VNode } from 'mostly-dom'
+import { domEvent } from '@most/dom-event'
+import { elementMap } from './elementMap'
+import { shouldUseCapture } from './shouldUseCapture'
 
 export class ElementDomSource implements DomSource {
-  protected _rootElement$: Stream<HTMLElement>;
-  protected _namespace: Array<string>;
-  protected _delegator: EventDelegator;
-  protected _element: HTMLElement;
+  protected _rootElement$: Stream<HTMLElement>
+  protected _namespace: Array<string>
+  protected _delegator: EventDelegator
+  protected _element: HTMLElement
 
   constructor(
     rootElement$: Stream<HTMLElement>,
@@ -20,18 +21,18 @@ export class ElementDomSource implements DomSource {
     delegator: EventDelegator = new EventDelegator(),
     element: HTMLElement,
   ) {
-    this._rootElement$ = rootElement$;
-    this._namespace = namespace;
-    this._delegator = delegator;
-    this._element = element;
+    this._rootElement$ = rootElement$
+    this._namespace = namespace
+    this._delegator = delegator
+    this._element = element
   }
 
   public namespace(): Array<string> {
-    return this._namespace;
+    return this._namespace
   }
 
   public select(cssSelector: string): DomSource {
-    const trimmedSelector = cssSelector.trim();
+    const trimmedSelector = cssSelector.trim()
 
     if (elementMap.has(trimmedSelector))
       return new ElementDomSource(
@@ -39,48 +40,46 @@ export class ElementDomSource implements DomSource {
         this._namespace,
         this._delegator,
         elementMap.get(trimmedSelector) as HTMLElement,
-      );
+      )
 
     const amendedNamespace = trimmedSelector === `:root`
       ? this._namespace
-      : this._namespace.concat(trimmedSelector);
+      : this._namespace.concat(trimmedSelector)
 
     return new MotorcycleDomSource(
       this._rootElement$,
       amendedNamespace,
       this._delegator,
-    );
+    )
   }
 
-  public elements(): Stream<Element[]> {
-    return this._rootElement$.constant([this._element]);
+  public elements(): Stream<Array<Element>> {
+    return this._rootElement$.constant([ this._element ])
   }
 
-  public events<T extends Event>(eventType: StandardEvents, options?: EventsFnOptions): Stream<T>;
-  public events<T extends Event>(eventType: string, options?: EventsFnOptions): Stream<T>;
-  public events(eventType: StandardEvents, options: EventsFnOptions = {}) {
+  public events<T extends Event>(eventType: StandardEvents | string, options: EventsFnOptions = {}): Stream<T> {
     const useCapture: boolean =
-      shouldUseCapture(eventType, options.useCapture || false);
+      shouldUseCapture(eventType, options.useCapture || false)
 
     const event$: Stream<Event> =
-      domEvent(eventType, this._element, useCapture);
+      domEvent(eventType, this._element, useCapture)
 
     return this._rootElement$
       .constant(event$)
       .switch()
-      .multicast();
+      .multicast()
   }
 
   public isolateSource(source: DomSource, scope: string) {
-    return source.select(SCOPE_PREFIX + scope);
+    return source.select(SCOPE_PREFIX + scope)
   }
 
   public isolateSink(sink: Stream<VNode>, scope: string): Stream<VNode> {
-    return sink.tap(vNode => {
+    return sink.tap((vNode) => {
       if (!vNode.scope)
-        vNode.scope = SCOPE_PREFIX + scope;
+        vNode.scope = SCOPE_PREFIX + scope
 
-      if (!vNode.key) vNode.key = SCOPE_PREFIX + scope;
-    });
+      if (!vNode.key) vNode.key = SCOPE_PREFIX + scope
+    })
   }
 }

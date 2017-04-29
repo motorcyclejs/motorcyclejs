@@ -1,1 +1,1 @@
-export const SCOPE_PREFIX = '$$MOTORCYCLEDOM$$-';
+export const SCOPE_PREFIX = '$$MOTORCYCLEDOM$$-'

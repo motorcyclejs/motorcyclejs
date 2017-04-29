@@ -4,131 +4,131 @@
 // tslint:disable:max-file-line-count
 
 export type ResourceEvents =
-  'cached' | 'error' | 'abort' | 'load' | 'beforeunload' | 'unload';
+  'cached' | 'error' | 'abort' | 'load' | 'beforeunload' | 'unload'
 
-export type NetworkEvents = 'online' | 'offline';
+export type NetworkEvents = 'online' | 'offline'
 
-export type FocusEvents = 'focus' | 'blur';
+export type FocusEvents = 'focus' | 'blur'
 
-export type WebsocketEvents = 'open' | 'message' | 'error' | 'close';
+export type WebsocketEvents = 'open' | 'message' | 'error' | 'close'
 
-export type SessionHistoryEvents = 'pagehide' | 'pageshow' | 'popstate';
+export type SessionHistoryEvents = 'pagehide' | 'pageshow' | 'popstate'
 
 export type CssAnimationEvents =
-  'animationstart' | 'animationend' | 'animationiteration';
+  'animationstart' | 'animationend' | 'animationiteration'
 
-export type FormEvents = 'reset' | 'submit' | 'invalid';
+export type FormEvents = 'reset' | 'submit' | 'invalid'
 
-export type PrintingEvents = 'beforeprint' | 'afterprint';
+export type PrintingEvents = 'beforeprint' | 'afterprint'
 
 export type TextCompositionEvents =
-  'compositionstart' | 'compositionupdate' | 'compositionend';
+  'compositionstart' | 'compositionupdate' | 'compositionend'
 
 export type ViewEvents =
-  'fullscreenchange' | 'fullscreenerror' | 'resize' | 'scroll';
+  'fullscreenchange' | 'fullscreenerror' | 'resize' | 'scroll'
 
-export type KeyboardEvents = 'keydown' | 'keypress' | 'keyup';
+export type KeyboardEvents = 'keydown' | 'keypress' | 'keyup'
 
 export type MouseEvents =
   'mouseenter' | 'mouseover' | 'mousemove' | 'mousedown' | 'mouseup' | 'click' |
   'dblclick' | 'contextmenu' | 'wheel' | 'mouseleave' | 'mouseout' | 'select' |
-  'pointerlockchange' | 'pointerlockerror';
+  'pointerlockchange' | 'pointerlockerror'
 
 export type DragAndDropEvents =
-  'dragstart' | 'drag' | 'dragend' | 'dragend' |  'dragenter' | 'dragover' |
-  'dragleave' | 'drop';
+  'dragstart' | 'drag' | 'dragend' | 'dragend' | 'dragenter' | 'dragover' |
+  'dragleave' | 'drop'
 
 export type MediaEvents =
   'durationchange' | 'loadedmetadata' | 'loadeddata' | 'canplay' |
   'canplaythrough' | 'ended' | 'emptied' | 'stalled' | 'suspend' | 'play' |
   'playing' | 'pause' | 'waiting' | 'seeking' | 'ratechange' | 'timeupdate' |
-  'volumechange' | 'complete' | 'ended' | 'audioprocess';
+  'volumechange' | 'complete' | 'ended' | 'audioprocess'
 
 export type ProgressEvents =
-  'loadstart' | 'progress' | 'error' | 'timeout' | 'abort' | 'load' | 'loaded';
+  'loadstart' | 'progress' | 'error' | 'timeout' | 'abort' | 'load' | 'loaded'
 
 export type StorageEvents =
-  'change' | 'storage';
+  'change' | 'storage'
 
 export type UpdateEvents =
-  'checking' | 'downloading' | 'error' | 'noupdate' | 'obsolete' | 'updateready';
+  'checking' | 'downloading' | 'error' | 'noupdate' | 'obsolete' | 'updateready'
 
 export type ValueChangeEvents =
   'broadcast' | 'CheckboxStateChange' | 'hashchange' | 'input' |
-  'RadioStateChange' | 'readystatechange' | 'ValueChange';
+  'RadioStateChange' | 'readystatechange' | 'ValueChange'
 
-export type LocalizationEvents = 'localized';
+export type LocalizationEvents = 'localized'
 
-export type WebWorkerEvents = 'message';
+export type WebWorkerEvents = 'message'
 
-export type ContextMenuEvents = 'show';
+export type ContextMenuEvents = 'show'
 
 export type SvgEvents =
   'SVGAbort' | 'SVGError' | 'SVGLoad' | 'SVGResize' | 'SVGScroll' |
-  'SVGUnload' | 'SVGZoom';
+  'SVGUnload' | 'SVGZoom'
 
 export type DatabaseEvents =
   'abort' | 'blocked' | 'complete' | 'error' | 'success' | 'upgradeneeded' |
-  'versionchange';
+  'versionchange'
 
-export type NotificationEvents = 'AlertActive' | 'AlertClose';
+export type NotificationEvents = 'AlertActive' | 'AlertClose'
 
 export type CSSEvents =
   'CssRuleViewRefreshed' | 'CssRuleViewChanged' | 'CssRuleViewCSSLinkClicked' |
-  'transitionend';
+  'transitionend'
 
 export type ScriptEvents =
-  'afterscriptexecute' | 'beforescriptexecute';
+  'afterscriptexecute' | 'beforescriptexecute'
 
-export type MenuEvents = 'DOMMenutItemActive' | 'DOMMenutItemInactive';
+export type MenuEvents = 'DOMMenutItemActive' | 'DOMMenutItemInactive'
 
 export type WindowEvents =
   'DOMWindowCreated' | 'DOMTitleChanged' | 'DOMWindowClose' |
-  'SSWindowClosing' | 'SSWindowStateReady' | 'SSWindowStateBusy' | 'close';
+  'SSWindowClosing' | 'SSWindowStateReady' | 'SSWindowStateBusy' | 'close'
 
 export type DocumentEvents =
   'DOMLinkAdded' | 'DOMLinkRemoved' | 'DOMMetaAdded' | 'DOMMetaRemoved' |
-  'DOMWillOpenModalDialog' | 'DOMModalDialogClosed';
+  'DOMWillOpenModalDialog' | 'DOMModalDialogClosed'
 
 export type PopupEvents =
   'popuphidden' | 'popuphiding' | 'popupshowing' |
-  'popupshown' | 'DOMPopupBlocked';
+  'popupshown' | 'DOMPopupBlocked'
 
 export type TabEvents =
   'TabOpen' | 'TabClose' | 'TabSelect' | 'TabShow' | 'TabHide' | 'TabPinned' |
   'TabUnpinned' | 'SSTabClosing' | 'SSTabRestoring' | 'SSTabRestored' |
-  'visibilitychange';
+  'visibilitychange'
 
 export type BatteryEvents =
   'chargingchange' | 'chargingtimechange' |
-  'dischargingtimechange' | 'levelchange';
+  'dischargingtimechange' | 'levelchange'
 
 export type CallEvents =
   'alerting' | 'busy' | 'callschanged' | 'connected' | 'connecting' |
   'dialing' | 'disconnected' | 'disconnecting' | 'error' | 'held' |
-  'holding' | 'incoming' | 'resuming' | 'statechange';
+  'holding' | 'incoming' | 'resuming' | 'statechange'
 
 export type SensorEvents =
   'devicelight' | 'devicemotion' | 'deviceorientation' | 'deviceproximity' |
   // 'MozOrientation' |
-  'orientationchange' | 'userproximity';
+  'orientationchange' | 'userproximity'
 
-export type SmartcardEvents = 'smartcard-insert' | 'smartcard-remove';
+export type SmartcardEvents = 'smartcard-insert' | 'smartcard-remove'
 
-export type SMSAndUSSDEvents = 'delivered' | 'received' | 'sent';
+export type SMSAndUSSDEvents = 'delivered' | 'received' | 'sent'
 
 export type FrameEvents =
   // 'mozbrowserclose' | 'mozbrowsercontextmenu' | 'mozbrowsererror' |
   // 'mozbrowsericonchange' | 'mozbrowserlocationchange' | 'mozbrowserloadend' |
   // 'mozbrowserloadstart' | 'mozbrowseropenwindow' | 'mozbrowsersecuritychange'
   // | 'mozbrowsershowmodalprompt' | 'mozbrowsertitlechange' |
-  'DOMFrameContentLoaded';
+  'DOMFrameContentLoaded'
 
 export type DOMMutationEvents =
   'DOMAttributeNameChanged' | 'DOMAttrModified' |
   'DOMCharacterDataModified' | 'DOMContentLoaded' | 'DOMElementNamedChanged' |
   'DOMNodeInserted' | 'DOMNodeInsertedIntoDocument' | 'DOMNodeRemoved' |
-  'DOMNodeRemovedFromDocument' | 'DOMSubtreeModified';
+  'DOMNodeRemovedFromDocument' | 'DOMSubtreeModified'
 
 export type TouchEvents =
   // 'MozEdgeUiGestor' | 'MozMagnifyGesture' | 'MozMagnifyGestureStart' |
@@ -136,12 +136,12 @@ export type TouchEvents =
   // 'MozRotateGestureStart' | 'MozRotateGestureUpdate' | 'MozSwipeGesture' |
   // 'MozTapGesture' | 'MozTouchDown' | 'MozTouchMove' | 'MozTouchUp' |
   'touchcancel' | 'touchend' | 'touchenter' | 'touchleave' | 'touchmove' |
-  'touchstart';
+  'touchstart'
 
 export type PointerEvents =
   'pointerover' | 'pointerenter' | 'pointerdown' | 'pointermove' | 'pointerup' |
   'pointercancel' | 'pointerout' | 'pointerleave' |
-  'gotpointercapture' | 'lostpointercapture';
+  'gotpointercapture' | 'lostpointercapture'
 
 // the events that are in the var browser specifications
 // all browsers should have these implemented the same
@@ -250,7 +250,7 @@ export type StandardEvents =
   'paste' | // ClipboardEvent
   'pause' | // Event, SpeechSynthesisEvent
   'pointercancel' | // PointerEvent
-  'pointerdown' | //PointerEvent
+  'pointerdown' | // PointerEvent
   'pointerenter' | // PointerEvent
   'pointerleave' | // PointerEvent
   'pointerlockchange' | // Event
@@ -280,7 +280,7 @@ export type StandardEvents =
   'selectstart' | // UIEvent
   'selectionchange' | // Event
   'show' | // MouseEvent
-  'soundend' | //Event
+  'soundend' | // Event
   'soundstart' | // Event
   'speechend' | // Event
   'speechstart' | // Event
@@ -318,4 +318,4 @@ export type StandardEvents =
   'vrdisplaydisconnected' | // Event
   'vrdisplaypresentchange' | // Event
   'waiting' | // Event
-  'wheel'; // WheelEvent
+  'wheel' // WheelEvent
