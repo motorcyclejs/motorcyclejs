@@ -1,9 +1,9 @@
-import { Subscription } from 'most';
+import { Subscription } from 'most'
 
 export function unsubscribeSubscriptions(subscriptions: Array<Subscription<any>>) {
-  subscriptions.forEach(unsubscribe);
+  subscriptions.forEach(unsubscribe)
 }
 
-function unsubscribe (subscription: Subscription<any>) {
-  subscription.unsubscribe();
+function unsubscribe(subscription: Subscription<any>) {
+  subscription.unsubscribe()
 }

@@ -27,12 +27,12 @@ const eventTypesThatDontBubble = [
   `unload`,
   `volumechange`,
   `waiting`,
-];
+]
 
 export function shouldUseCapture(eventType: string, useCapture?: boolean): boolean {
-  if (eventTypesThatDontBubble.indexOf(eventType) !== -1) return true;
+  if (eventTypesThatDontBubble.indexOf(eventType) !== -1) return true
 
   return typeof useCapture === 'boolean'
     ? useCapture
-    : false;
+    : false
 }

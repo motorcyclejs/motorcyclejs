@@ -1,2 +1,2 @@
-export * from './DomSource';
-export * from './Events';
+export * from './DomSource'
+export * from './Events'

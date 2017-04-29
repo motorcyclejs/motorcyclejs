@@ -1,29 +1,29 @@
-import { Stream } from 'most';
+import { Stream } from 'most'
 
 export interface LocalStorageSource {
-  getItem(key: string): Stream<string | null>;
-  length(): Stream<number>;
+  getItem(key: string): Stream<string | null>
+  length(): Stream<number>
 }
 
 export type LocalStorageCommand =
   LocalStorageClearCommand |
   LocalStorageSetItemCommand |
-  LocalStorageRemoveItemCommand;
+  LocalStorageRemoveItemCommand
 
 export type LocalStorageClearCommand =
   {
     method: 'clear';
-  };
+  }
 
 export type LocalStorageSetItemCommand =
   {
     method: 'setItem';
     key: string;
     value: string;
-  };
+  }
 
 export type LocalStorageRemoveItemCommand =
   {
     method: 'removeItem';
     key: string;
-  };
+  }

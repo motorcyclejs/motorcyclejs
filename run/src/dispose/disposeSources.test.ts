@@ -1,22 +1,22 @@
-import * as assert from 'assert';
-import { disposeSources } from './disposeSources';
+import * as assert from 'assert'
+import { disposeSources } from './disposeSources'
 
 describe('disposeSource', () => {
   describe('given a Source with dispose method', () => {
     it('calls Source\'s dispose method', () => {
-      let called = 0;
+      let called = 0
 
       const source = {
         dispose() {
-          ++called;
+          ++called
         },
-      };
+      }
 
-      const sources = { source };
+      const sources = { source }
 
-      disposeSources(sources);
+      disposeSources(sources)
 
-      assert.strictEqual(called, 1);
-    });
-  });
-});
+      assert.strictEqual(called, 1)
+    })
+  })
+})

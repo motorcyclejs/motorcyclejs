@@ -1,33 +1,33 @@
-import { Path } from 'prehistoric';
+import { Path } from 'prehistoric'
 
 export interface PushHistoryInput {
-  type: 'push';
-  path: Path;
-  state?: any;
-};
+  type: 'push'
+  path: Path
+  state?: any
+}
 
 export interface ReplaceHistoryInput {
-  type: 'replace';
-  path: Path;
-  state?: any;
-};
+  type: 'replace'
+  path: Path
+  state?: any
+}
 
 export interface GoHistoryInput {
-  type: 'go';
-  amount: number;
-};
+  type: 'go'
+  amount: number
+}
 
 export interface GoBackHistoryInput {
-  type: 'goBack';
-};
+  type: 'goBack'
+}
 
 export interface GoForwardHistoryInput {
-  type: 'goForward';
-};
+  type: 'goForward'
+}
 
 export type HistoryInput =
   PushHistoryInput
   | ReplaceHistoryInput
   | GoHistoryInput
   | GoBackHistoryInput
-  | GoForwardHistoryInput;
+  | GoForwardHistoryInput

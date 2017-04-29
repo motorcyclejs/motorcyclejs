@@ -5,6 +5,6 @@ export {
   AgentOptions,
   Attachment,
   HTTPMethod,
-} from 'most-request';
-export * from './http';
-export * from './requests';
+} from 'most-request'
+export * from './http'
+export * from './requests'

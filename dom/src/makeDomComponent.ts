@@ -1,18 +1,18 @@
-import { ElementVNode, Module, VNode, elementToVNode, init } from 'mostly-dom';
-import { Stream, map, scan } from 'most';
+import { ElementVNode, Module, VNode, elementToVNode, init } from 'mostly-dom'
+import { Stream, map, scan } from 'most'
 
-import { Component } from '@motorcycle/run';
-import { DomSource } from './types';
-import { MotorcycleDomSource } from './DomSources';
-import { hold } from 'most-subject';
-import { vNodeWrapper } from './vNodeWrapper';
+import { Component } from '@motorcycle/run'
+import { DomSource } from './types'
+import { MotorcycleDomSource } from './DomSources'
+import { hold } from 'most-subject'
+import { vNodeWrapper } from './vNodeWrapper'
 
 export interface DomSinks {
-  view$: Stream<VNode>;
+  view$: Stream<VNode>
 }
 
 export interface DomSources {
-  dom: DomSource;
+  dom: DomSource
 }
 
 export interface DomComponent extends Component<DomSources, DomSinks> {}
@@ -21,34 +21,34 @@ export function makeDomComponent(
   rootElement: HTMLElement,
   options: DomDriverOptions = { modules: [] })
 {
-  const modules = options.modules || [];
-  const patch = init(modules);
-  const rootVNode = elementToVNode(rootElement);
-  const wrapVNodeInRootElement = vNodeWrapper(rootElement);
+  const modules = options.modules || []
+  const patch = init(modules)
+  const rootVNode = elementToVNode(rootElement)
+  const wrapVNodeInRootElement = vNodeWrapper(rootElement)
 
   return function Dom(sinks: DomSinks): DomSources {
-    const { view$ } = sinks;
+    const { view$ } = sinks
 
     const rootVNode$: Stream<VNode> =
-      scan<VNode, ElementVNode>(patch, rootVNode, map(wrapVNodeInRootElement, view$));
+      scan<VNode, ElementVNode>(patch, rootVNode, map(wrapVNodeInRootElement, view$))
 
     const rootElement$: Stream<HTMLElement> =
-      map(vNodeToElement, rootVNode$).thru(hold(1));
+      map(vNodeToElement, rootVNode$).thru(hold(1))
 
     rootElement$.drain()
-      .catch(err => console.error('Error in DomComponent:', err))
-      .then(() => console.log('Dom Component has terminated'));
+      .catch((err) => console.error('Error in DomComponent:', err))
+      .then(() => console.log('Dom Component has terminated'))
 
-    const dom = new MotorcycleDomSource(rootElement$, []);
+    const dom = new MotorcycleDomSource(rootElement$, [])
 
-    return { dom };
-  };
+    return { dom }
+  }
 }
 
 function vNodeToElement(vNode: ElementVNode): HTMLElement {
-  return vNode.element as HTMLElement;
+  return vNode.element as HTMLElement
 }
 
 export interface DomDriverOptions {
-  modules: Array<Module>;
+  modules: Array<Module>
 }
