@@ -1,3 +1,10 @@
+# 6.1.0 (2017-04-29)
+---
+
+## Features
+
+- feat(history): upgrade to TS 2.3.x [69290594](https://github.com/motorcyclejs/history/commits/69290594332ed0861a4baa4b584538bba7167a94)
+
 # 6.0.0 (2017-03-14)
 ---
 
