@@ -1,6 +1,6 @@
 {
   "name": "@motorcycle/http",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Standard HTTP driver for Motorcycle.js",
   "main": "lib/index.js",
   "jsnext:main": "lib.es2015/index.js",
