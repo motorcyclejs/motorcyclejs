@@ -1,3 +1,10 @@
+# 3.1.0 (2017-04-29)
+---
+
+## Features
+
+- feat(local-storage): upgrade to TS 2.3.x [bf1abc5d](https://github.com/motorcyclejs/motorcyclejs/commits/bf1abc5dd7c76621cbbbdc48e516c7b81e4025b5)
+
 # 3.0.0 (2017-03-14)
 ---
 
