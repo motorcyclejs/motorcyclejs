@@ -88,7 +88,7 @@ export class MotorcycleDomSource implements DomSource {
         .take(1)
         .map((element) => domEvent(eventType, element, useCapture))
         .switch()
-        .multicast()
+        .multicast() as Stream<T>
 
     const delegator = this._delegator
     const scope = this._scope
@@ -108,7 +108,7 @@ export class MotorcycleDomSource implements DomSource {
         return scopeEventStream(event$, checkElementIsInScope, selector, useCapture, element)
       })
       .switch()
-      .multicast()
+      .multicast() as Stream<T>
   }
 
   public isolateSource(source: DomSource, scope: string) {
@@ -122,7 +122,8 @@ export class MotorcycleDomSource implements DomSource {
       if (!vNode.scope)
         vNode.scope = prefixedScope
 
-      addScopeToChildren(vNode.children, prefixedScope)
+      if (Array.isArray(vNode.children))
+        addScopeToChildren(vNode.children, prefixedScope)
 
       if (!vNode.key)
         vNode.key = prefixedScope
@@ -160,7 +161,7 @@ function addScopeToChildren(children: Array<VNode> | void, scope: string) {
 
     child.scope = scope
 
-    if (child.children)
+    if (Array.isArray(child.children))
       addScopeToChildren(child.children, scope)
   }
 }

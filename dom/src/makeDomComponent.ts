@@ -1,15 +1,15 @@
 import { ElementVNode, Module, VNode, elementToVNode, init } from 'mostly-dom'
 import { Stream, map, scan } from 'most'
+import { Subject, hold } from 'most-subject'
 
 import { Component } from '@motorcycle/run'
 import { DomSource } from './types'
 import { MotorcycleDomSource } from './DomSources'
-import { hold } from 'most-subject'
 import { vNodeWrapper } from './vNodeWrapper'
 
-export interface DomSinks {
-  view$: Stream<VNode>
-}
+export type DomSinks =
+  { readonly [key: string]: Stream<any> } &
+  { view$: Stream<VNode> }
 
 export interface DomSources {
   dom: DomSource
@@ -33,7 +33,7 @@ export function makeDomComponent(
       scan<VNode, ElementVNode>(patch, rootVNode, map(wrapVNodeInRootElement, view$))
 
     const rootElement$: Stream<HTMLElement> =
-      map(vNodeToElement, rootVNode$).thru(hold(1))
+      hold(1, map(vNodeToElement, rootVNode$) as any) as any as Stream<HTMLElement>
 
     rootElement$.drain()
       .catch((err) => console.error('Error in DomComponent:', err))
