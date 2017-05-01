@@ -1,4 +1,5 @@
 import { Stream, multicast } from 'most'
+
 import { domEvent } from '@most/dom-event'
 
 export function createEventStream(
@@ -6,6 +7,6 @@ export function createEventStream(
   useCapture: boolean,
 ) {
   return function(element: Element): Stream<Event> {
-    return multicast(domEvent(eventType, element, useCapture))
+    return multicast(domEvent(eventType, element, useCapture) as Stream<Event>)
   }
 }
