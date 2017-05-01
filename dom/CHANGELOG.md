@@ -1,3 +1,10 @@
+# 10.3.0 (2017-05-01)
+---
+
+## Bug Fixes
+
+- fix(dom): upgrade dependencies [1fb4dfc4](https://github.com/motorcyclejs/dom/commits/1fb4dfc4fa3065741daf7c6c7ca3980e3ab5023f)
+
 # 10.2.0 (2017-04-29)
 ---
 
