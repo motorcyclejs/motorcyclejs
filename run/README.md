@@ -30,8 +30,8 @@ is the output of `main`. The return values of `main` and `effects` both must be
 objects.
 
 ```typescript
-import { run } from '@motorcycle/run'
-import { makeDomDriver, div, button, h2 } from '@motorcycle/dom';
+import { run } from '@motorcycle/run';
+import { makeDomComponent, div, button, h2 } from '@motorcycle/dom';
 
 function main(sources) {
   const click$ = sources.dom.select('button').events('click');
@@ -48,12 +48,14 @@ function main(sources) {
   return { view$ }
 }
 
-const domDriver = makeDomDriver(document.querySelector('#app'));
+const domDriver = makeDomComponent(document.querySelector('#app'));
 
 function effects(sinks) {
-  const dom = domDriver(sinks.view$)
+  const sources = domDriver(sinks)
 
-  return { dom }
+  return {
+    dom: sources.dom
+  }
 }
 
 run(main, effects)
