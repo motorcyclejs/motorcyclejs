@@ -1,3 +1,10 @@
+# 10.4.0 (2017-05-02)
+---
+
+## Features
+
+- feat(dom): add 1 parameter variants of event functions [4ea69fad](https://github.com/motorcyclejs/dom/commits/4ea69fad5ca09aee90dee771a593bd09fd0272f0)
+
 # 10.3.0 (2017-05-01)
 ---
 
