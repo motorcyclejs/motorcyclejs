@@ -1,0 +1,36 @@
+{
+  "name": "@motorcycle/stream",
+  "version": "0.0.0",
+  "description": "Most.js distribution for Motorcycle.js applications",
+  "main": "lib/index.js",
+  "jsnext:main": "lib.es2015/index.js",
+  "module": "lib.es2015/index.js",
+  "typings": "lib.es2015/index.d.ts",
+  "files": [
+    "lib",
+    "lib.es2015"
+  ],
+  "scripts": {
+    "test": "../node_modules/.bin/nb tslint --only @motorcyle/stream && ../node_modules/.bin/nb mocha --only @motorcycle/stream"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/motorcyclejs/motorcyclejs"
+  },
+  "author": "Tylor Steinberger <tlsteinberger167@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/motorcyclejs/motorcyclejs/issues"
+  },
+  "homepage": "https://github.com/motorcyclejs/motorcyclejs#readme",
+  "dependencies": {
+    "@most/core": "^0.4.1",
+    "@most/disposable": "^0.4.1",
+    "@most/prelude": "^1.6.0",
+    "@most/scheduler": "^0.4.1",
+    "@most/types": "^0.4.1"
+  },
+  "devDependencies": {
+    "@briancavalier/assert": "^3.4.0"
+  }
+}
