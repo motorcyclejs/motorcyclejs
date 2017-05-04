@@ -5,7 +5,7 @@ import { scheduler } from '../../scheduler'
 
 export const next: NextArity2 = curry2(
   function next<A>(value: A, stream: MulticastStream<A>): MulticastStream<A> {
-    stream.end(scheduler.now(), value)
+    stream.event(scheduler.now(), value)
 
     return stream
   },
