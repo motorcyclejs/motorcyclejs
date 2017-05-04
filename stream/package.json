@@ -24,11 +24,11 @@
   },
   "homepage": "https://github.com/motorcyclejs/motorcyclejs#readme",
   "dependencies": {
-    "@most/core": "^0.4.1",
-    "@most/disposable": "^0.4.1",
+    "@most/core": "^0.5.0",
+    "@most/disposable": "^0.5.0",
     "@most/prelude": "^1.6.0",
-    "@most/scheduler": "^0.4.1",
-    "@most/types": "^0.4.1"
+    "@most/scheduler": "^0.5.0",
+    "@most/types": "^0.5.0"
   },
   "devDependencies": {
     "@briancavalier/assert": "^3.4.0"

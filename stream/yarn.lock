@@ -10,36 +10,36 @@
     lodash.isequal "^4.5.0"
     object-inspect "^1.2.1"
 
-"@most/core@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@most/core/-/core-0.4.1.tgz#53c976a38063a45ecad5b67f7c8ea691188b540f"
+"@most/core@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@most/core/-/core-0.5.0.tgz#aeaa765df5cd3cf86c36ca7d2a69dce97b15618d"
   dependencies:
-    "@most/disposable" "^0.4.1"
+    "@most/disposable" "^0.5.0"
     "@most/prelude" "^1.5.2"
-    "@most/scheduler" "^0.4.1"
-    "@most/types" "^0.4.1"
+    "@most/scheduler" "^0.5.0"
+    "@most/types" "^0.5.0"
 
-"@most/disposable@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@most/disposable/-/disposable-0.4.1.tgz#6e37148ab684ad7a9b62a1d397a7f83ac936b9ec"
+"@most/disposable@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@most/disposable/-/disposable-0.5.0.tgz#012242af14e0ce8f78e973587dada5b343c02f93"
   dependencies:
     "@most/prelude" "^1.5.2"
-    "@most/types" "^0.4.1"
+    "@most/types" "^0.5.0"
 
 "@most/prelude@^1.5.0", "@most/prelude@^1.5.2", "@most/prelude@^1.6.0":
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/@most/prelude/-/prelude-1.6.0.tgz#4256e3a902ddf04c1f07afca2267526195072e13"
 
-"@most/scheduler@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@most/scheduler/-/scheduler-0.4.1.tgz#d190500ef6e77e0444288bb75a4e43eeaa818e9d"
+"@most/scheduler@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@most/scheduler/-/scheduler-0.5.0.tgz#c65a7cde792824e79a347a1b0829f79aa5bfc66c"
   dependencies:
     "@most/prelude" "^1.5.2"
-    "@most/types" "^0.4.1"
+    "@most/types" "^0.5.0"
 
-"@most/types@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@most/types/-/types-0.4.1.tgz#b6a87ad3e974b550b943340153a777131e7771ef"
+"@most/types@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@most/types/-/types-0.5.0.tgz#22f00451be319206d75ce4d292e6f91f6e7cbe11"
 
 lodash.isequal@^4.5.0:
   version "4.5.0"
