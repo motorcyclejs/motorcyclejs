@@ -8,9 +8,9 @@ export function tryEvent<A>(t: Time, x: A, sink: Sink<A>) {
   }
 }
 
-export function tryEnd<A>(t: Time, x: A, sink: Sink<A>) {
+export function tryEnd<A>(t: Time, sink: Sink<A>) {
   try {
-    sink.end(t, x)
+    sink.end(t)
   } catch (e) {
     sink.error(t, e)
   }

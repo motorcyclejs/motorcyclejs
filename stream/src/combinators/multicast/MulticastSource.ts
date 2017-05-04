@@ -36,11 +36,11 @@ export class Multicast<A> implements MulticastStream<A> {
       tryEvent(time, value, s[i])
   }
 
-  public end(time: Time, value: A) {
+  public end(time: Time) {
     const s = this.sinks
 
     for (let i = 0; i < s.length; ++i)
-      tryEnd(time, value, s[i])
+      tryEnd(time, s[i])
   }
 
   public error(time: Time, err: Error) {

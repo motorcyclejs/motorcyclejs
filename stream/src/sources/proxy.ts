@@ -19,7 +19,7 @@ export function proxy<T>(): Proxy<T> {
   return { attach, stream }
 }
 
-export class ProxySource<T> extends Multicast<T> {
+export class ProxySource<T> extends Multicast<T> implements Stream<T>, Sink<T> {
   private attached: boolean = false
   private running: boolean = false
 
@@ -52,10 +52,10 @@ export class ProxySource<T> extends Multicast<T> {
     return source
   }
 
-  public end(time: number, value: T) {
+  public end(time: number) {
     this.attached = false
     this.running = false
 
-    return super.end(time, value)
+    return super.end(time)
   }
 }
