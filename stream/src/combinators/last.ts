@@ -25,7 +25,8 @@ class LastSink<A> implements Sink<A> {
     this.value = void 0
   }
 
-  public event(_: Time, x: A) {
+  public event(t: Time, x: A) {
+    Function.prototype(t)
     this.has = true
     this.value = x
   }

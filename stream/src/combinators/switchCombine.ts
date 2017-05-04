@@ -3,6 +3,7 @@ import { combineArray, just, map, switchLatest } from '@most/core'
 import { Stream } from '@most/types'
 
 // tslint:disable:unified-signatures
+// tslint:disable:no-unused-variable
 export function switchCombine<A>(
   streams$: Stream<Array<Stream<A>>>): Stream<ReadonlyArray<A>>
 export function switchCombine<A>(

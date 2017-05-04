@@ -12,13 +12,13 @@ export const error: ErrorArity2 = curry2(
 )
 
 export interface ErrorArity2 {
-  <A>(value: A, stream: MulticastStream<A>): MulticastStream<A>
-  <A>(value: A, stream: HoldStream<A>): HoldStream<A>
+  <A>(err: Error, stream: MulticastStream<A>): MulticastStream<A>
+  <A>(err: Error, stream: HoldStream<A>): HoldStream<A>
 
-  <A>(value: A): ErrorArity1<A>
+  (err: Error): ErrorArity1
 }
 
-export interface ErrorArity1<A> {
-  (stream: MulticastStream<A>): MulticastStream<A>
-  (stream: HoldStream<A>): HoldStream<A>
+export interface ErrorArity1 {
+  <A>(stream: MulticastStream<A>): MulticastStream<A>
+  <A>(stream: HoldStream<A>): HoldStream<A>
 }

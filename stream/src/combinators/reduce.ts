@@ -15,17 +15,22 @@ export const reduce: ReduceArity3 = curry3(function reduce<A, B>(
 })
 
 export interface ReduceArity3 {
+  // tslint:disable-next-line
   <A, B>(f: (accumulator: B, value: A) => B, seed: B, stream: Stream<A>): Promise<B>
-
+  // tslint:disable-next-line
   <A, B>(f: (accumulator: B, value: A) => B, seed: B): ReduceArity1<A, B>
+  // tslint:disable-next-line
   <A, B>(f: (accumulator: B, value: A) => B): ReduceArity2<A, B>
 }
 
 export interface ReduceArity2<A, B> {
+  // tslint:disable-next-line
   (seed: B, stream: Stream<A>): Promise<B>
+  // tslint:disable-next-line
   (seed: B): ReduceArity1<A, B>
 }
 
 export interface ReduceArity1<A, B> {
+  // tslint:disable-next-line
   (stream: Stream<A>): Promise<B>
 }
