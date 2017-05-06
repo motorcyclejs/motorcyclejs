@@ -8,33 +8,33 @@ import {
   distPath,
   resolve,
   srcPath,
-} from './.config/webpack';
+} from './.config/webpack'
 
-import { join } from 'path';
+import { join } from 'path'
 
 const entry =
   {
     app: join(srcPath, 'bootstrap.ts'),
-  };
+  }
 
 const output =
   {
     path: distPath,
     filename: 'todoApp.js',
-  };
+  }
 
 const plugins =
   [
     HtmlPlugin,
-  ];
+  ]
 
 if (process.env.BUILD_ENV !== DEVELOPMENT)
-  plugins.push(BabiliPlugin);
+  plugins.push(BabiliPlugin)
 
 const loaders =
   [
     TsLoader,
-  ];
+  ]
 
 export =
   {
@@ -45,7 +45,7 @@ export =
     plugins,
     resolve,
     module:
-      {
-        loaders,
-      },
-  };
+    {
+      loaders,
+    },
+  }

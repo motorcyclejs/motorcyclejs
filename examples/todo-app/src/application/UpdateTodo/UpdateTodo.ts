@@ -1,20 +1,20 @@
-import { Sinks, Sources } from './types';
-import { findIndex, update } from 'ramda';
+import { Sinks, Sources } from './types'
+import { findIndex, update } from '167'
 
-import { Todo } from '../../domain/model';
-import { sample } from '@most/sample';
+import { Todo } from '../../domain/model'
+import { sample } from '@most/sample'
 
 export function UpdateTodo(sinks: Sinks): Sources {
-  const { updateTodo$, todos$ } = sinks;
+  const { updateTodo$, todos$ } = sinks
 
   const updatedTodos$ =
-    sample(updateTodo, updateTodo$, todos$);
+    sample(updateTodo, updateTodo$, todos$)
 
-  return { todos$: updatedTodos$ };
+  return { todos$: updatedTodos$ }
 }
 
-function updateTodo(todo: Todo, todos: Array<Todo>): Array<Todo> {
-  const index = findIndex(({ id }) => id === todo.id, todos);
+function updateTodo(todo: Todo, todos: ReadonlyArray<Todo>): ReadonlyArray<Todo> {
+  const index = findIndex(({ id }) => id === todo.id, todos)
 
-  return update(index, todo, todos);
+  return update(index, todo, todos)
 }

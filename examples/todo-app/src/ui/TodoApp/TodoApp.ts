@@ -1,16 +1,16 @@
-import { DomSource, VNode } from '../../../../../dom/src';
-import { Model, Sinks, Sources } from './types';
-import { Stream, just, map, never, startWith } from 'most';
-import { Todo, Uid } from '../../domain/model';
-import { TodoItem, TodoItemSinks } from '../TodoItem';
-import { mapProp, switchCombine, switchMerge } from '../helpers';
+import { DomSource, VNode, isolateDom } from '@motorcycle/dom'
+import { Model, Sinks, Sources } from './types'
+import { Stream, just, map, never, startWith } from 'most'
+import { Todo, Uid } from '../../domain/model'
+import { TodoItem, TodoItemSinks } from '../TodoItem'
+import { mapProp, switchCombine, switchMerge } from '../helpers'
 
-import { clearCompleted } from './clearCompleted';
-import { combineObj } from 'most-combineobj';
-import { hold } from '@most/hold';
-import { newTodo } from './newTodo';
-import { map as rMap } from 'ramda';
-import { view } from './view';
+import { clearCompleted } from './clearCompleted'
+import { combineObj } from 'most-combineobj'
+import { hold } from '@most/hold'
+import { newTodo } from './newTodo'
+import { map as rMap } from '167'
+import { view } from './view'
 
 export function TodoApp(sources: Sources): Sinks {
   const {
@@ -19,28 +19,28 @@ export function TodoApp(sources: Sources): Sinks {
     activeTodoItemCount$,
     completedTodoItemCount$,
     todoItemCount$,
-  } = sources;
+  } = sources
 
-  const addTodo$ = newTodo(dom);
-  const clearCompletedTodos$ = clearCompleted(dom);
+  const addTodo$ = newTodo(dom)
+  const clearCompletedTodos$ = clearCompleted(dom)
 
-  const todoItemSinks$: Stream<TodoItemSinks[]> =
-    hold(map(rMap(toTodoItem(dom)), todos$));
+  const todoItemSinks$: Stream<ReadonlyArray<TodoItemSinks>> =
+    hold(map(rMap(toTodoItem(dom)), todos$))
 
   const todoItemView$s$ =
-    mapProp<TodoItemSinks, VNode>(`view$`, todoItemSinks$);
+    mapProp<TodoItemSinks>('view$', todoItemSinks$)
 
-  const todoItemViews$ = startWith([], switchCombine<VNode>(todoItemView$s$));
+  const todoItemViews$ = startWith([], switchCombine<VNode>(todoItemView$s$))
 
   const todoItemRemove$s$ =
-    mapProp<TodoItemSinks, Uid>(`remove$`, todoItemSinks$);
+    mapProp<TodoItemSinks>('remove$', todoItemSinks$)
 
-  const removeTodo$ = switchMerge(todoItemRemove$s$);
+  const removeTodo$ = switchMerge(todoItemRemove$s$)
 
   const todoItemUpdate$s$ =
-    mapProp<TodoItemSinks, Todo>(`update$`, todoItemSinks$);
+    mapProp<TodoItemSinks>('update$', todoItemSinks$)
 
-  const updateTodo$ = switchMerge(todoItemUpdate$s$);
+  const updateTodo$ = switchMerge(todoItemUpdate$s$)
 
   const model$ = combineObj<Model>(
     {
@@ -49,9 +49,9 @@ export function TodoApp(sources: Sources): Sinks {
       todoItemCount$,
       todoItems$: todoItemViews$,
     },
-  );
+  )
 
-  const view$ = map(view, model$);
+  const view$ = map(view, model$)
 
   return {
     view$,
@@ -62,11 +62,11 @@ export function TodoApp(sources: Sources): Sinks {
     showAllTodos$: never(),
     showCompletedTodos$: never(),
     removeTodo$,
-  };
-};
+  }
+}
 
 function toTodoItem(dom: DomSource) {
-  return function (todo: Todo) {
-    return TodoItem({ dom, todo$: just(todo) });
-  };
+  return function(todo: Todo) {
+    return isolateDom(TodoItem)({ dom, todo$: just(todo) })
+  }
 }

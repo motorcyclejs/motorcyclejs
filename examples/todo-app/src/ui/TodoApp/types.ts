@@ -1,18 +1,18 @@
-import { ApplicationSinks, ApplicationSources } from '../../application';
-import { DomSinks, DomSources, VNode } from '../../../../../dom/src';
+import { ApplicationSinks, ApplicationSources } from '../../application'
+import { DomSinks, DomSources, VNode } from '@motorcycle/dom'
 
 export type Sinks =
   DomSinks &
-  ApplicationSinks;
+  ApplicationSinks
 
 export type Sources =
   DomSources &
-  ApplicationSources;
+  ApplicationSources
 
 export type Model =
   {
-    todoItems: Array<VNode>;
+    todoItems: ReadonlyArray<VNode>;
     activeTodoItemCount: number;
     completedTodoItemCount: number;
     todoItemCount: number;
-  };
+  }

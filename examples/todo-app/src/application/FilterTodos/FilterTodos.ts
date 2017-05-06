@@ -1,42 +1,42 @@
-import { CaptureClicks, History } from '../../../../../history/src';
-import { DefineReturn, Router, define } from '../../../../../router/src';
-import { Sinks, Sources } from './types';
-import { Stream, constant, map, merge, switchLatest } from 'most';
+import { CaptureClicks, History } from '@motorcycle/history'
+import { DefineReturn, Router, define } from '@motorcycle/router'
+import { Sinks, Sources } from './types'
+import { Stream, constant, map, merge, switchLatest } from 'most'
 
-import { Todo } from '../../domain/model';
-import { filter } from 'ramda';
+import { Todo } from '../../domain/model'
+import { filter } from '167'
 
 export function FilterTodos(sinks: Sinks): Sources {
-  const { showActiveTodos$, showAllTodos$, showCompletedTodos$, todos$ } = sinks;
+  const { showActiveTodos$, showAllTodos$, showCompletedTodos$, todos$ } = sinks
 
   const history$ =
     merge(
       constant('/', showAllTodos$),
       constant('/active', showActiveTodos$),
       constant('/completed', showCompletedTodos$),
-    );
+    )
 
-  const { router } = Router(CaptureClicks(History)({ history$ }));
+  const { router } = Router(CaptureClicks(History)({ history$ }))
 
   const routes =
     {
       '/active': map(filterCompleted, todos$),
       '/completed': map(filterActive, todos$),
       '*': todos$,
-    };
+    }
 
-  const defineReturn$ = define(routes, router);
+  const defineReturn$ = define(routes, router)
 
   const filteredTodos$ =
-    switchLatest(map<DefineReturn, Stream<Array<Todo>>>(x => x.value, defineReturn$));
+    switchLatest(map<DefineReturn, Stream<ReadonlyArray<Todo>>>((x) => x.value, defineReturn$))
 
-  return { todos$: filteredTodos$ };
+  return { todos$: filteredTodos$ }
 }
 
-function filterCompleted(todos: Array<Todo>): Array<Todo> {
-  return filter(todo => !todo.completed, todos);
+function filterCompleted(todos: ReadonlyArray<Todo>): ReadonlyArray<Todo> {
+  return filter((todo) => !todo.completed, todos)
 }
 
-function filterActive(todos: Array<Todo>): Array<Todo> {
-  return filter(todo => todo.completed, todos);
+function filterActive(todos: ReadonlyArray<Todo>): ReadonlyArray<Todo> {
+  return filter((todo) => todo.completed, todos)
 }

@@ -1,4 +1,4 @@
-import { cssRaw, style, types } from 'typestyle';
+import { cssRaw, style, types } from 'typestyle'
 
 export namespace TodoItemStyles {
 
@@ -26,7 +26,7 @@ export namespace TodoItemStyles {
         },
       },
     },
-  );
+  )
 
   export const labelClass = style(
     { $debugName: `todo-app_item-label` },
@@ -38,11 +38,11 @@ export namespace TodoItemStyles {
       lineHeight: 1.2,
       transition: `color 0.4s`,
     },
-  );
+  )
 
   export const completedClass = style(
     { $debugName: `todo-app_item-completed` },
-  );
+  )
 
   export const itemClass = style(
     { $debugName: `todo-app_item` },
@@ -60,7 +60,7 @@ export namespace TodoItemStyles {
         },
       },
     },
-  );
+  )
 
   export const toggleClass = style(
     { $debugName: `todo-app_item-toggle` },
@@ -82,27 +82,27 @@ export namespace TodoItemStyles {
         },
       },
     },
-  );
+  )
 
   const toggleSvg = `url(\'data:image/svg+xml;utf8,` +
     `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"` +
     ` viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" ` +
-    `stroke="#ededed" stroke-width="3"/></svg>\')`;
+    `stroke="#ededed" stroke-width="3"/></svg>\')`
 
-  cssRaw(`.${toggleClass}::after { content: ${toggleSvg} }`);
+  cssRaw(`.${toggleClass}::after { content: ${toggleSvg} }`)
 
   const toggleCheckedSvg = `url(\'data:image/svg+xml;utf8,` +
     `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" ` +
     `viewBox="-10 -18 100 135"><circle cx="50" cy="50" r="50" fill="none" ` +
     `stroke="#bddad5" stroke-width="3"/>` +
-    `<path fill="#5dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>\')`;
+    `<path fill="#5dc2af" d="M72 25L42 71 27 56l-4 4 20 20 34-52z"/></svg>\')`
 
-  cssRaw(`.${toggleClass}:checked::after { content: ${toggleCheckedSvg} }`);
+  cssRaw(`.${toggleClass}:checked::after { content: ${toggleCheckedSvg} }`)
 
   const displayNone: types.NestedCSSProperties =
     {
       display: `none`,
-    };
+    }
 
   export const editingClass = style(
     { $debugName: `todo-app_item-editing` },
@@ -115,7 +115,7 @@ export namespace TodoItemStyles {
         [`& .${toggleClass}`]: displayNone,
       },
     },
-  );
+  )
 
   const itemInput: types.NestedCSSProperties =
     {
@@ -133,7 +133,7 @@ export namespace TodoItemStyles {
       boxSizing: 'border-box',
       '-webkit-font-smoothing': `antialiased`,
       '-moz-osx-font-smoothing': `grayscale`,
-    };
+    }
 
   export const editClass = style(
     { $debugName: `todo-app_item-edit` },
@@ -144,12 +144,12 @@ export namespace TodoItemStyles {
       padding: `12px 16px`,
       margin: `0 0 0 43px`,
     },
-  );
+  )
 
   export const hideClass = style(
     { $debugName: `todo-app_hide` },
     {
       display: `none`,
     },
-  );
+  )
 }
