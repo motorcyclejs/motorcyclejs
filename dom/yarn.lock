@@ -16,17 +16,13 @@
   dependencies:
     "@most/prelude" "^1.4.0"
 
-"@most/prelude@^1.4.0", "@most/prelude@^1.4.1":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@most/prelude/-/prelude-1.5.0.tgz#0c8ce09f305039d4055d3deb59c9e44cd337854d"
-
-"@most/prelude@^1.6.0":
+"@most/prelude@^1.4.0", "@most/prelude@^1.4.1", "@most/prelude@^1.6.0":
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/@most/prelude/-/prelude-1.6.0.tgz#4256e3a902ddf04c1f07afca2267526195072e13"
 
 "@motorcycle/run@latest":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@motorcycle/run/-/run-1.3.0.tgz#88a3dd85b94a7db525d7f0dfac0fa8d858a3b723"
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@motorcycle/run/-/run-2.1.0.tgz#212a20d8d4d7a7036232e98aa974e764c3bd26a9"
   dependencies:
     most "^1.2.1"
     most-subject "^5.3.0"
@@ -71,15 +67,7 @@ most-subject@^5.3.0:
     "@most/prelude" "^1.4.1"
     most "^1.1.0"
 
-most@^1.1.0, most@^1.2.1:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/most/-/most-1.2.2.tgz#8f12e434ad6195ed2e1efb3ec217e0cbcf3e1de8"
-  dependencies:
-    "@most/multicast" "^1.2.5"
-    "@most/prelude" "^1.4.0"
-    symbol-observable "^1.0.2"
-
-most@^1.3.0:
+most@^1.1.0, most@^1.2.1, most@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/most/-/most-1.3.0.tgz#148f96c311ce26cace63a179d10dd61dacee58f4"
   dependencies:
