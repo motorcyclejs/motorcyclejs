@@ -36,6 +36,7 @@ export {
   debounce,
   awaitPromises,
   recoverWith,
+  skipAfter,
 } from '@most/core'
 
 export * from './multicast'
