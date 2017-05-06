@@ -12,8 +12,11 @@ export const events: EventsFn = curry2<StandardEvents, DomSource, Stream<Event>>
 export interface EventsFn {
   (): EventsFn
 
-  <T extends Event>(eventType: StandardEvents | string): (domSource: DomSource) => Stream<T>
-  <T extends Event>(eventType: StandardEvents | string, domSource: DomSource): Stream<T>
+  <T extends Event>(eventType: StandardEvents): (domSource: DomSource) => Stream<T>
+  <T extends Event>(eventType: StandardEvents, domSource: DomSource): Stream<T>
+
+  <T extends Event>(eventType: string): (domSource: DomSource) => Stream<T>
+  <T extends Event>(eventType: string, domSource: DomSource): Stream<T>
 }
 
 export const abortEvent = events<UIEvent | ProgressEvent | Event>('abort')

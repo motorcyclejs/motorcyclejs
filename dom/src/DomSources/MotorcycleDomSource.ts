@@ -15,15 +15,15 @@ import { shouldUseCapture } from './shouldUseCapture'
 
 const SCOPE_SEPARATOR = `~`
 
-export class MotorcycleDomSource implements DomSource {
-  protected _rootElement$: Stream<HTMLElement>
+export class MotorcycleDomSource<T extends Element> implements DomSource<T> {
+  protected _rootElement$: Stream<T>
   protected _namespace: Array<string>
   protected _delegator: EventDelegator
   protected _selector: string
   protected _scope: string
 
   constructor(
-    rootElement$: Stream<HTMLElement>,
+    rootElement$: Stream<T>,
     namespace: Array<string>,
     delegator: EventDelegator = new EventDelegator(),
   ) {
@@ -38,7 +38,7 @@ export class MotorcycleDomSource implements DomSource {
     return this._namespace
   }
 
-  public select(cssSelector: string): DomSource {
+  public select<R extends Element>(cssSelector: string): DomSource<R> {
     const trimmedSelector = cssSelector.trim()
 
     if (trimmedSelector === ':root') return this
@@ -51,14 +51,14 @@ export class MotorcycleDomSource implements DomSource {
         elementMap.get(trimmedSelector) as HTMLElement,
       )
 
-    return new MotorcycleDomSource(
-      this._rootElement$,
+    return new MotorcycleDomSource<R>(
+      this._rootElement$ as any as Stream<R>,
       this._namespace.concat(trimmedSelector),
       this._delegator,
     )
   }
 
-  public elements(): Stream<Array<Element>> {
+  public elements(): Stream<Array<T>> {
     const namespace = this._namespace
 
     if (namespace.length === 0)
@@ -70,12 +70,12 @@ export class MotorcycleDomSource implements DomSource {
     if (!selector)
       return this._rootElement$.map(findMostSpecificElement(scope)).map(Array)
 
-    const matchElement = findMatchingElements(selector, isInScope(scope))
+    const matchElement = findMatchingElements<T>(selector, isInScope(scope))
 
     return this._rootElement$.map(matchElement)
   }
 
-  public events<T extends Event>(eventType: StandardEvents | string, options: EventsFnOptions = {}) {
+  public events<E extends Event>(eventType: StandardEvents | string, options: EventsFnOptions = {}) {
     const namespace = this._namespace
 
     const useCapture = shouldUseCapture(eventType, options.useCapture || false)
@@ -88,7 +88,7 @@ export class MotorcycleDomSource implements DomSource {
         .take(1)
         .map((element) => domEvent(eventType, element, useCapture))
         .switch()
-        .multicast() as Stream<T>
+        .multicast() as Stream<E>
 
     const delegator = this._delegator
     const scope = this._scope
@@ -108,14 +108,14 @@ export class MotorcycleDomSource implements DomSource {
         return scopeEventStream(event$, checkElementIsInScope, selector, useCapture, element)
       })
       .switch()
-      .multicast() as Stream<T>
+      .multicast() as Stream<E>
   }
 
-  public isolateSource(source: DomSource, scope: string) {
-    return source.select(SCOPE_PREFIX + scope)
+  public isolateSource<D extends DomSource>(source: D, scope: string): D {
+    return source.select(SCOPE_PREFIX + scope) as D
   }
 
-  public isolateSink(sink: Stream<VNode>, scope: string): Stream<VNode> {
+  public isolateSink<V extends VNode>(sink: Stream<V>, scope: string): Stream<V> {
     const prefixedScope = SCOPE_PREFIX + scope
 
     return sink.tap((vNode) => {
@@ -172,8 +172,8 @@ function findMostSpecificElement(scope: string) {
   }
 }
 
-function findMatchingElements(selector: string, checkIsInScope: (element: HTMLElement) => boolean) {
-  return function(element: HTMLElement): Array<HTMLElement> {
+function findMatchingElements<T extends Element>(selector: string, checkIsInScope: (element: HTMLElement) => boolean) {
+  return function(element: T): Array<T> {
     const matchedNodes = element.querySelectorAll(selector)
     const matchedNodesArray = copy(matchedNodes as any as Array<any>)
 

@@ -16,11 +16,7 @@
   dependencies:
     "@most/prelude" "^1.4.0"
 
-"@most/prelude@^1.4.0", "@most/prelude@^1.4.1":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@most/prelude/-/prelude-1.5.0.tgz#0c8ce09f305039d4055d3deb59c9e44cd337854d"
-
-"@most/prelude@^1.6.0":
+"@most/prelude@^1.4.0", "@most/prelude@^1.4.1", "@most/prelude@^1.6.0":
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/@most/prelude/-/prelude-1.6.0.tgz#4256e3a902ddf04c1f07afca2267526195072e13"
 
@@ -31,9 +27,9 @@
     most "^1.2.1"
     most-subject "^5.3.0"
 
-"@types/hyperscript@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@types/hyperscript/-/hyperscript-0.0.1.tgz#3a30ad62427ca82d11f59e6fffa1ac3121b4e08b"
+"@types/hyperscript@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@types/hyperscript/-/hyperscript-0.0.2.tgz#6ce43f561a575467eedbf0ee03cd47fdba5b9d97"
 
 browser-split@0.0.0:
   version "0.0.0"
@@ -71,15 +67,7 @@ most-subject@^5.3.0:
     "@most/prelude" "^1.4.1"
     most "^1.1.0"
 
-most@^1.1.0, most@^1.2.1:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/most/-/most-1.2.2.tgz#8f12e434ad6195ed2e1efb3ec217e0cbcf3e1de8"
-  dependencies:
-    "@most/multicast" "^1.2.5"
-    "@most/prelude" "^1.4.0"
-    symbol-observable "^1.0.2"
-
-most@^1.3.0:
+most@^1.1.0, most@^1.2.1, most@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/most/-/most-1.3.0.tgz#148f96c311ce26cace63a179d10dd61dacee58f4"
   dependencies:
@@ -87,11 +75,11 @@ most@^1.3.0:
     "@most/prelude" "^1.4.0"
     symbol-observable "^1.0.2"
 
-mostly-dom@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/mostly-dom/-/mostly-dom-1.5.0.tgz#a37990093a62d13726bd1b7569420d0e0449d3a1"
+mostly-dom@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/mostly-dom/-/mostly-dom-2.0.1.tgz#cc0ac0a6de4fc96a9685dbf8db6a8255f95bc762"
   dependencies:
-    "@most/prelude" "^1.4.1"
+    "@most/prelude" "^1.6.0"
 
 symbol-observable@^1.0.2:
   version "1.0.4"

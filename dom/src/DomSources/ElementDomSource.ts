@@ -10,16 +10,16 @@ import { elementMap } from './elementMap'
 import { shouldUseCapture } from './shouldUseCapture'
 
 export class ElementDomSource implements DomSource {
-  protected _rootElement$: Stream<HTMLElement>
+  protected _rootElement$: Stream<Element>
   protected _namespace: Array<string>
   protected _delegator: EventDelegator
-  protected _element: HTMLElement
+  protected _element: Element
 
   constructor(
-    rootElement$: Stream<HTMLElement>,
+    rootElement$: Stream<Element>,
     namespace: Array<string>,
     delegator: EventDelegator = new EventDelegator(),
-    element: HTMLElement,
+    element: Element,
   ) {
     this._rootElement$ = rootElement$
     this._namespace = namespace
@@ -31,7 +31,7 @@ export class ElementDomSource implements DomSource {
     return this._namespace
   }
 
-  public select(cssSelector: string): DomSource {
+  public select<T extends Element>(cssSelector: string): DomSource<T> {
     const trimmedSelector = cssSelector.trim()
 
     if (elementMap.has(trimmedSelector))
@@ -46,8 +46,8 @@ export class ElementDomSource implements DomSource {
       ? this._namespace
       : this._namespace.concat(trimmedSelector)
 
-    return new MotorcycleDomSource(
-      this._rootElement$,
+    return new MotorcycleDomSource<T>(
+      this._rootElement$ as Stream<T>,
       amendedNamespace,
       this._delegator,
     )

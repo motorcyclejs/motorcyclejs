@@ -1,6 +1,6 @@
-import { VNode, ElementVNode, elementToVNode, h } from 'mostly-dom'
+import { ElementVNode, VNode, elementToVNode, h } from 'mostly-dom'
 
-export function vNodeWrapper(rootElement: HTMLElement): (vNode: VNode) => VNode {
+export function vNodeWrapper(rootElement: Element): (vNode: VNode) => VNode {
   const rootVNode = elementToVNode(rootElement)
   const rootVNodeSelector = vNodeSelector(rootVNode)
 
