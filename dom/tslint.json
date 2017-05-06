@@ -9,6 +9,9 @@
     ],
     "no-unused-variable": [
       false
+    ],
+    "unified-signatures": [
+      false
     ]
   }
 }

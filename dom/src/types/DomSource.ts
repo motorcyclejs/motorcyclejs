@@ -6,15 +6,16 @@ export interface EventsFnOptions {
   useCapture?: boolean
 }
 
-export interface DomSource {
-  select(selector: string): DomSource
+export interface DomSource<T extends Element = Element> {
+  select<T extends Element>(selector: string): DomSource<T>
   elements<T extends Element>(): Stream<Array<T>>
 
-  events<T extends Event>(eventType: StandardEvents | string, options?: EventsFnOptions): Stream<T>
+  events<T extends Event>(eventType: StandardEvents, options?: EventsFnOptions): Stream<T>
+  events<T extends Event>(eventType: string, options?: EventsFnOptions): Stream<T>
 
   namespace(): Array<string>
-  isolateSource(source: DomSource, scope: string): DomSource
-  isolateSink(sink: Stream<VNode>, scope: string): Stream<VNode>
+  isolateSource<T extends Element>(source: DomSource<T>, scope: string): DomSource<T>
+  isolateSink<T extends VNode>(sink: Stream<T>, scope: string): Stream<T>
 
   // TODO: implement these because strings suck
 
@@ -86,7 +87,7 @@ export interface DomSource {
   // gamepadconnected(options?: EventsFnOptions): Stream<GamepadEvent>;
   // gamepaddisconnected(options?: EventsFnOptions): Stream<GamepadEvent>;
   // gotpointercapture(options?: EventsFnOptions): Stream<PointerEvent>;
-  // hashchange(options?: EventsFnOptions): Stream<HashChangeEvent>;
+  // hashchange(options?: EventsFnOptions): Stream<HashChangeEvent>;interfaces
   // lostpointercapture(options?: EventsFnOptions): Stream<PointerEvent>;
   // input(options?: EventsFnOptions): Stream<Event>;
   // invalid(options?: EventsFnOptions): Stream<Event>;
