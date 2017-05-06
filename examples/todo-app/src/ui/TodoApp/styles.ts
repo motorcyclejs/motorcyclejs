@@ -1,4 +1,4 @@
-import { cssRule, style, types } from 'typestyle';
+import { cssRule, style, types } from 'typestyle'
 
 export namespace todoAppStyles {
   cssRule(
@@ -13,9 +13,9 @@ export namespace todoAppStyles {
       margin: `0 auto`,
       '-webkit-font-smoothing': `antialiased`,
       '-moz-osx-font-smoothing': `grayscale`,
-      'fontWeight': 300,
+      fontWeight: 300,
     },
-  );
+  )
 
   cssRule(
     `button`,
@@ -34,14 +34,14 @@ export namespace todoAppStyles {
       '-webkit-font-smoothing': `antialiased`,
       '-moz-osx-font-smoothing': `grayscale`,
     },
-  );
+  )
 
   cssRule(
     `:focus`,
     {
       outline: 0,
     },
-  );
+  )
 
   const inputPlaceholder: types.NestedCSSProperties =
     {
@@ -49,7 +49,7 @@ export namespace todoAppStyles {
       fontStyle: 'italic',
       fontWeight: 300,
       color: `#e6e6e6`,
-    };
+    }
 
   const itemInput: types.NestedCSSProperties =
     {
@@ -67,7 +67,7 @@ export namespace todoAppStyles {
       boxSizing: 'border-box',
       '-webkit-font-smoothing': `antialiased`,
       '-moz-osx-font-smoothing': `grayscale`,
-    };
+    }
 
   export const hostClass = style(
     { $debugName: `todo-app` },
@@ -87,7 +87,7 @@ export namespace todoAppStyles {
         },
       },
     },
-  );
+  )
 
   export const headingClass = style(
     { $debugName: `todo-app_heading` },
@@ -101,12 +101,12 @@ export namespace todoAppStyles {
       color: `rgba(175, 47, 47, 0.15)`,
       textRendering: 'optimizeLegibility',
     },
-  );
+  )
 
   export const editClass = style(
     { $debugName: `todo-app_edit` },
     itemInput,
-  );
+  )
 
   export const newTodoClass = style(
     { $debugName: `todo-app_new-todo` },
@@ -117,7 +117,7 @@ export namespace todoAppStyles {
       background: `rgba(0, 0, 0, 0.003)`,
       boxShadow: `inset 0 -2px 1px rgba(0, 0, 0, 0.03)`,
     },
-  );
+  )
 
   export const mainClass = style(
     { $debugName: `todo-app_main` },
@@ -126,14 +126,14 @@ export namespace todoAppStyles {
       zIndex: 2,
       borderTop: `1px solid #e6e6e6`,
     },
-  );
+  )
 
   cssRule(
     `label[for='toggle-all']`,
     {
       display: `none`,
     },
-  );
+  )
 
   export const toggleAllClass = style(
     { $debugName: `todo-app_toggle-all` },
@@ -164,7 +164,7 @@ export namespace todoAppStyles {
         },
       },
     },
-  );
+  )
 
   export const todoListClass = style(
     { $debugName: `todo-app_todo-list` },
@@ -173,7 +173,7 @@ export namespace todoAppStyles {
       padding: 0,
       listStyle: `none`,
     },
-  );
+  )
 
   export const footerClass = style(
     { $debugName: `todo-app_footer` },
@@ -200,7 +200,7 @@ export namespace todoAppStyles {
         },
       },
     },
-  );
+  )
 
   export const todoCountClass = style(
     { $debugName: `todo-app_todo-count` },
@@ -213,11 +213,11 @@ export namespace todoAppStyles {
         },
       },
     },
-  );
+  )
 
   export const selectedClass = style(
     { $debugName: `todo-app_selected` },
-  );
+  )
 
   export const filtersClass = style(
     { $debugName: `todo-app_filters` },
@@ -252,7 +252,7 @@ export namespace todoAppStyles {
         },
       },
     },
-  );
+  )
 
   export const clearCompletedClass = style(
     { $debugName: `todo-app_clear-completed` },
@@ -268,12 +268,12 @@ export namespace todoAppStyles {
         },
       },
     },
-  );
+  )
 
   export const hideClass = style(
     { $debugName: `todo-app_hide` },
     {
       display: `none`,
     },
-  );
+  )
 }

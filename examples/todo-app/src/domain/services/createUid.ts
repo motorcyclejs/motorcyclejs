@@ -1,5 +1,5 @@
-import cuid = require('cuid');
+import cuid = require('cuid')
 
-import { Uid } from '../model';
+import { Uid } from '../model'
 
-export const createUid: () => Uid = cuid;
+export const createUid: () => Uid = cuid

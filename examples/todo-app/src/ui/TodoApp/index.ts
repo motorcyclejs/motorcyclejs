@@ -1,2 +1,2 @@
-export * from './TodoApp';
-export * from './types';
+export * from './TodoApp'
+export * from './types'

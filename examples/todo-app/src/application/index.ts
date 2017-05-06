@@ -1,2 +1,2 @@
-export * from './types';
-export * from './makeApplication';
+export * from './types'
+export * from './makeApplication'

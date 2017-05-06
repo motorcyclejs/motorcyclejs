@@ -1,4 +1,3 @@
-export * from './isolateDom';
-export * from './mapProp';
-export * from './switchCombine';
-export * from './switchMerge';
+export * from './mapProp'
+export * from './switchCombine'
+export * from './switchMerge'

@@ -1,5 +1,5 @@
-import { Stream } from 'most';
-import { Todo } from './types';
+import { Stream } from 'most'
+import { Todo } from './types'
 
 /**
  * A TodoRepository is a Effectful Component (Sinks -> Sources) that
@@ -12,14 +12,14 @@ import { Todo } from './types';
  * API.
  */
 export type TodoRepository =
-  (sinks: TodoRepositorySinks) => TodoRepositorySources;
+  (sinks: TodoRepositorySinks) => TodoRepositorySources
 
 export type TodoRepositorySinks =
   {
-    todos$: Stream<Array<Todo>>;
-  };
+    todos$: Stream<ReadonlyArray<Todo>>;
+  }
 
 export type TodoRepositorySources =
   {
-    todos$: Stream<Array<Todo>>;
-  };
+    todos$: Stream<ReadonlyArray<Todo>>;
+  }

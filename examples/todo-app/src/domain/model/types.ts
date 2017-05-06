@@ -15,20 +15,20 @@
  */
 
 export interface Todo {
-  readonly id: Uid;
-  readonly completed: boolean;
-  readonly title: Title;
+  readonly id: Uid
+  readonly completed: boolean
+  readonly title: Title
 }
 
 /**
  * Business rule:
  *  Must be unique
  */
-export type Uid = string;
+export type Uid = string
 
 /**
  * Business rule:
  *  Must be greater than 0 characters long
  *  Must be less than or equal to 80 characters long
  */
-export type Title = string;
+export type Title = string

@@ -1,11 +1,11 @@
-import { ElementVirtualNode, VNode, button, input, label, li } from '../../../../../dom/src';
+import { VNode, button, input, label, li } from '@motorcycle/dom'
 
-import { Model } from './types';
-import { TodoItemStyles } from './styles';
-import { classes } from 'typestyle';
+import { Model } from './types'
+import { TodoItemStyles } from './styles'
+import { classes } from 'typestyle'
 
 export function view(model: Model): VNode {
-  const { todo, editing } = model;
+  const { todo, editing } = model
 
   const host =
     li(
@@ -49,7 +49,7 @@ export function view(model: Model): VNode {
           },
         ),
       ],
-    );
+    )
 
-  return host;
+  return host
 }
