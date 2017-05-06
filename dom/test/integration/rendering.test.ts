@@ -1,16 +1,16 @@
-import * as assert from 'assert';
+import * as assert from 'assert'
 
-import { DomSource, VNode, a, div, h2, makeDomComponent, p } from '../../src';
-import { Stream, just } from 'most';
+import { DomSource, VNode, a, div, h2, makeDomComponent, p } from '../../src'
+import { Stream, just } from 'most'
 
-import { run } from '@motorcycle/run';
+import { run } from '@motorcycle/run'
 
 interface DomSources {
-  dom: DomSource;
+  dom: DomSource
 }
 
 interface DomSinks {
-  view$: Stream<VNode>;
+  view$: Stream<VNode>
 }
 
 describe('rendering', () => {
@@ -26,57 +26,57 @@ describe('rendering', () => {
           ]),
           div(`Hello world`),
         ]),
-      );
+      )
 
-      return { view$ };
+      return { view$ }
     }
 
-    const { sources, dispose } = run<DomSources, DomSinks>(main, makeDomComponent(createInitialRenderTarget()));
+    const { sources, dispose } = run<DomSources, DomSinks>(main, makeDomComponent(createInitialRenderTarget()))
 
     sources.dom.elements().skip(1).take(1)
-      .observe(elements => {
-        const rootElement = elements[0] as HTMLDivElement;
+      .observe((elements) => {
+        const rootElement = elements[0] as HTMLDivElement
 
-        assert.strictEqual(rootElement.id, 'test');
-        assert.strictEqual(rootElement.childNodes.length, 1);
+        assert.strictEqual(rootElement.id, 'test')
+        assert.strictEqual(rootElement.childNodes.length, 1)
 
-        const page = rootElement.childNodes[0] as HTMLDivElement;
+        const page = rootElement.childNodes[0] as HTMLDivElement
 
-        assert.strictEqual(page.childNodes.length, 3);
+        assert.strictEqual(page.childNodes.length, 3)
 
-        assert.strictEqual((page.childNodes[0] as HTMLHeadingElement).tagName, 'H2');
-        assert.strictEqual((page.childNodes[1] as HTMLDivElement).tagName, 'DIV');
+        assert.strictEqual((page.childNodes[0] as HTMLHeadingElement).tagName, 'H2')
+        assert.strictEqual((page.childNodes[1] as HTMLDivElement).tagName, 'DIV')
 
-        dispose();
-        done();
+        dispose()
+        done()
       })
-      .catch(done);
-  });
-});
+      .catch(done)
+  })
+})
 
 function createInitialRenderTarget(): HTMLDivElement {
-  const rootElement = document.createElement('div');
-  rootElement.id = 'test';
-  rootElement.className = 'unresolved';
+  const rootElement = document.createElement('div')
+  rootElement.id = 'test'
+  rootElement.className = 'unresolved'
 
-  const textContainer = document.createElement('div');
+  const textContainer = document.createElement('div')
 
-  const firstTextNode = document.createTextNode('Motorcycle');
+  const firstTextNode = document.createTextNode('Motorcycle')
 
-  textContainer.appendChild(firstTextNode);
+  textContainer.appendChild(firstTextNode)
 
-  const spanElement = document.createElement('span');
+  const spanElement = document.createElement('span')
 
-  const secondTextNode = document.createTextNode('.js');
+  const secondTextNode = document.createTextNode('.js')
 
-  spanElement.appendChild(secondTextNode);
+  spanElement.appendChild(secondTextNode)
 
-  textContainer.appendChild(spanElement);
-  textContainer.appendChild(spanElement);
+  textContainer.appendChild(spanElement)
+  textContainer.appendChild(spanElement)
 
-  rootElement.appendChild(textContainer);
+  rootElement.appendChild(textContainer)
 
-  document.body.appendChild(rootElement);
+  document.body.appendChild(rootElement)
 
-  return rootElement;
+  return rootElement
 }
