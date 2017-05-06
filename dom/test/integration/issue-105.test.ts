@@ -1,113 +1,113 @@
-import * as assert from 'assert';
+import * as assert from 'assert'
 
-import { button, div, makeDomComponent } from '../../src';
+import { button, div, makeDomComponent } from '../../src'
 
-import isolate from '@cycle/isolate';
-import { just } from 'most';
-import { run } from '@motorcycle/run';
+import isolate from '@cycle/isolate'
+import { just } from 'most'
+import { run } from '@motorcycle/run'
 
 // TESTS
 describe('issue 105', () => {
   it('should only emit a single event with useCapture false', (done) => {
     const { sources, sinks }: any =
-      run<any, any>(withUseCaptureFalse, makeDomComponent(document.createElement('div')));
+      run<any, any>(withUseCaptureFalse, makeDomComponent(document.createElement('div')))
 
-    sources.dom.elements().skip(1).take(1).observe(([root]: Element[]) => {
-      const button = root.querySelector('button');
+    sources.dom.elements().skip(1).take(1).observe(([root]: Array<Element>) => {
+      const button = root.querySelector('button')
       if (!button)
-        done(new Error('Can not find button'));
+        done(new Error('Can not find button'))
 
-      setTimeout(() => (button as any).click());
-    });
+      setTimeout(() => (button as any).click())
+    })
 
-    let called = 0;
+    let called = 0
     sinks.toggle$.skip(1).tap(() => ++called).observe(() => {
-      assert.strictEqual(called, 1);
-      setTimeout(done, 100);
-    }).catch(done);
-  });
+      assert.strictEqual(called, 1)
+      setTimeout(done, 100)
+    }).catch(done)
+  })
 
   it('should only emit a single event with useCapture true', (done) => {
     const { sources, sinks }: any =
-      run<any, any>(withUseCaptureTrue, makeDomComponent(document.createElement('div')));
+      run<any, any>(withUseCaptureTrue, makeDomComponent(document.createElement('div')))
 
-    sources.dom.elements().skip(1).take(1).observe(([root]: Element[]) => {
-      const button = root.querySelector('button');
+    sources.dom.elements().skip(1).take(1).observe(([root]: Array<Element>) => {
+      const button = root.querySelector('button')
       if (!button)
-        done(new Error('Can not find button'));
+        done(new Error('Can not find button'))
 
-      setTimeout(() => (button as any).click());
-    });
+      setTimeout(() => (button as any).click())
+    })
 
-    let called = 0;
+    let called = 0
     sinks.toggle$.skip(1).tap(() => ++called).observe(() => {
-      assert.strictEqual(called, 1);
-      done();
-    }).catch(done);
-  });
-});
+      assert.strictEqual(called, 1)
+      done()
+    }).catch(done)
+  })
+})
 
-function withUseCaptureFalse (sources: any) {
+function withUseCaptureFalse(sources: any) {
   // ORIGINAL PROBLEM:
   // -------
   // Setting `useCapture: true` causes
   // Uncaught SyntaxError: Failed to execute 'matches' on 'Element': '' is not a valid selector.
   //
   // Setting `useCapture: false` causes event to fire twice.
-  const events = { click: { useCapture: false } };
+  const events = { click: { useCapture: false } }
 
   const aButton = isolate(
     augmentComponentWithEvents(Button, events),
-  )(sources);
+  )(sources)
 
-  const aButtonToggle$ = aButton.click$.scan((previous: boolean) => !previous, false).multicast();
+  const aButtonToggle$ = aButton.click$.scan((previous: boolean) => !previous, false).multicast()
 
-  const childViews$ = aButton.dom.map((view: any) => [view]);
+  const childViews$ = aButton.dom.map((view: any) => [view])
 
-  const aHeaderSources = { childViews$ };
+  const aHeaderSources = { childViews$ }
 
-  const aHeader = augmentComponent(Header, { aButtonToggle$ })(aHeaderSources);
+  const aHeader = augmentComponent(Header, { aButtonToggle$ })(aHeaderSources)
 
   return {
     view$: aHeader.dom,
     toggle$: aButtonToggle$,
-  };
+  }
 }
 
-function withUseCaptureTrue (sources: any) {
+function withUseCaptureTrue(sources: any) {
   // ORIGINAL PROBLEM:
   // -------
   // Setting `useCapture: true` causes
   // Uncaught SyntaxError: Failed to execute 'matches' on 'Element': '' is not a valid selector.
   //
   // Setting `useCapture: false` causes event to fire twice.
-  const events = { click: { useCapture: true } };
+  const events = { click: { useCapture: true } }
 
   const aButton = isolate(
     augmentComponentWithEvents(Button, events),
-  )(sources);
+  )(sources)
 
-  const aButtonToggle$ = aButton.click$.scan((previous: boolean) => !previous, false).multicast();
+  const aButtonToggle$ = aButton.click$.scan((previous: boolean) => !previous, false).multicast()
 
-  const childViews$ = aButton.dom.map((view: any) => [view]);
+  const childViews$ = aButton.dom.map((view: any) => [view])
 
-  const aHeaderSources = { childViews$ };
+  const aHeaderSources = { childViews$ }
 
-  const aHeader = augmentComponent(Header, { aButtonToggle$ })(aHeaderSources);
+  const aHeader = augmentComponent(Header, { aButtonToggle$ })(aHeaderSources)
 
   return {
     view$: aHeader.dom,
     toggle$: aButtonToggle$,
-  };
+  }
 }
 
 function Header(sources: any) {
-  const { childViews$ } = sources;
+  const { childViews$ } = sources
   return {
     dom: childViews$.map((childViews: any) => {
-      return div(`#header`, childViews);
+      return div(`#header`, childViews)
     }),
-  };
+  }
 }
 
 function Button() {
@@ -117,7 +117,7 @@ function Button() {
         button([`click me`]),
       ]),
     ),
-  };
+  }
 }
 
 function augmentComponentWithEvents(
@@ -125,21 +125,21 @@ function augmentComponentWithEvents(
   events: { [name: string]: { useCapture?: boolean } },
 ) {
   return function AugmentationComponent(sources: any) {
-    const sinks = Component(sources);
+    const sinks = Component(sources)
 
     Object.keys(events)
-      .forEach(function (key) {
-        sinks[`${key}$`] = sources.dom.events(key, events[key]);
-      });
+      .forEach(function(key) {
+        sinks[`${key}$`] = sources.dom.events(key, events[key])
+      })
 
-    return sinks;
-  };
+    return sinks
+  }
 }
 
 function augmentComponent(Component: any, augmentationSinks: any) {
   return function AugmentationComponent(sources: any) {
-    const sinks = Component(sources);
+    const sinks = Component(sources)
 
-    return Object.assign(sinks, augmentationSinks);
-  };
+    return Object.assign(sinks, augmentationSinks)
+  }
 }

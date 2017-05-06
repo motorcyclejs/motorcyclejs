@@ -7,11 +7,11 @@ import { DomSource } from './types'
 import { MotorcycleDomSource } from './DomSources'
 import { vNodeWrapper } from './vNodeWrapper'
 
-export type DomSinks<T extends Element> =
+export type DomSinks<T extends Element = Element> =
   { readonly [key: string]: Stream<any> } &
   { view$: Stream<VirtualNode<T>> }
 
-export interface DomSources<T extends Element> {
+export interface DomSources<T extends Element = Element> {
   dom: DomSource<T>
 }
 
