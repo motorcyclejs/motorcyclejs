@@ -22,22 +22,18 @@ export function makeDomComponent<T extends Element>(
   options: DomDriverOptions = { modules: [] })
 {
   const modules = options.modules || []
-  const patch = init(modules)
-  const rootVNode = elementToVNode(rootElement) as ElementVirtualNode<T>
-  const wrapVNodeInRootElement = vNodeWrapper(rootElement)
+  const patch = init<T>(modules)
+  const rootVNode = elementToVNode<T>(rootElement)
+  const wrapVNodeInRootElement = vNodeWrapper<T>(rootElement)
 
   return function Dom(sinks: DomSinks<T>): DomSources<T> {
     const { view$ } = sinks
 
     const rootVNode$: Stream<ElementVirtualNode<T>> =
-      scan<VirtualNode<T>, ElementVirtualNode<T>>(
-        (elementVNode: ElementVirtualNode<T>, vNode: VirtualNode<T>) => patch<T>(elementVNode, vNode),
-        rootVNode,
-        map(wrapVNodeInRootElement, view$) as any,
-      )
+      scan(patch, rootVNode, map(wrapVNodeInRootElement, view$))
 
     const rootElement$: Stream<T> =
-      hold(1, map((vNode: ElementVirtualNode<T>) => vNodeToElement<T>(vNode), rootVNode$) as any)
+      hold(1, map(vNodeToElement, rootVNode$) as any)
 
     drain(rootElement$)
       .catch((err) => console.error('Error in DomComponent:', err))
