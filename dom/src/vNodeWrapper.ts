@@ -1,10 +1,10 @@
-import { ElementVirtualNode, VirtualNode, elementToVNode, h } from 'mostly-dom'
+import { ElementVirtualNode, VNodeProps, VirtualNode, elementToVNode, h } from 'mostly-dom'
 
 export function vNodeWrapper<T extends Element>(rootElement: T) {
   const rootVNode = elementToVNode(rootElement)
   const rootVNodeSelector = vNodeSelector(rootVNode)
 
-  return function execute(vNode: VirtualNode<any>): VirtualNode<T> {
+  return function execute(vNode: VirtualNode<any>): VirtualNode<T, VNodeProps<T>> {
     if (rootVNodeSelector === vNodeSelector(vNode)) return vNode as VirtualNode<T>
 
     const wrappedVNode = h(rootVNodeSelector, {}, [ vNode ])
