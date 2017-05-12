@@ -1,10 +1,21 @@
-import { Stream, combineArray, just, map, switchLatest } from 'most';
+import { Stream, combineArray, just, map, switchLatest } from 'most'
 
-export function switchCombine<A>(streams$: Stream<Array<Stream<A>>>): Stream<Array<A>> {
+// tslint:disable:unified-signatures
+// tslint:disable:no-unused-variable
+export function switchCombine<A>(
+  streams$: Stream<Array<Stream<A>>>): Stream<ReadonlyArray<A>>
+export function switchCombine<A>(
+  streams$: Stream<ReadonlyArray<Stream<A>>>): Stream<ReadonlyArray<A>>
+
+export function switchCombine<A>(
+  streams$: Stream<Array<Stream<A>>>): Stream<ReadonlyArray<A>>
+{
   return switchLatest(
     map(
-      streams => streams.length === 0 ? just([]) : combineArray<A, Array<A>>(Array, streams),
+      (streams) => streams.length === 0 ?
+        just([]) :
+        combineArray(Array, streams as Array<Stream<A>>),
       streams$,
     ),
-  );
+  )
 }

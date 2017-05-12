@@ -11,22 +11,22 @@ import {
   section,
   span,
   ul,
-} from '../../../../../dom/src';
+} from '@motorcycle/dom'
 
-import { Model } from './';
-import { classes } from 'typestyle';
-import { todoAppStyles } from './styles';
+import { Model } from './'
+import { classes } from 'typestyle'
+import { todoAppStyles } from './styles'
 
-const HEADING = `todos`;
+const HEADING = `todos`
 
-const NEW_ITEM_PLACEHOLDER = `What needs to be done?`;
+const NEW_ITEM_PLACEHOLDER = `What needs to be done?`
 
 export function view(model: Model): VNode {
   const {
     todoItems,
     activeTodoItemCount,
     completedTodoItemCount,
-    todoItemCount } = model;
+    todoItemCount } = model
 
   const host =
     section(
@@ -47,7 +47,7 @@ export function view(model: Model): VNode {
                 className: todoAppStyles.newTodoClass,
                 placeholder: NEW_ITEM_PLACEHOLDER,
                 autofocus: true,
-                update: (_, vNode) => { (vNode.element as HTMLInputElement).value = ``; },
+                update: (_, vNode) => { (vNode.element as HTMLInputElement).value = `` },
               },
             ),
           ],
@@ -104,7 +104,7 @@ export function view(model: Model): VNode {
                           {
                             href: `/`,
                           },
-                          [`All`],
+                          [ `All` ],
                         ),
                       ],
                     ),
@@ -114,7 +114,7 @@ export function view(model: Model): VNode {
                           {
                             href: `/active`,
                           },
-                          [`Active`],
+                          [ `Active` ],
                         ),
                       ],
                     ),
@@ -124,7 +124,7 @@ export function view(model: Model): VNode {
                           {
                             href: `/completed`,
                           },
-                          [`Completed`],
+                          [ `Completed` ],
                         ),
                       ],
                     ),
@@ -146,7 +146,7 @@ export function view(model: Model): VNode {
           ],
         ),
       ],
-    );
+    )
 
-  return host;
+  return host
 }

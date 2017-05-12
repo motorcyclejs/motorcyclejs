@@ -1,2 +1,2 @@
-export * from './types';
-export * from './AddTodo';
+export * from './types'
+export * from './AddTodo'

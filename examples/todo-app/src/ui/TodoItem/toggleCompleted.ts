@@ -1,15 +1,14 @@
-import { DomSource, events, query } from '../../../../../dom/src';
-import { Stream, scan, skip } from 'most';
+import { DomSource, events, query } from '@motorcycle/dom'
+import { Stream, scan, skip } from 'most'
 
-import { TodoItemStyles } from './styles';
-import { not } from 'ramda';
+import { TodoItemStyles } from './styles'
 
 export function toggleCompleted(dom: DomSource): Stream<boolean> {
-  const toggle = query(`.${TodoItemStyles.toggleClass}`, dom);
+  const toggle = query(`.${TodoItemStyles.toggleClass}`, dom)
 
-  const click$ = events('click', toggle);
+  const click$ = events('click', toggle)
 
-  const completed$ = skip(1, scan(not, false, click$));
+  const completed$ = skip(1, scan((x) => !x, false, click$))
 
-  return completed$;
+  return completed$
 }

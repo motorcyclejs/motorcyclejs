@@ -1,2 +1,2 @@
-export * from './types';
-export * from './UpdateTodo';
+export * from './types'
+export * from './UpdateTodo'

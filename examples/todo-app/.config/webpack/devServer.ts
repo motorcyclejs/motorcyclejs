@@ -1,4 +1,4 @@
-import { distPath } from './paths';
+import { distPath } from './paths'
 
 export const devServer =
   {
@@ -7,4 +7,4 @@ export const devServer =
     port: 8080,
     contentBase: distPath,
     historyApiFallback: true,
-  };
+  }
