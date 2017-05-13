@@ -1,12 +1,13 @@
-import { NorthbrookConfig } from 'northbrook';
-import { plugin as mocha } from '@northbrook/mocha';
-import { plugin as northbrook } from 'northbrook/plugins';
-import { plugin as tsc } from '@northbrook/tsc';
-import { plugin as tslint } from '@northbrook/tslint';
+import { NorthbrookConfig } from 'northbrook'
+import { plugin as mocha } from '@northbrook/mocha'
+import { plugin as northbrook } from 'northbrook/plugins'
+import { plugin as tsc } from '@northbrook/tsc'
+import { plugin as tslint } from '@northbrook/tslint'
 
 const config: NorthbrookConfig =
   {
     packages: [
+      'stream',
       'dom',
       'history',
       'router',
@@ -47,6 +48,6 @@ const config: NorthbrookConfig =
         'src/**/*.ts',
       ],
     },
-  };
+  }
 
-export = config;
+export = config
