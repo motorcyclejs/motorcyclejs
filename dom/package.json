@@ -1,7 +1,7 @@
 {
   "name": "@motorcycle/dom",
   "description": "Standard DOM Driver for Motorcycle.js",
-  "version": "10.4.0",
+  "version": "10.5.0",
   "author": "Tylor Steinberger <tlsteinberger167@gmail.com>",
   "main": "lib/index.js",
   "module": "lib.es2015/index.js",
