@@ -31,7 +31,7 @@ export class ElementDomSource implements DomSource {
     return this._namespace
   }
 
-  public select<T extends Element>(cssSelector: string): DomSource<T> {
+  public select(cssSelector: string): DomSource {
     const trimmedSelector = cssSelector.trim()
 
     if (elementMap.has(trimmedSelector))
@@ -39,22 +39,22 @@ export class ElementDomSource implements DomSource {
         this._rootElement$,
         this._namespace,
         this._delegator,
-        elementMap.get(trimmedSelector) as HTMLElement,
+        elementMap.get(trimmedSelector) as Element,
       )
 
     const amendedNamespace = trimmedSelector === `:root`
       ? this._namespace
       : this._namespace.concat(trimmedSelector)
 
-    return new MotorcycleDomSource<T>(
-      this._rootElement$ as Stream<T>,
+    return new MotorcycleDomSource(
+      this._rootElement$,
       amendedNamespace,
       this._delegator,
     )
   }
 
-  public elements(): Stream<Array<Element>> {
-    return this._rootElement$.constant([ this._element ])
+  public elements<T extends Element>(): Stream<Array<T>> {
+    return this._rootElement$.constant([ this._element as T ])
   }
 
   public events<T extends Event>(eventType: StandardEvents | string, options: EventsFnOptions = {}): Stream<T> {

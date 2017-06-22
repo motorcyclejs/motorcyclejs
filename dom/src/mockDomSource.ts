@@ -56,7 +56,7 @@ function isolateSource(source: DomSource, scope: string) {
   return source.select(`${SCOPE_PREFIX}${scope}`)
 }
 
-function isolateSink(vNode$: Stream<VNode>, scope: string) {
+function isolateSink<T extends VNode>(vNode$: Stream<T>, scope: string) {
   const generatedScope = `${SCOPE_PREFIX}${scope}`
 
   return vNode$.tap((vNode) => {

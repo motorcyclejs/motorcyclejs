@@ -9,8 +9,8 @@ interface DomSources {
   dom: DomSource
 }
 
-interface DomSinks {
-  view$: Stream<VNode>
+type DomSinks = { [key: string]: Stream<any> } & {
+  view$: Stream<VNode>,
 }
 
 describe('rendering', () => {

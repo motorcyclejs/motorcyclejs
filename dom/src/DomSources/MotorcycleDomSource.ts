@@ -15,15 +15,15 @@ import { shouldUseCapture } from './shouldUseCapture'
 
 const SCOPE_SEPARATOR = `~`
 
-export class MotorcycleDomSource<T extends Element> implements DomSource<T> {
-  protected _rootElement$: Stream<T>
+export class MotorcycleDomSource implements DomSource {
+  protected _rootElement$: Stream<Element>
   protected _namespace: Array<string>
   protected _delegator: EventDelegator
   protected _selector: string
   protected _scope: string
 
   constructor(
-    rootElement$: Stream<T>,
+    rootElement$: Stream<Element>,
     namespace: Array<string>,
     delegator: EventDelegator = new EventDelegator(),
   ) {
@@ -38,7 +38,7 @@ export class MotorcycleDomSource<T extends Element> implements DomSource<T> {
     return this._namespace
   }
 
-  public select<R extends Element>(cssSelector: string): DomSource<R> {
+  public select(cssSelector: string): DomSource {
     const trimmedSelector = cssSelector.trim()
 
     if (trimmedSelector === ':root') return this
@@ -51,14 +51,14 @@ export class MotorcycleDomSource<T extends Element> implements DomSource<T> {
         elementMap.get(trimmedSelector) as HTMLElement,
       )
 
-    return new MotorcycleDomSource<R>(
-      this._rootElement$ as any as Stream<R>,
+    return new MotorcycleDomSource(
+      this._rootElement$,
       this._namespace.concat(trimmedSelector),
       this._delegator,
     )
   }
 
-  public elements(): Stream<Array<T>> {
+  public elements<T extends Element = Element>(): Stream<Array<T>> {
     const namespace = this._namespace
 
     if (namespace.length === 0)
@@ -115,7 +115,7 @@ export class MotorcycleDomSource<T extends Element> implements DomSource<T> {
     return source.select(SCOPE_PREFIX + scope) as D
   }
 
-  public isolateSink<V extends VNode>(sink: Stream<V>, scope: string): Stream<V> {
+  public isolateSink(sink: Stream<VNode>, scope: string): Stream<VNode> {
     const prefixedScope = SCOPE_PREFIX + scope
 
     return sink.tap((vNode) => {
