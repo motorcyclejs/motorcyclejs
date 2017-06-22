@@ -8,6 +8,6 @@ export const query: QueryFn = curry2<string, DomSource, DomSource>(
 )
 
 export interface QueryFn {
-  <T extends Element = Element>(cssSelector: string, domSource: DomSource): DomSource<T>
-  <T extends Element = Element>(cssSelector: string): (domSource: DomSource) => DomSource<T>
+  (cssSelector: string, domSource: DomSource): DomSource
+  (cssSelector: string): (domSource: DomSource) => DomSource
 }
