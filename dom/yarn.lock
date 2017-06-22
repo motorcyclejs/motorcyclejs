@@ -75,9 +75,9 @@ most@^1.1.0, most@^1.2.1, most@^1.3.0:
     "@most/prelude" "^1.4.0"
     symbol-observable "^1.0.2"
 
-mostly-dom@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/mostly-dom/-/mostly-dom-2.1.1.tgz#677ec08b3302d722c7a778cb624ae998d174397e"
+mostly-dom@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/mostly-dom/-/mostly-dom-3.5.0.tgz#a74a7e5c3d0ec38986d32a941efff3883fa09433"
   dependencies:
     "@most/prelude" "^1.6.0"
 
