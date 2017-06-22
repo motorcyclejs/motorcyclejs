@@ -1,3 +1,23 @@
+# 11.0.0 (2017-06-22)
+---
+
+## Breaking Changes
+
+1. Types from mostly-dom such as ElementVirutalNode and VirtualNode no longer exist.
+  - feat(dom): upgrade to mostly-dom v3 [fcd5978f](https://github.com/motorcyclejs/dom/commits/fcd5978f7d2d6fbfab1657ab8c486c2bef05d38d)
+
+## Features
+
+- feat(dom): upgrade mostly-dom [f971b4a6](https://github.com/motorcyclejs/dom/commits/f971b4a6dd24866a56362b3f046f0dea4aa768f8)
+- feat(dom): upgrade mostly-dom [b7be83e6](https://github.com/motorcyclejs/dom/commits/b7be83e62a082d06056a9b5413f897003bb6c1f4)
+
+## Bug Fixes
+
+- fix(vNodeWrapper): use VNodeProps [f210e532](https://github.com/motorcyclejs/dom/commits/f210e53213a25ab6a778149de89260b55805ee9a)
+- fix(dom): fix compile errors [33529aeb](https://github.com/motorcyclejs/dom/commits/33529aeb1d110afe402a3a174e9766f2cb8c4d48)
+- fix(vNodeWrapper): use VNodeProps [3577b965](https://github.com/motorcyclejs/dom/commits/3577b965cb5ecfaa6150f8c476d57c24830a81a3)
+- fix(dom): fix compile errors [ecd9708a](https://github.com/motorcyclejs/dom/commits/ecd9708af44cf20b2ac64867ceb7f8b6fa551b06)
+
 # 10.4.0 (2017-05-02)
 ---
 
