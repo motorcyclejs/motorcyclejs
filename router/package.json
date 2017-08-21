@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@most/prelude": "^1.5.0",
-    "@motorcycle/history": "latest",
-    "@motorcycle/run": "latest",
+    "@motorcycle/history": "6.1.0",
+    "@motorcycle/run": "2.1.0",
     "most-subject": "^5.3.0",
     "switch-path": "^1.2.0"
   },

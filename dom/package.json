@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@cycle/isolate": "^1.4.0",
-    "@motorcycle/run": "latest",
+    "@motorcycle/run": "2.1.0",
     "@types/hyperscript": "^0.0.2",
     "hyperscript": "^2.0.2"
   },
